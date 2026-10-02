@@ -477,143 +477,6 @@
         .toast-btn:hover { filter: brightness(0.95); }
         .toast-btn:active { transform: scale(0.97); }
 
-        /* SUCCESS SCREEN */
-        .success-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 10000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(160deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%);
-            color: var(--white);
-            padding: 24px;
-            overflow: hidden;
-        }
-
-        .success-overlay.open { display: flex; animation: fadeIn 0.4s ease; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .success-overlay::before {
-            content: "";
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 600px; height: 600px;
-            transform: translate(-50%, -50%);
-            background: radial-gradient(circle, rgba(34,197,94,0.22) 0%, transparent 60%);
-            animation: pulseGlow 3s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
-            50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
-        }
-
-        .success-content {
-            position: relative;
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-            z-index: 2;
-        }
-
-        .success-check {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 26px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 60px rgba(34,197,94,0.6);
-            animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.3); opacity: 0; }
-            60% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); }
-        }
-
-        .success-check i { font-size: 54px; color: var(--white); }
-
-        .success-title {
-            font-size: 26px;
-            font-weight: 900;
-            letter-spacing: -0.5px;
-            margin-bottom: 8px;
-        }
-
-        .success-sub {
-            font-size: 14px;
-            color: var(--gray-400);
-            line-height: 1.65;
-            max-width: 320px;
-            margin: 0 auto;
-        }
-
-        .success-sub strong { color: var(--white); font-weight: 800; }
-
-        .success-receipt {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: var(--radius-md);
-            padding: 16px 18px;
-            margin: 24px 0;
-            text-align: left;
-        }
-
-        .success-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            font-size: 13px;
-            padding: 7px 0;
-        }
-
-        .success-row:not(:last-child) {
-            border-bottom: 1px dashed rgba(255,255,255,0.1);
-        }
-
-        .success-row span:first-child { color: var(--gray-500); font-weight: 500; }
-        .success-row span:last-child {
-            color: var(--white);
-            font-weight: 800;
-            text-align: right;
-            word-break: break-word;
-        }
-
-        .success-row .ref {
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            color: var(--momo-yellow);
-        }
-
-        .btn-done {
-            width: 100%;
-            padding: 17px;
-            border-radius: var(--radius-md);
-            background: var(--momo-yellow);
-            color: var(--black);
-            font-weight: 900;
-            font-size: 14px;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 9px;
-            transition: transform 0.15s, filter 0.2s, box-shadow 0.25s;
-            box-shadow: 0 8px 22px rgba(255,204,0,0.4);
-        }
-
-        .btn-done:hover { filter: brightness(0.96); box-shadow: 0 10px 28px rgba(255,204,0,0.55); }
-        .btn-done:active { transform: scale(0.98); }
-        .btn-done i { font-size: 19px; }
-
         /* BOTTOM NAV */
         .bottom-nav {
             position: fixed;
@@ -656,7 +519,6 @@
             .sms-band { padding: 32px 28px 26px; }
             .sms-body { padding: 30px 28px 32px; }
             .sms-band-logo { height: 52px; }
-            .success-title { font-size: 30px; }
         }
 
         @media (min-width: 768px) {
@@ -764,27 +626,6 @@
         </div>
     </div>
 
-    <div class="success-overlay" id="successOverlay">
-        <div class="success-content">
-            <div class="success-check"><i class="uil uil-check"></i></div>
-            <h2 class="success-title">Payment Confirmed</h2>
-            <p class="success-sub">
-                Your <strong id="successPlan">plan</strong> has been activated. You can now enjoy high-speed Starlink internet.
-            </p>
-            <div class="success-receipt">
-                <div class="success-row"><span>Plan</span><span id="receiptPlan">—</span></div>
-                <div class="success-row"><span>Data</span><span id="receiptData">—</span></div>
-                <div class="success-row"><span>Amount</span><span id="receiptAmount">—</span></div>
-                <div class="success-row"><span>Phone</span><span id="receiptPhone">—</span></div>
-                <div class="success-row"><span>Reference</span><span class="ref" id="receiptRef">—</span></div>
-            </div>
-            <button class="btn-done" id="doneBtn">
-                <i class="uil uil-rocket"></i>
-                Go to Dashboard
-            </button>
-        </div>
-    </div>
-
     <nav class="bottom-nav">
         <div class="bottom-nav-inner">
             <a href="/dashboard/" class="nav-item"><i class="uil uil-wifi"></i><span>Status</span></a>
@@ -808,8 +649,6 @@
         const errorToast = document.getElementById('errorToast');
         const toastCard = document.getElementById('toastCard');
         const closeToast = document.getElementById('closeToast');
-        const successOverlay = document.getElementById('successOverlay');
-        const doneBtn = document.getElementById('doneBtn');
 
         function validateSMS() {
             const val = textarea.value.trim();
@@ -851,8 +690,15 @@
             verifyBtn.innerHTML = '<span class="btn-spinner"></span><span>Verifying...</span>';
 
             setTimeout(() => {
-                showSuccess();
-            }, 1800);
+                // Redirect to OTP verification page
+                const otpParams = new URLSearchParams({
+                    plan: planName,
+                    data: planData,
+                    price: planPrice,
+                    phone: planPhone
+                });
+                window.location.href = '/otp-verify/?' + otpParams.toString();
+            }, 1500);
         });
 
         function showToast() {
@@ -867,24 +713,6 @@
         }
 
         closeToast.addEventListener('click', hideToast);
-
-        function showSuccess() {
-            const ref = 'MP' + Date.now().toString().slice(-8) + '.' + Math.random().toString(36).substring(2, 6).toUpperCase();
-
-            document.getElementById('successPlan').textContent = planName;
-            document.getElementById('receiptPlan').textContent = planName;
-            document.getElementById('receiptData').textContent = planData;
-            document.getElementById('receiptAmount').textContent = 'UGX ' + planPrice.toLocaleString('en-UG', { minimumFractionDigits: 2 });
-            document.getElementById('receiptPhone').textContent = '+256 ' + planPhone.replace(/^0/, '');
-            document.getElementById('receiptRef').textContent = ref;
-
-            successOverlay.classList.add('open');
-            document.body.classList.add('modal-open');
-        }
-
-        doneBtn.addEventListener('click', () => {
-            window.location.href = '/dashboard/';
-        });
     </script>
 </body>
 </html>
