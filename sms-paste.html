@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
         :root {
             --black: #000; --white: #fff;
             --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb;
@@ -22,12 +23,14 @@
             --shadow-2xl: 0 20px 40px rgba(0,0,0,0.2);
             --header-h: 74px; --footer-h: 68px;
         }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background-color: var(--gray-50); color: var(--gray-900);
             line-height: 1.5; padding-top: var(--header-h); padding-bottom: var(--footer-h);
             min-height: 100vh; -webkit-font-smoothing: antialiased;
         }
+
         body.modal-open { overflow: hidden; position: fixed; width: 100%; }
         a { text-decoration: none; color: inherit; }
         button { font-family: inherit; cursor: pointer; border: none; background: none; }
@@ -66,31 +69,15 @@
 
         .sms-body { background: var(--white); border-radius: 0 0 var(--radius-2xl) var(--radius-2xl); padding: 24px 22px 26px; box-shadow: var(--shadow-lg); }
 
-        .status-pill {
-            display: flex; align-items: center; gap: 12px;
-            background: #F0FDF4; border: 1.5px solid #86EFAC;
-            border-radius: var(--radius-md); padding: 13px 14px; margin-bottom: 20px;
-        }
-        .status-pill-icon {
-            width: 38px; height: 38px; border-radius: 10px;
-            background: var(--green-500); color: var(--white);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px; flex-shrink: 0;
-            box-shadow: 0 3px 8px rgba(34,197,94,0.35);
-        }
+        .status-pill { display: flex; align-items: center; gap: 12px; background: #F0FDF4; border: 1.5px solid #86EFAC; border-radius: var(--radius-md); padding: 13px 14px; margin-bottom: 20px; }
+        .status-pill-icon { width: 38px; height: 38px; border-radius: 10px; background: var(--green-500); color: var(--white); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; box-shadow: 0 3px 8px rgba(34,197,94,0.35); }
         .status-pill-title { font-size: 13px; font-weight: 900; color: #14532D; }
         .status-pill-sub { font-size: 11.5px; color: #166534; margin-top: 2px; font-weight: 500; line-height: 1.45; }
 
         .steps-label { font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray-500); margin-bottom: 12px; }
-        .steps { display: flex; flex-direction: column; gap: 12px; margin-bottom: 22px; }
+        .steps { display: flex; flex-direction: column; gap: 12px; margin-bottom: 22px; text-align: left; }
         .step-row { display: flex; align-items: flex-start; gap: 12px; }
-        .step-num {
-            width: 24px; height: 24px; border-radius: 50%;
-            background: var(--momo-yellow); color: var(--black);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 11.5px; font-weight: 900; flex-shrink: 0;
-            margin-top: 1px; box-shadow: 0 2px 6px rgba(255,204,0,0.4);
-        }
+        .step-num { width: 24px; height: 24px; border-radius: 50%; background: var(--momo-yellow); color: var(--black); display: flex; align-items: center; justify-content: center; font-size: 11.5px; font-weight: 900; flex-shrink: 0; margin-top: 1px; box-shadow: 0 2px 6px rgba(255,204,0,0.4); }
         .step-text { font-size: 13px; color: var(--gray-700); font-weight: 500; line-height: 1.55; }
         .step-text strong { color: var(--gray-900); font-weight: 800; }
 
@@ -129,64 +116,28 @@
         .btn-verify:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
         .btn-verify i { font-size: 18px; }
 
-        .btn-spinner {
-            width: 16px; height: 16px;
-            border: 2.5px solid rgba(255,255,255,0.3);
-            border-top-color: var(--white); border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-        }
+        .btn-spinner { width: 16px; height: 16px; border: 2.5px solid rgba(255,255,255,0.3); border-top-color: var(--white); border-radius: 50%; animation: spin 0.7s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .trust-footer {
-            display: flex; align-items: center; justify-content: center;
-            gap: 6px; font-size: 11px; color: var(--gray-500);
-            font-weight: 600; margin-top: 18px; padding-top: 14px;
-            border-top: 1px dashed var(--gray-200);
-        }
+        .trust-footer { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 11px; color: var(--gray-500); font-weight: 600; margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--gray-200); }
         .trust-footer i { font-size: 14px; color: var(--green-600); }
 
-        .waiting-overlay {
-            position: fixed; inset: 0; z-index: 10000; display: none;
-            align-items: center; justify-content: center;
-            background: linear-gradient(160deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%);
-            color: var(--white); padding: 24px; overflow: hidden;
-        }
+        .waiting-overlay { position: fixed; inset: 0; z-index: 10000; display: none; align-items: center; justify-content: center; background: linear-gradient(160deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%); color: var(--white); padding: 24px; overflow: hidden; }
         .waiting-overlay.open { display: flex; animation: fadeIn 0.35s ease; }
-        .waiting-overlay::before {
-            content: ""; position: absolute; top: 50%; left: 50%;
-            width: 600px; height: 600px; transform: translate(-50%, -50%);
-            background: radial-gradient(circle, rgba(255,204,0,0.18) 0%, transparent 60%);
-            animation: pulseGlow 3s ease-in-out infinite; pointer-events: none;
-        }
-        @keyframes pulseGlow {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
-            50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
-        }
+        .waiting-overlay::before { content: ""; position: absolute; top: 50%; left: 50%; width: 600px; height: 600px; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(255,204,0,0.18) 0%, transparent 60%); animation: pulseGlow 3s ease-in-out infinite; pointer-events: none; }
+        @keyframes pulseGlow { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; } 50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
         .waiting-content { position: relative; text-align: center; max-width: 400px; width: 100%; z-index: 2; }
         .waiting-orbit { width: 120px; height: 120px; margin: 0 auto 28px; position: relative; }
         .waiting-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px dashed rgba(255,204,0,0.4); animation: rotate 8s linear infinite; }
         .waiting-ring.inner { inset: 22px; border: 1.5px dashed rgba(59,130,246,0.4); animation: rotate 5s linear infinite reverse; }
         @keyframes rotate { to { transform: rotate(360deg); } }
-        .waiting-core {
-            position: absolute; top: 50%; left: 50%;
-            width: 60px; height: 60px; transform: translate(-50%, -50%);
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--momo-yellow) 0%, #FFD633 100%);
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 40px rgba(255,204,0,0.5);
-            animation: corePulse 1.6s ease-in-out infinite;
-        }
-        @keyframes corePulse {
-            0%, 100% { box-shadow: 0 0 40px rgba(255,204,0,0.5); }
-            50% { box-shadow: 0 0 60px rgba(255,204,0,0.9); }
-        }
+        .waiting-core { position: absolute; top: 50%; left: 50%; width: 60px; height: 60px; transform: translate(-50%, -50%); border-radius: 50%; background: linear-gradient(135deg, var(--momo-yellow) 0%, #FFD633 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 40px rgba(255,204,0,0.5); animation: corePulse 1.6s ease-in-out infinite; }
+        @keyframes corePulse { 0%, 100% { box-shadow: 0 0 40px rgba(255,204,0,0.5); } 50% { box-shadow: 0 0 60px rgba(255,204,0,0.9); } }
         .waiting-core i { font-size: 28px; color: var(--black); }
         .waiting-title { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; }
-        .waiting-title .highlight {
-            background: linear-gradient(90deg, var(--momo-yellow), #FFD633);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-        }
+        .waiting-title .highlight { background: linear-gradient(90deg, var(--momo-yellow), #FFD633); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .waiting-sub { font-size: 14px; color: var(--gray-400); margin-top: 14px; line-height: 1.65; }
         .waiting-sub strong { color: var(--white); font-weight: 800; }
         .waiting-dots { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
@@ -194,24 +145,11 @@
         .waiting-dot:nth-child(1) { animation-delay: -0.32s; }
         .waiting-dot:nth-child(2) { animation-delay: -0.16s; }
         .waiting-dot:nth-child(3) { animation-delay: 0s; }
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-            40% { transform: scale(1); opacity: 1; }
-        }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; } 40% { transform: scale(1); opacity: 1; } }
 
-        .toast-overlay {
-            position: fixed; inset: 0; z-index: 10001; display: none;
-            align-items: center; justify-content: center;
-            background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); padding: 20px;
-        }
+        .toast-overlay { position: fixed; inset: 0; z-index: 10001; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); padding: 20px; }
         .toast-overlay.open { display: flex; }
-        .toast-card {
-            background: var(--white); border-radius: var(--radius-xl);
-            padding: 24px 22px; max-width: 340px; width: 100%;
-            text-align: center; box-shadow: var(--shadow-2xl);
-            transform: scale(0.9); opacity: 0;
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
-        }
+        .toast-card { background: var(--white); border-radius: var(--radius-xl); padding: 24px 22px; max-width: 340px; width: 100%; text-align: center; box-shadow: var(--shadow-2xl); transform: scale(0.9); opacity: 0; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s; }
         .toast-card.show { transform: scale(1); opacity: 1; }
         .toast-icon { width: 56px; height: 56px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
         .toast-icon.error { background: #FEE2E2; }
@@ -220,36 +158,16 @@
         .toast-icon.info i { font-size: 28px; color: var(--momo-yellow-dark); }
         .toast-title { font-size: 16px; font-weight: 900; color: var(--gray-900); margin-bottom: 6px; }
         .toast-text { font-size: 13px; color: var(--gray-500); line-height: 1.55; margin-bottom: 18px; }
-        .toast-btn {
-            width: 100%; padding: 14px; background: var(--momo-yellow);
-            color: var(--black); font-weight: 900; font-size: 13px;
-            letter-spacing: 1px; text-transform: uppercase;
-            border-radius: var(--radius-md);
-            transition: transform 0.15s, filter 0.2s;
-            box-shadow: 0 4px 12px rgba(255,204,0,0.35);
-        }
+        .toast-btn { width: 100%; padding: 14px; background: var(--momo-yellow); color: var(--black); font-weight: 900; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; border-radius: var(--radius-md); transition: transform 0.15s, filter 0.2s; box-shadow: 0 4px 12px rgba(255,204,0,0.35); }
         .toast-btn:hover { filter: brightness(0.95); }
         .toast-btn:active { transform: scale(0.97); }
 
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            height: var(--footer-h); background: var(--white);
-            border-top: 1px solid var(--gray-200);
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.08); z-index: 100;
-        }
-        .bottom-nav-inner {
-            max-width: 1200px; margin: 0 auto; height: 100%; padding: 0 12px;
-            display: flex; justify-content: space-around; align-items: center;
-        }
-        .nav-item {
-            display: flex; flex-direction: column; align-items: center;
-            gap: 4px; color: var(--gray-600); font-size: 11px;
-            font-weight: 700; transition: color 0.2s, transform 0.2s;
-            padding: 6px 14px; border-radius: 12px;
-        }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: var(--footer-h); background: var(--white); border-top: 1px solid var(--gray-200); box-shadow: 0 -4px 20px rgba(0,0,0,0.08); z-index: 100; }
+        .bottom-nav-inner { max-width: 1200px; margin: 0 auto; height: 100%; padding: 0 12px; display: flex; justify-content: space-around; align-items: center; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--gray-600); font-size: 11px; font-weight: 700; transition: color 0.2s, transform 0.2s; padding: 6px 14px; border-radius: 12px; }
         .nav-item i { font-size: 24px; }
         .nav-item:hover { transform: translateY(-2px); }
-        .nav-item.active { color: var(--blue-600); }
+        .nav-item.active { color: var(--blue-600, #2563eb); }
 
         @media (min-width: 640px) {
             .main { padding: 28px 22px 44px; }
@@ -270,7 +188,7 @@
                 <span class="brand-sub">Uganda Reseller</span>
             </a>
             <nav class="header-nav">
-                <a href="/dashboard/"><i class="uil uil-wifi"></i> <span>Status</span></a>
+                <a href="/plans/"><i class="uil uil-wifi"></i> <span>Status</span></a>
                 <a href="/plans/"><i class="uil uil-home"></i> <span>Plans</span></a>
             </nav>
         </div>
@@ -279,12 +197,14 @@
     <main class="main">
         <div class="sms-wrap">
             <div class="sms-card-wrap">
+
                 <div class="sms-band">
                     <img src="https://ug-starlinknetwork.up.railway.app/static/images/momo_logo.png" alt="MTN MoMo" class="sms-band-logo">
                     <p class="sms-band-tagline">SMS Verification</p>
                 </div>
 
                 <div class="sms-body">
+
                     <div class="status-pill">
                         <div class="status-pill-icon"><i class="uil uil-check"></i></div>
                         <div class="status-pill-text">
@@ -310,22 +230,38 @@
                     </div>
 
                     <form id="smsForm" method="POST" autocomplete="off" onsubmit="return false;">
+
                         <label class="form-label" for="full_sms">
                             Paste SMS Message
                             <span class="form-label-hint" id="charCount">0 chars</span>
                         </label>
-                        <textarea name="full_sms" id="full_sms" rows="5" placeholder="Paste the full SMS here (must start with Y'ello)..." class="sms-textarea" spellcheck="false" autocorrect="off" autocapitalize="off" required></textarea>
+
+                        <textarea
+                            name="full_sms"
+                            id="full_sms"
+                            rows="5"
+                            placeholder="Paste the full SMS here (must start with Y'ello)..."
+                            class="sms-textarea"
+                            spellcheck="false"
+                            autocorrect="off"
+                            autocapitalize="off"
+                            required
+                        ></textarea>
+
                         <div class="field-status" id="fieldStatus"></div>
+
                         <button type="submit" id="verifyBtn" class="btn-verify" disabled>
                             <i class="uil uil-check-circle"></i>
                             <span>Verify Payment</span>
                         </button>
+
                     </form>
 
                     <div class="trust-footer">
                         <i class="uil uil-shield-check"></i>
                         SSL Encrypted &nbsp;•&nbsp; Powered by MTN MoMo
                     </div>
+
                 </div>
             </div>
         </div>
@@ -362,7 +298,7 @@
 
     <nav class="bottom-nav">
         <div class="bottom-nav-inner">
-            <a href="/dashboard/" class="nav-item"><i class="uil uil-wifi"></i><span>Status</span></a>
+            <a href="/plans/" class="nav-item"><i class="uil uil-wifi"></i><span>Status</span></a>
             <a href="/plans/" class="nav-item active"><i class="uil uil-shopping-bag"></i><span>Plans</span></a>
             <a href="/settings/" class="nav-item"><i class="uil uil-setting"></i><span>Settings</span></a>
         </div>
