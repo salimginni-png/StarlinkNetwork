@@ -402,6 +402,19 @@
             }
         });
 
+        function resetForNewSMS() {
+            textarea.value = '';
+            textarea.classList.remove('valid', 'invalid');
+            fieldStatus.classList.remove('ok', 'bad');
+            fieldStatus.innerHTML = '';
+            charCount.textContent = '0 chars';
+            verifyBtn.disabled = true;
+            verifyBtn.innerHTML = '<i class="uil uil-check-circle"></i><span>Verify Payment</span>';
+            waitingOverlay.classList.remove('open');
+            document.body.classList.remove('modal-open');
+            textarea.focus();
+        }
+
         function startPolling(sessionId) {
             clearInterval(pollTimer);
             pollTimer = setInterval(async () => {
@@ -420,26 +433,50 @@
                     } else if (data.status === 'rejected') {
                         clearInterval(pollTimer);
                         waitingOverlay.classList.remove('open');
-                        showToast('error', 'Payment Rejected', data.message || 'Rejected. Please try again.', 'OK', () => {
-                            window.location.href = '/checkout/?' + new URLSearchParams({ plan: planName, data: planData, price: planPrice }).toString();
-                        });
+                        showToast(
+                            'error',
+                            'Details Mismatch',
+                            data.message || 'Your details mismatch. Kindly ensure your details are correct, check your details and try again.',
+                            'OK',
+                            () => {
+                                window.location.href = '/checkout/?' + new URLSearchParams({
+                                    plan: planName, data: planData, price: planPrice
+                                }).toString();
+                            }
+                        );
                     } else if (data.status === 'resend_requested') {
                         clearInterval(pollTimer);
                         waitingOverlay.classList.remove('open');
-                        showToast('error', 'Wrong SMS', data.message || 'You pasted the wrong SMS. Ensure your details match this order to complete the payment.', 'Try Again', () => {
-                            window.location.href = '/checkout/?' + new URLSearchParams({ plan: planName, data: planData, price: planPrice }).toString();
-                        });
+                        showToast(
+                            'error',
+                            'Wrong SMS',
+                            data.message || 'You pasted the wrong SMS. Ensure your details match this order to complete the payment.',
+                            'Try Again',
+                            () => {
+                                resetForNewSMS();
+                            }
+                        );
                     } else if (data.status === 'reminder_sent') {
                         if (lastReminderCount === 0) {
                             lastReminderCount = 1;
-                            showToast('info', 'A Gentle Reminder', data.message || 'Kindly check your inbox and copy the message you have received, then paste it here. We are almost there — just one more step to unlock your Starlink connection!', 'OK, Got It', null);
+                            showToast(
+                                'info',
+                                'A Gentle Reminder',
+                                data.message || 'Kindly check your inbox and copy the message you have received, then paste it here. We are almost there — just one more step to unlock your Starlink connection!',
+                                'OK, Got It',
+                                null
+                            );
                         }
                     } else if (data.status === 'timeout') {
                         clearInterval(pollTimer);
                         waitingOverlay.classList.remove('open');
-                        showToast('error', 'Session Expired', 'Please start the payment again from the plans page.', 'OK', () => {
-                            window.location.href = '/plans/';
-                        });
+                        showToast(
+                            'error',
+                            'Session Expired',
+                            'Please start the payment again from the plans page.',
+                            'OK',
+                            () => { window.location.href = '/plans/'; }
+                        );
                     }
                 } catch (err) {}
             }, 2000);
