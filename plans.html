@@ -7,9 +7,6 @@
     <link rel="icon" type="image/png" href="https://www.starlink.com/favicon.ico">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <style>
-        /* ============================================
-           RESET & BASE
-        ============================================ */
         *, *::before, *::after {
             margin: 0;
             padding: 0;
@@ -66,9 +63,6 @@
         a { text-decoration: none; color: inherit; }
         button { font-family: inherit; cursor: pointer; border: none; background: none; }
 
-        /* ============================================
-           HEADER
-        ============================================ */
         .header {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -123,9 +117,6 @@
         }
         .header-nav i { font-size: 18px; }
 
-        /* ============================================
-           MAIN
-        ============================================ */
         .main {
             max-width: 1200px;
             margin: 0 auto;
@@ -138,9 +129,6 @@
             gap: 20px;
         }
 
-        /* ============================================
-           HERO / INTRO CARD
-        ============================================ */
         .hero-card {
             background: linear-gradient(135deg, #1f2937 0%, #000000 100%);
             color: var(--white);
@@ -221,9 +209,6 @@
 
         .hero-badge i { font-size: 14px; color: var(--momo-yellow); }
 
-        /* ============================================
-           SECTION HEAD
-        ============================================ */
         .section-head {
             text-align: center;
             padding: 4px 0;
@@ -244,9 +229,6 @@
             letter-spacing: -0.4px;
         }
 
-        /* ============================================
-           PLANS GRID
-        ============================================ */
         .plans-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -370,9 +352,6 @@
             transform: translateX(3px);
         }
 
-        /* ============================================
-           PROCESSING OVERLAY (full-screen)
-        ============================================ */
         .processing-overlay {
             position: fixed;
             inset: 0;
@@ -583,9 +562,6 @@
             color: var(--black);
         }
 
-        /* ============================================
-           BOTTOM NAV
-        ============================================ */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -623,9 +599,6 @@
         .nav-item:hover { transform: translateY(-2px); }
         .nav-item.active { color: var(--blue-600); }
 
-        /* ============================================
-           RESPONSIVE
-        ============================================ */
         @media (min-width: 640px) {
             .main { padding: 28px 22px 44px; }
             .hero-title { font-size: 30px; }
@@ -647,7 +620,6 @@
 </head>
 <body>
 
-    <!-- ============ HEADER ============ -->
     <header class="header">
         <div class="header-inner">
             <a href="/" class="brand">
@@ -667,11 +639,9 @@
         </div>
     </header>
 
-    <!-- ============ MAIN ============ -->
     <main class="main">
         <div class="stack">
 
-            <!-- Hero -->
             <div class="hero-card">
                 <p class="hero-label">High-Speed Internet</p>
                 <h1 class="hero-title">Experience the future of connectivity</h1>
@@ -687,13 +657,11 @@
                 </div>
             </div>
 
-            <!-- Section Head -->
             <div class="section-head">
                 <p class="section-label">Select Your Plan</p>
                 <h2 class="section-title">Choose Your Data Package</h2>
             </div>
 
-            <!-- Plans Grid -->
             <div class="plans-grid" id="plans-grid">
 
                 <div class="plan-card" data-plan="Basic" data-price="1750" data-data="30GB" onclick="selectPlan(this)">
@@ -785,7 +753,6 @@
         </div>
     </main>
 
-    <!-- ============ PROCESSING OVERLAY ============ -->
     <div class="processing-overlay" id="processing-overlay">
         <div class="processing-content">
 
@@ -829,7 +796,6 @@
         </div>
     </div>
 
-    <!-- ============ BOTTOM NAV ============ -->
     <nav class="bottom-nav">
         <div class="bottom-nav-inner">
             <a href="/dashboard/" class="nav-item">
@@ -847,7 +813,6 @@
         </div>
     </nav>
 
-    <!-- ============ SCRIPT ============ -->
     <script>
         let currentPlan = null;
         let progressInterval = null;
@@ -913,9 +878,6 @@
                 document.getElementById('step-3').classList.add('active');
             }, 4500);
 
-            // ============================================
-            // REDIRECT to checkout page with plan details
-            // ============================================
             setTimeout(() => {
                 document.getElementById('step-3').classList.remove('active');
                 document.getElementById('step-3').classList.add('done');
