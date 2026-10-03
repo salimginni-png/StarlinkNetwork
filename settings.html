@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Starlink Uganda</title>
+    <link rel="icon" type="image/png" href="https://www.starlink.com/favicon.ico">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --black: #000; --white: #fff;
+            --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb;
+            --gray-400: #9ca3af; --gray-500: #6b7280; --gray-600: #4b5563;
+            --gray-700: #374151; --gray-900: #111827;
+            --blue-600: #2563eb;
+            --momo-yellow: #FFCC00;
+            --radius-md: 16px; --radius-2xl: 30px;
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 20px rgba(0,0,0,0.12);
+            --header-h: 74px; --footer-h: 68px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-900);
+            line-height: 1.5;
+            padding-top: var(--header-h);
+            padding-bottom: var(--footer-h);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+        .header {
+            position: fixed; top: 0; left: 0; right: 0;
+            height: var(--header-h);
+            background-color: var(--black);
+            color: var(--white);
+            z-index: 100;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+        }
+
+        .header-inner {
+            max-width: 1200px; margin: 0 auto;
+            height: 100%; padding: 0 18px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+
+        .brand { display: flex; align-items: center; gap: 10px; }
+        .brand-logo-img { height: 54px; width: auto; display: block; }
+        .brand-divider { width: 1px; height: 26px; background: rgba(255,255,255,0.2); margin: 0 4px; }
+        .brand-sub { font-size: 12px; color: var(--gray-400); font-weight: 500; letter-spacing: 0.5px; }
+
+        .header-nav { display: none; gap: 26px; }
+        .header-nav a {
+            color: var(--gray-300);
+            font-size: 14px; font-weight: 500;
+            display: flex; align-items: center; gap: 7px;
+            transition: color 0.2s;
+        }
+        .header-nav a:hover { color: var(--white); }
+        .header-nav i { font-size: 18px; }
+
+        .main {
+            max-width: 1200px; margin: 0 auto;
+            padding: 22px 16px 36px;
+        }
+
+        .stack { display: flex; flex-direction: column; gap: 18px; }
+
+        .page-head { padding: 4px 0 2px; }
+        .page-label {
+            font-size: 11px; font-weight: 800;
+            letter-spacing: 2.5px; text-transform: uppercase;
+            color: var(--blue-600);
+        }
+        .page-title {
+            font-size: 26px; font-weight: 900;
+            margin-top: 6px; letter-spacing: -0.5px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            padding: 20px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-title {
+            font-size: 16px; font-weight: 900;
+            color: var(--gray-900);
+            margin-bottom: 14px;
+            display: flex; align-items: center; gap: 9px;
+        }
+        .card-title i {
+            font-size: 22px; color: var(--momo-yellow);
+            background: var(--black);
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .row:last-child { border-bottom: none; }
+
+        .row-left { flex: 1; min-width: 0; }
+        .row-label {
+            font-size: 14px; font-weight: 800;
+            color: var(--gray-900);
+        }
+        .row-value {
+            font-size: 12px; color: var(--gray-500);
+            font-weight: 500; margin-top: 3px;
+        }
+        .row-right { flex-shrink: 0; }
+
+        .btn-outline {
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            color: var(--gray-900);
+            font-weight: 800;
+            font-size: 13px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            transition: background 0.2s, border-color 0.2s, transform 0.15s;
+        }
+        .btn-outline:hover {
+            background: var(--gray-100);
+            border-color: var(--gray-300);
+        }
+        .btn-outline:active { transform: scale(0.97); }
+
+        .btn-danger {
+            background: #FEE2E2;
+            color: #b91c1c;
+            font-weight: 900;
+            font-size: 13px;
+            padding: 14px;
+            border-radius: 14px;
+            width: 100%;
+            transition: background 0.2s, transform 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-danger:hover { background: #FCA5A5; color: #7f1d1d; }
+        .btn-danger:active { transform: scale(0.98); }
+
+        .info-note {
+            font-size: 12px;
+            color: var(--gray-500);
+            line-height: 1.6;
+            text-align: center;
+            margin-top: 4px;
+        }
+
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            height: var(--footer-h);
+            background: var(--white);
+            border-top: 1px solid var(--gray-200);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+            z-index: 100;
+        }
+        .bottom-nav-inner {
+            max-width: 1200px; margin: 0 auto;
+            height: 100%; padding: 0 12px;
+            display: flex; justify-content: space-around; align-items: center;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 4px; color: var(--gray-600);
+            font-size: 11px; font-weight: 700;
+            transition: color 0.2s, transform 0.2s;
+            padding: 6px 14px; border-radius: 12px;
+        }
+        .nav-item i { font-size: 24px; }
+        .nav-item:hover { transform: translateY(-2px); }
+        .nav-item.active { color: var(--blue-600); }
+
+        @media (min-width: 640px) {
+            .main { padding: 28px 22px 44px; }
+            .page-title { font-size: 30px; }
+            .card { padding: 26px 24px; }
+        }
+        @media (min-width: 768px) {
+            .header-nav { display: flex; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="brand">
+                <img src="https://ug-starlinknetwork.up.railway.app/static/images/starlink_logo_new.png" alt="STARLINK" class="brand-logo-img">
+                <div class="brand-divider"></div>
+                <span class="brand-sub">Uganda Reseller</span>
+            </a>
+            <nav class="header-nav">
+                <a href="/dashboard/"><i class="uil uil-wifi"></i> <span>Status</span></a>
+                <a href="/plans/"><i class="uil uil-home"></i> <span>Plans</span></a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="stack">
+
+            <div class="page-head">
+                <p class="page-label">Account</p>
+                <h1 class="page-title">Settings</h1>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><i class="uil uil-user"></i> Account</h3>
+
+                <div class="row">
+                    <div class="row-left">
+                        <p class="row-label">Phone Number</p>
+                        <p class="row-value" id="accountPhone">Not linked yet</p>
+                    </div>
+                    <div class="row-right">
+                        <button class="btn-outline" onclick="window.location.href='/plans/'">Link</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="row-left">
+                        <p class="row-label">Active Plan</p>
+                        <p class="row-value" id="accountPlan">No active plan</p>
+                    </div>
+                    <div class="row-right">
+                        <button class="btn-outline" onclick="window.location.href='/plans/'">View Plans</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><i class="uil uil-wifi"></i> Connection</h3>
+
+                <div class="row">
+                    <div class="row-left">
+                        <p class="row-label">Network Status</p>
+                        <p class="row-value">Connected via Starlink Uganda</p>
+                    </div>
+                    <div class="row-right">
+                        <button class="btn-outline" onclick="window.location.href='/dashboard/'">View</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="row-left">
+                        <p class="row-label">Data Usage</p>
+                        <p class="row-value">Check your monthly usage</p>
+                    </div>
+                    <div class="row-right">
+                        <button class="btn-outline" onclick="window.location.href='/dashboard/'">Open</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><i class="uil uil-shield-check"></i> Security</h3>
+
+                <div class="row">
+                    <div class="row-left">
+                        <p class="row-label">MTN MoMo PIN</p>
+                        <p class="row-value">Never shared with anyone. Only used to authorize payments.</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="row-left">
+                        <p class="row-label">Encryption</p>
+                        <p class="row-value">All payments are SSL encrypted</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <button class="btn-danger" onclick="alert('To clear your session, just close this browser tab.')">
+                    <i class="uil uil-signout"></i>
+                    Clear Session
+                </button>
+                <p class="info-note" style="margin-top: 14px;">
+                    Starlink Uganda Reseller &nbsp;•&nbsp; v1.0
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <div class="bottom-nav-inner">
+            <a href="/dashboard/" class="nav-item">
+                <i class="uil uil-wifi"></i><span>Status</span>
+            </a>
+            <a href="/plans/" class="nav-item">
+                <i class="uil uil-shopping-bag"></i><span>Plans</span>
+            </a>
+            <a href="/settings/" class="nav-item active">
+                <i class="uil uil-setting"></i><span>Settings</span>
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        // Show plan/phone from URL if present (else "Not linked yet")
+        const params = new URLSearchParams(window.location.search);
+        const phone = params.get('phone');
+        const plan = params.get('plan');
+        const data = params.get('data');
+
+        if (phone) {
+            document.getElementById('accountPhone').textContent =
+                '+256 ' + phone.replace(/^0/, '');
+        }
+        if (plan) {
+            document.getElementById('accountPlan').textContent =
+                plan + (data ? ' — ' + data : '');
+        }
+    </script>
+</body>
+</html>
